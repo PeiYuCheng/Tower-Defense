@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class Map {
 	
-	public int Width;
-	public int Height;
+	private int Width;
+	private int Height;
 	public Cell[][] Grid; // 2 dimensional array
 	public Cell EntryCell;
 	public Cell ExitCell;
@@ -37,9 +37,9 @@ public class Map {
 	public boolean validate(){
 		boolean valid = true;
 		
-		// Check grid
+		//check if the grid completely filled with cells
 		for(int i=0; i<Height; i++){
-			for(int j=0; j<Width; j++){
+			for(int j=0; j<Width; j++){				
 				if(Grid[i][j] == null){
 					valid = false;
 				} else {
@@ -47,10 +47,10 @@ public class Map {
 					System.out.print(" ");	
 				}
 			}
-			System.out.println("\n");
+			System.out.print("\n");
 		}
 		
-		// Check path
+		//check if path is continuous and does not branch out
 		int previousX = -1;
 		int previousY = -1;
 		Cell FirstCell;
@@ -63,15 +63,20 @@ public class Map {
 			LastCell = ExitCell;
 			previousX = FirstCell.getX();
 			previousY = FirstCell.getY();
-			
+		//see if at least one side the current cell is connected to the previous cell
+		//if path has branches,the cell at the end of the branch won't be connected
+		//to the next cell, so return false
 			for(Cell aCell : path){
 				if(aCell.getX() != previousX && aCell.getY() != previousY ){
 					valid = false;
+					break;
 				}
 				previousX = aCell.getX();
 				previousY = aCell.getY();
 			}
-			
+		//at the end of the for loop, previousX and Y should be the coordinates of
+		//the last cell.
+		//check if it is the coordinate of the last cell
 			if(previousX != LastCell.getX() || previousY != LastCell.getY()){
 				valid = false;
 			}
