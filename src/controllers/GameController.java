@@ -9,8 +9,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javafx.scene.control.Cell;
+
 import javax.swing.Timer;
 
+import map.Map;
 import critterModels.Critter;
 import domain.Player;
 import presentation.*;
@@ -19,6 +22,7 @@ import towerModels.*;
 public class GameController implements ActionListener {
 
 	private Player player;
+	private Map map;
 	private Field field;
 	private Timer timer;
 	private MouseMaster mouse_master;
@@ -33,6 +37,7 @@ public class GameController implements ActionListener {
 		
 		mouse_master = new MouseMaster();
 		player = Player.getPlayerInstance();
+		map = Map.createGeneric();
 		list_of_critters_on_map = new ArrayList<>();
 		list_of_towers_on_map = new ArrayList<>();
 		
@@ -52,12 +57,16 @@ public class GameController implements ActionListener {
 	}
 	
 	protected void doDrawing(Graphics g) {
-		// TODO Auto-generated method stub
-		
+		drawGrid(g);		
 	}
 	
-	private void drawGrid() {
+	private void drawGrid(Graphics g) {
 		
+		for (int i = 0; i < map.Grid.length; i++) {
+			for (int j = 0; j < map.Grid[0].length; j++) {
+				map.Grid[i][j].drawCell(g);
+			}
+		}
 	}
 
 	private void fireTowers() {
@@ -99,6 +108,7 @@ public class GameController implements ActionListener {
 		}
 		
 		fireTowers();
+		field.repaint();
 		
 	}
 
@@ -144,6 +154,13 @@ public class GameController implements ActionListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			
+			// Selects a cell
+			for (int i = 0; i < map.Grid.length; i++) {
+				for (int j = 0; j < map.Grid[0].length; j++) {
+					map.Grid[i][j].selectCell(e.getX(), e.getY());;
+				}
+			}
+			
 			setMouseClicked(true);
 			int temp[] = new int[2];
 			temp[0] = e.getX();
@@ -151,6 +168,7 @@ public class GameController implements ActionListener {
 			setMousePositionAtClick(temp);
 
 		}
+		
 		
 		@Override
 		public void mouseMoved(MouseEvent e) {
