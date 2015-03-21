@@ -6,10 +6,10 @@ public class Map {
 	
 	private int Width;
 	private int Height;
-	public Cell[][] Grid; // 2 dimensional array
-	public Cell EntryCell;
-	public Cell ExitCell;
-	public ArrayList<Cell> path;
+	private Cell[][] Grid; // 2 dimensional array
+	private Cell EntryCell;
+	private Cell ExitCell;
+	private ArrayList<Cell> path;
 
 	public Map(int w, int h){
 		Width = w;
@@ -32,10 +32,24 @@ public class Map {
 		Grid[j][i] = aCell;
 	}
 	
+	public Cell getGridCell(int x, int y){
+		return Grid[y][x];
+	}
+	
 	public void addPathCell(Cell aCell){
 		path.add(aCell);
 	}
 	
+	
+	
+	public ArrayList<Cell> getPath() {
+		return path;
+	}
+
+	public void setGrid(Cell[][] grid) {
+		Grid = grid;
+	}
+
 	public boolean validate(){
 		boolean valid = true;
 		

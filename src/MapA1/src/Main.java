@@ -83,9 +83,12 @@ public class Main {
 			System.out.println("Invalid map. Path is incomplete or has branches");
 		}
 		
-		//we can access the user determined path through MyMap.path
-		System.out.print("the coordinates of the path cells are: \n");
-		for(Cell c: MyMap.path)
+		//access the user determined path array coordinate through MyMap.getPath()
+		System.out.print("\nThe coordinates of the path cells are: \n");
+		for(Cell c: MyMap.getPath())
 			System.out.print("{" + c.getX() + "," + c.getY() + "}");
+		
+		//see if a certain cell can place tower or not
+		System.out.println("\n\nCan the cell {7,2} place tower?" + MyMap.getGridCell(7,2).canPlaceTower());
 	}
 }
