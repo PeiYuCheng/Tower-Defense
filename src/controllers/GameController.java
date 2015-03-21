@@ -60,6 +60,10 @@ public class GameController implements ActionListener {
 		drawGrid(g);		
 	}
 	
+	/**
+	 * Draws all the cells in the grid
+	 * @param g
+	 */
 	private void drawGrid(Graphics g) {
 		
 		for (int i = 0; i < map.Grid.length; i++) {
