@@ -1,3 +1,5 @@
+package MapA1.src;
+
 
 public abstract class Cell implements CellInterface{
 

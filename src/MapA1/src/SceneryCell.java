@@ -1,3 +1,5 @@
+package MapA1.src;
+
 public class SceneryCell extends Cell{
 
 	public SceneryCell(int posX, int posY){

@@ -1,3 +1,5 @@
+package MapA1.src;
+
 
 public interface CellInterface {
 

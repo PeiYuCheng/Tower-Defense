@@ -1,3 +1,5 @@
+package MapA1.src;
+
 
 public class PathCell extends Cell{
 

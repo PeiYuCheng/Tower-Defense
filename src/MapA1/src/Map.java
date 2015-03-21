@@ -1,3 +1,5 @@
+package MapA1.src;
+
 import java.util.ArrayList;
 
 public class Map {
