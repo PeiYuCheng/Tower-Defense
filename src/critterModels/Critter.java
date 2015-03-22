@@ -1,6 +1,8 @@
-package critter;
+package critterModels;
 
 import java.util.Observable;
+
+import domain.Player;
 
 /**
  * <h3>
@@ -50,7 +52,7 @@ public abstract class Critter extends Observable{
 	 */
 	public boolean isDead() {
 		// TODO: reward player with reward of appropriate kill and add animation
-		if (getHealth() <= 0)
+		if (getHealth() == 0)
 			return true;
 		return false;
 	}
@@ -62,10 +64,10 @@ public abstract class Critter extends Observable{
 	 */
 
 	// TODO: Implement later in game controller
-	public void reward(Player p) {
-		if (isDead())
-			p.cash += reward;
-	}
+//	public void reward(Player p) {
+//		if (isDead())
+//			p.cash += reward;
+//	}
 
 	/**
 	 * This method indicates that the critter is hit.
@@ -73,38 +75,17 @@ public abstract class Critter extends Observable{
 	 * @return <b>true</b> if the critter is hit reduces the critter health
 	 *         appropriately based on the tower's power.
 	 */
-	public boolean isHit() {
-		// TODO: check if tower hit critter then reduce health appropriately and
-		// add animation to hit
-		if (Tower.ATTACK) {
-			health -= Tower.DAMAGE;
-			return true;
-		} else
-			return false;
-	}
-	
-	/**
-	 * This method is used to damage Critter by taking in 3 parameters the tower's attack, 
-	 * and which negative effect will hurt it. The effect is a boolean which is changed in the game 
-	 * controller for a certain time.
-	 * 
-	 * @param amountOfDamageTaken: The damage that is taken from the tower
-	 * @param negativePowerEffect: The boolean value that will define a change in the critter's power
-	 * @param negativeSpeedEffect: The boolean value that will define a slowdown in the critter's movement
-	 */
-	public void damageCritter(int amountOfDamageTaken, boolean negativePowerEffect, boolean negativeSpeedEffect) {
-
-		this.health -= amountOfDamageTaken;
-		int currentSpeed = this.getMovingSpeed();
-		
-		if (negativeSpeedEffect)
-			this.movingSpeed = currentSpeed - 10;
-		else
-			this.movingSpeed = currentSpeed;
-		
-		setChanged();
-		notifyObservers();
-	}
+//	public boolean isHit() {
+//		// TODO: check if tower hit critter then reduce health appropriately and
+//		// add animation to hit
+//		if (Tower.ATTACK) {
+//			health -= Tower.DAMAGE;
+//			setChanged();
+//			notifyObservers();
+//			return true;
+//		} else
+//			return false;
+//	}
 
 	/**
 	 * This method indicates that the critter has reached the exit.
@@ -113,10 +94,10 @@ public abstract class Critter extends Observable{
 	 */
 	public boolean hasReachedExit() {
 		// TODO: check if critter has reached exit tile.
-		if (posX == Tile.END_TILE[0] && posY == Tile.END_TILE[1])
+//		if (posX == Tile.END_TILE[0] && posY == Tile.END_TILE[1])
 			return true;
-		else
-			return false;
+//		else
+//			return false;
 	}
 
 	/**
@@ -127,7 +108,7 @@ public abstract class Critter extends Observable{
 	// TODO: Implement later in game controller
 	public void damage(Player p) {
 		if (hasReachedExit())
-			p.lives -= damagingPower;
+			p.setLives(p.getLives() - damagingPower);
 		// TODO: Player.Health -= DAMAGING_POWER;
 	}
 
@@ -181,5 +162,11 @@ public abstract class Critter extends Observable{
 
 	public void setPosY(int posY) {
 		this.posY = posY;
+	}
+
+	public void damageCritter(int amount_of_damage, boolean pyro_damage,
+			boolean slow_damage) {
+		// TODO Auto-generated method stub
+		
 	}
 }

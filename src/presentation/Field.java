@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 public class Field extends JPanel {
 	
 	public Field(MouseListener ml){
-//		setBackground(Color.BLACK);
+		setBackground(Color.white);
         setPreferredSize(new Dimension(Application.SCREEN_WIDTH, Application.SCREEN_HEIGHT));
         setDoubleBuffered(true);
         setVisible(true);

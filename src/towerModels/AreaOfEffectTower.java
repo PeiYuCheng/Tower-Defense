@@ -11,12 +11,12 @@ import critterModels.Critter;
  */
 public class AreaOfEffectTower extends Tower {
 
-	private static final int COST = 70;
+	public static final int COST = 70;
 	private static final int REFUND_VALUE = 40;
 	private static final int RANGE = 3;
 	private static final int POWER = 3;
 	private static final int RATE_OF_FIRE = 1;
-	private static final Color TOWER_COLOR = Color.orange;
+	public static final Color TOWER_COLOR = Color.orange;
 	
 	private final int AREA_OF_EFFECT = 2;
 	private ArrayList<Critter> area_of_effect_targets;

@@ -9,12 +9,12 @@ import java.awt.Color;
  */
 public class RegularTower extends Tower {
 
-	private static final int COST = 50;
+	public static final int COST = 50;
 	private static final int REFUND_VALUE = 30;
 	private static final int RANGE = 5;
 	private static final int POWER = 5;
 	private static final int RATE_OF_FIRE = 1;
-	private static final Color TOWER_COLOR = Color.blue;
+	public static final Color TOWER_COLOR = Color.blue;
 	
 	
 	public RegularTower() {

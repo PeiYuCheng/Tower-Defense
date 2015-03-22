@@ -11,12 +11,12 @@ import critterModels.Critter;
  */
 public class RadialTower extends Tower {
 
-	private static final int COST = 70;
+	public static final int COST = 70;
 	private static final int REFUND_VALUE = 40;
 	private static final int RANGE = 4;
 	private static final int POWER = 4;
 	private static final int RATE_OF_FIRE = 1;
-	private static final Color TOWER_COLOR = Color.green;
+	public static final Color TOWER_COLOR = Color.green;
 	
 	private ArrayList<Critter> radial_targets;
 	private ArrayList<Integer> x_coordinate_target_points;

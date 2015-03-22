@@ -57,7 +57,8 @@ public class GameController implements ActionListener {
 	}
 	
 	protected void doDrawing(Graphics g) {
-		drawGrid(g);		
+		drawSideMenu(g);
+		drawGrid(g);	
 	}
 	
 	/**
@@ -71,6 +72,40 @@ public class GameController implements ActionListener {
 				map.Grid[i][j].drawCell(g);
 			}
 		}
+	}
+	
+	private void drawSideMenu(Graphics g) {
+		
+		g.fillRect(600, 0, 200, 600);
+		g.setColor(Color.white);
+		g.drawString("Lives: " + player.getLives(), 610, 20);
+		g.drawString("Money: " + player.getMoney(), 610, 40);
+		g.drawString("Towers: ", 610, 70);
+		
+		// Regular tower button
+		g.setColor(Color.white);
+		g.drawRect(610, 80, 30, 30);
+		g.drawString("Regular", 610, 120);
+		g.drawString("$" + RegularTower.COST, 610, 130);
+		g.setColor(RegularTower.TOWER_COLOR);
+		g.fillOval(612, 82, 26, 26);
+		
+		// AoE tower button
+		g.setColor(Color.white);
+		g.drawRect(670, 80, 30, 30);
+		g.drawString("Splash", 670, 120);
+		g.drawString("$" + AreaOfEffectTower.COST, 670, 130);
+		g.setColor(AreaOfEffectTower.TOWER_COLOR);
+		g.fillOval(672, 82, 26, 26);
+		
+		// Radial tower button
+		g.setColor(Color.white);
+		g.drawRect(730, 80, 30, 30);
+		g.drawString("Radial", 730, 120);
+		g.drawString("$" + RadialTower.COST, 730, 130);
+		g.setColor(RadialTower.TOWER_COLOR);
+		g.fillOval(732, 82, 26, 26);
+		
 	}
 
 	private void fireTowers() {
