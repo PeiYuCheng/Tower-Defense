@@ -52,7 +52,7 @@ public abstract class Critter extends Observable{
 	 */
 	public boolean isDead() {
 		// TODO: reward player with reward of appropriate kill and add animation
-		if (getHealth() == 0)
+		if (getHealth() <= 0)
 			return true;
 		return false;
 	}
