@@ -3,7 +3,7 @@ package map;
 import java.awt.Color;
 
 
-public class PathCell extends Cell{
+public class PathCell extends Cell {
 	
 	private static final Color PATH_CELL_COLOR = Color.orange;
 	

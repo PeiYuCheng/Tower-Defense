@@ -6,11 +6,11 @@ import java.util.Observable;
 
 public abstract class Cell extends Observable implements CellInterface{
 
-	private static final int CELL_HEIGHT = 30;
-	private static final int CELL_WIDTH = 30;
-	private static final int CELL_SPACING = 30;
-	private int x_position;
-	private int y_position;
+	protected static final int CELL_HEIGHT = 30;
+	protected static final int CELL_WIDTH = 30;
+	protected static final int CELL_SPACING = 30;
+	protected int x_position;
+	protected int y_position;
 	private Color cell_color;
 	private boolean selected;
 	
