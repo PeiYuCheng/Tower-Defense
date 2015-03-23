@@ -52,7 +52,7 @@ public abstract class Critter extends Observable{
 	 */
 	public boolean isDead() {
 		// TODO: reward player with reward of appropriate kill and add animation
-		if (getHealth() == 0)
+		if (getHealth() <= 0)
 			return true;
 		return false;
 	}
@@ -111,7 +111,29 @@ public abstract class Critter extends Observable{
 			p.setLives(p.getLives() - damagingPower);
 		// TODO: Player.Health -= DAMAGING_POWER;
 	}
+	
+	/**
+	 * This method is used to damage Critter by taking in 3 parameters the tower's attack, 
+	 * and which negative effect will hurt it. The effect is a boolean which is changed in the game 
+	 * controller for a certain time.
+	 * 
+	 * @param amountOfDamageTaken: The damage that is taken from the tower
+	 * @param negativePowerEffect: The boolean value that will define a change in the critter's power
+	 * @param negativeSpeedEffect: The boolean value that will define a slowdown in the critter's movement
+	 */
+	public void damageCritter(int amountOfDamageTaken, boolean negativePowerEffect, boolean negativeSpeedEffect) {
 
+		this.health -= amountOfDamageTaken;
+		int currentSpeed = this.getMovingSpeed();
+		
+		if (negativeSpeedEffect)
+			this.movingSpeed = currentSpeed - 10;
+		else
+			this.movingSpeed = currentSpeed;
+		
+		setChanged();
+		notifyObservers();
+	}
 	// /////////////////////
 	// Getters & Setters //
 	// /////////////////////
@@ -162,11 +184,5 @@ public abstract class Critter extends Observable{
 
 	public void setPosY(int posY) {
 		this.posY = posY;
-	}
-
-	public void damageCritter(int amount_of_damage, boolean pyro_damage,
-			boolean slow_damage) {
-		// TODO Auto-generated method stub
-		
 	}
 }
