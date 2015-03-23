@@ -1,6 +1,5 @@
 package map;
 
-
 public interface CellInterface {
 
 	public void printType();

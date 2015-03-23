@@ -3,6 +3,7 @@ package map;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Observable;
+import map.CellInterface;
 
 public abstract class Cell extends Observable implements CellInterface{
 
