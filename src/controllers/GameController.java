@@ -225,8 +225,15 @@ public class GameController implements ActionListener {
 		}
 		
 		
+		
 		@Override
 		public void mouseMoved(MouseEvent e) {
+			
+			System.out.println("MOVED! ZOMEGGS");
+			
+			for (Button button : list_of_buttons) {
+				button.hoverCell(e.getX(), e.getY());
+			}
 			
 			int temp[] = new int[2];
 			temp[0] = e.getX();

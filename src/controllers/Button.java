@@ -14,6 +14,7 @@ public class Button {
 	protected int x_position;
 	protected int y_position;
 	private boolean selected;
+	private boolean hovered;
 	
 	public Button(int posX, int posY, int width, int height, int spacing) {
 		this.x_position = posX;
@@ -28,17 +29,22 @@ public class Button {
 		if (isSelected()) {
 			g.setColor(Color.magenta);
 		}
+		else if (hovered) {
+			g.setColor(Color.gray);
+		}
 		else{
 			g.setColor(BUTTON_COLOR);
 		}
 		g.fillRect(x_position, y_position, button_width, button_height);
 		g.setColor(Color.black);
 		g.drawRect(x_position, y_position, button_width, button_height);
+		
 	}
 	
 	public boolean isSelected() {
 		return selected;
 	}
+	
 	
 	/**
 	 * Selects a cell if it contains the point used as parameter
@@ -51,6 +57,19 @@ public class Button {
 		}
 		else {
 			selected = false;
+		}
+	}
+	
+	public boolean isHovered() {
+		return hovered;
+	}
+	
+	public void hoverCell(int xPos, int yPos) {
+		if (checkInRange(xPos, (x_position + button_spacing/2)) && checkInRange(yPos, (y_position + button_spacing/2))) {
+			hovered = true;
+		}
+		else {
+			hovered = false;
 		}
 	}
 	
