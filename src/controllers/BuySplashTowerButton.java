@@ -2,6 +2,7 @@ package controllers;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseListener;
 
 import towerModels.AreaOfEffectTower;
 
@@ -9,27 +10,21 @@ public class BuySplashTowerButton extends Button {
 
 
 	
-	public BuySplashTowerButton(int posX, int posY, int width, int height,
-			int spacing) {
-		super(posX, posY, width, height, spacing);
+	public BuySplashTowerButton(int posX, int posY, int width, int height) {
+		super(posX, posY, width, height);
 	}
 
 	@Override
-	public void drawCell(Graphics g) {
+	public void drawButton(Graphics g) {
 		
-		if (isSelected()) {
-			g.setColor(Color.magenta);
-		}
-		else{
-			g.setColor(BUTTON_COLOR);
-		}
-		g.fillRect(x_position, y_position, button_width, button_height);
+		selectColor(g, BUTTON_COLOR);
+		g.fillRect(position.x, position.y, size.width, size.height);
 		g.setColor(Color.white);
-		g.drawRect(x_position, y_position, button_width, button_height);
-		g.drawString("Splash", x_position, y_position + 45);
-		g.drawString("$" + AreaOfEffectTower.COST, x_position, y_position + 60);
+		g.drawRect(position.x, position.y, size.width, size.height);
+		g.drawString("Splash", position.x, position.y + 45);
+		g.drawString("$" + AreaOfEffectTower.COST, position.x, position.y + 60);
 		g.setColor(AreaOfEffectTower.TOWER_COLOR);
-		g.fillOval(x_position + 2, y_position + 2, button_width - 4, button_height - 4);
+		g.fillOval(position.x + 2, position.y + 2, size.width - 4, size.height - 4);
 	}
 
 }

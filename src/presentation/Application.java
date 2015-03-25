@@ -1,6 +1,8 @@
 package presentation;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import controllers.GameController;
 
@@ -21,6 +23,7 @@ public class Application extends JFrame {
 	
 	
 	protected GameController controller = new GameController();
+	private JPanel container;
 	
 	public  Application(){
 		init();
@@ -30,7 +33,13 @@ public class Application extends JFrame {
 	 * Initialize the window
 	 */
 	private void init(){
-		add(controller.getField());
+		
+		// create a container for all the frames in the game
+		container = new JPanel();
+		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+		add(container);
+		container.add(controller.getField());
+		container.add(controller.getSideMenu());
 		setSize(SCREEN_WIDTH,SCREEN_HEIGHT);	
 		setTitle(APP_NAME);
 		pack();

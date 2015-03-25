@@ -16,7 +16,7 @@ public class RadialTower extends Tower {
 	private static final int RANGE = 4;
 	private static final int POWER = 4;
 	private static final int RATE_OF_FIRE = 1;
-	public static final Color TOWER_COLOR = Color.green;
+	public static final Color TOWER_COLOR = Color.cyan;
 	
 	private ArrayList<Critter> radial_targets;
 	private ArrayList<Integer> x_coordinate_target_points;

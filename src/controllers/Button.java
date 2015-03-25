@@ -1,93 +1,106 @@
 package controllers;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 
-import map.Cell;
-
-public class Button {
+public class Button extends JComponent {
 
 	protected static final Color BUTTON_COLOR = Color.black;
-	protected int button_height;
-	protected int button_width;
 	protected int button_spacing;
-	protected int x_position;
-	protected int y_position;
+	protected Point position;
+	protected Dimension size;
 	private boolean selected;
 	private boolean hovered;
+	private MouseMaster mouse_master;
 	
-	public Button(int posX, int posY, int width, int height, int spacing) {
-		this.x_position = posX;
-		this.y_position = posY;
-		button_height = height;
-		button_width = width;
-		button_spacing = spacing;
+	public Button(int posX, int posY, int width, int height) {
+		super();
+		position = new Point(posX, posY);
+		size = new Dimension(width, height);
+		setLocation(position);
+		setPreferredSize(size);
+//		setBorder(BorderFactory.createTitledBorder("Node"));
+		
+		mouse_master = new MouseMaster();
+		addMouseListener(mouse_master);
+		
 	}
 	
-	public void drawCell(Graphics g) {
+	@Override
+	protected void paintComponent(Graphics g) {
+		setLocation(position);
+		drawButton(g);
+		super.paintComponent(g);
+	}
+	
+	public void drawButton(Graphics g) {
 		
-		if (isSelected()) {
+		selectColor(g, BUTTON_COLOR);
+		g.fillRect(position.x, position.y, size.width, size.height);
+		g.setColor(Color.black);
+		g.drawRect(position.x, position.y, size.width, size.height);
+		
+	}
+	
+	protected void selectColor(Graphics g, Color button_color) {
+		if (selected) {
 			g.setColor(Color.magenta);
 		}
 		else if (hovered) {
 			g.setColor(Color.gray);
 		}
-		else{
-			g.setColor(BUTTON_COLOR);
+		else {
+			g.setColor(button_color);
 		}
-		g.fillRect(x_position, y_position, button_width, button_height);
-		g.setColor(Color.black);
-		g.drawRect(x_position, y_position, button_width, button_height);
-		
 	}
 	
 	public boolean isSelected() {
 		return selected;
 	}
 	
-	
-	/**
-	 * Selects a cell if it contains the point used as parameter
-	 * @param xPos
-	 * @param yPos
-	 */
-	public void selectCell(int xPos, int yPos) {
-		if (checkInRange(xPos, (x_position + button_spacing/2)) && checkInRange(yPos, (y_position + button_spacing/2))) {
-			selected = true;
+	public void toggleSelection() {
+		if (selected) {
+			selected = false;
 		}
 		else {
-			selected = false;
+			selected = true;
 		}
 	}
 	
 	public boolean isHovered() {
 		return hovered;
 	}
-	
-	public void hoverCell(int xPos, int yPos) {
-		if (checkInRange(xPos, (x_position + button_spacing/2)) && checkInRange(yPos, (y_position + button_spacing/2))) {
-			hovered = true;
-		}
-		else {
-			hovered = false;
-		}
-	}
-	
-	/**
-	 * Returns true if a position is within the centre of a cell
-	 * @param position_to_check
-	 * @param cell_centre
-	 * @return
-	 */
-	private boolean checkInRange(int position_to_check, int cell_centre) {
-		if ((position_to_check > cell_centre - (button_spacing/2)) && (position_to_check < cell_centre + (button_spacing/2))) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
 
+	private class MouseMaster extends MouseAdapter {
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+				
+			toggleSelection();
+
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			hovered = true;
+			super.mouseEntered(e);
+		}
+		
+		@Override
+		public void mouseExited(MouseEvent e) {
+			hovered = false;
+			super.mouseExited(e);
+		}
+		
+		
+
+	}
+	
 	
 }
