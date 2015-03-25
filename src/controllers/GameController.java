@@ -39,7 +39,7 @@ public class GameController implements ActionListener {
 		
 		mouse_master = new MouseMaster();
 		player = Player.getPlayerInstance();
-		map = Map.createGeneric();
+		map = Map.createGeneric();		
 		list_of_critters_on_map = new ArrayList<>();
 		list_of_towers_on_map = new ArrayList<>();
 		list_of_buttons = new ArrayList<>();
@@ -53,6 +53,13 @@ public class GameController implements ActionListener {
 		        Toolkit.getDefaultToolkit().sync();
 			}
 		});
+		
+		// populate field with cells
+		for (int i = 0; i < map.Grid.length; i++) {
+			for (int j = 0; j < map.Grid[0].length; j++) {
+				field.add(map.Grid[i][j].getComponent());
+			}
+		}
 		
 		setSideMenu(new SideMenu() {
 			@Override
@@ -87,10 +94,8 @@ public class GameController implements ActionListener {
 	 */
 	private void drawGrid(Graphics g) {
 		
-		for (int i = 0; i < map.Grid.length; i++) {
-			for (int j = 0; j < map.Grid[0].length; j++) {
-				map.Grid[i][j].drawCell(g);
-			}
+		for (int i = 0; i < field.getComponents().length; i++) {
+			field.getComponent(i).paint(g);
 		}
 	}
 	

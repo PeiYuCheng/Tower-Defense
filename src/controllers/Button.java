@@ -64,15 +64,6 @@ public class Button extends JComponent {
 		return selected;
 	}
 	
-	public void toggleSelection() {
-		if (selected) {
-			selected = false;
-		}
-		else {
-			selected = true;
-		}
-	}
-	
 	public boolean isHovered() {
 		return hovered;
 	}
@@ -82,7 +73,7 @@ public class Button extends JComponent {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 				
-			toggleSelection();
+			selected = !selected;
 
 		}
 		
