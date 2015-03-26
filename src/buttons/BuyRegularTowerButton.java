@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 
 import towerModels.RegularTower;
 
-public class BuyRegularTowerButton extends Button {
+public class BuyRegularTowerButton extends ToggleButton {
 
 
 	

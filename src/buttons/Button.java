@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
-public class Button extends JComponent {
+public abstract class Button extends JComponent {
 
 	protected static final Color BUTTON_COLOR = Color.black;
 	protected int button_spacing;
@@ -62,8 +62,12 @@ public class Button extends JComponent {
 		}
 	}
 	
-	public void setSelection(boolean selected) {
+	public void setSelected(boolean selected) {
 		this.selected = selected;		
+	}
+	
+	public void setHovered(boolean hovered) {
+		this.hovered = hovered;
 	}
 	
 	public boolean isSelected() {
@@ -74,39 +78,56 @@ public class Button extends JComponent {
 		return hovered;
 	}
 	
-	private Button getThisButton() {
-		return this;
+	protected void OnClick() {
+
+	}
+	
+	protected void OnPress() {
+		
+	}
+	
+	protected void OnRelease() {
+		
+	}
+	
+	protected void OnEnter() {
+		hovered = true;
+	}
+	
+	protected void OnExit() {
+		hovered = false;
 	}
 
 	private class MouseMaster extends MouseAdapter {
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			
-			if (selected) {
-				button_selector.deselectSelected();
-				button_selector.setSelectedButton(null);
-			}
-			else {
-				button_selector.deselectSelected();
-				button_selector.setSelectedButton(getThisButton());
-				selected = true;
-			}
-
+			OnClick();
 		}
 		
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			hovered = true;
+			OnEnter();
 			super.mouseEntered(e);
 		}
 		
 		@Override
 		public void mouseExited(MouseEvent e) {
-			hovered = false;
+			OnExit();
 			super.mouseExited(e);
 		}
 		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			OnPress();
+			super.mousePressed(e);
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			OnRelease();
+			super.mouseReleased(e);
+		}
 		
 
 	}

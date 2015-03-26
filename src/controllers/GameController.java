@@ -17,6 +17,8 @@ import buttons.Button;
 import buttons.BuyRadialTowerButton;
 import buttons.BuyRegularTowerButton;
 import buttons.BuySplashTowerButton;
+import buttons.ClickButton;
+import buttons.UpgradeButton;
 import map.Map;
 import critterModels.Critter;
 import domain.Player;
@@ -78,6 +80,7 @@ public class GameController implements ActionListener {
 		side_menu.add(new BuyRegularTowerButton(10, 80, 30, 30));
 		side_menu.add(new BuySplashTowerButton(70, 80, 30, 30));
 		side_menu.add(new BuyRadialTowerButton(130, 80, 30, 30));
+		side_menu.add(new UpgradeButton(10, 200, 30, 30));
 		
 		timer = new Timer(Application.TIMEOUT,this);
 		timer.start();

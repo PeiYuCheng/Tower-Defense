@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 
 import towerModels.AreaOfEffectTower;
 
-public class BuySplashTowerButton extends Button {
+public class BuySplashTowerButton extends ToggleButton {
 
 
 	

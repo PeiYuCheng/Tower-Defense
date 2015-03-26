@@ -20,7 +20,7 @@ public class ButtonSelector {
 	
 	public void deselectSelected() {
 		if (selectedButton != null) {
-			selectedButton.setSelection(false);
+			selectedButton.setSelected(false);
 		}
 		CellSelector.getInstance().deselectSelectedCell();
 	}

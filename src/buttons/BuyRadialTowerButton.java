@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 
 import towerModels.RadialTower;
 
-public class BuyRadialTowerButton extends Button {
+public class BuyRadialTowerButton extends ToggleButton {
 
 	public BuyRadialTowerButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);
