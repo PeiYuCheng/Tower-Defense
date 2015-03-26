@@ -38,59 +38,72 @@ public class CritterFactory {
 	public CritterFactory(int waveNumber) {
 		group = new LinkedList<Critter>();
 		// TODO: add real start position for boss and regular
-		Critter regularCritter = new RegularCritter(0, 0);
-		Critter bossCritter = new BossCritter(0, 0);
-		Critter mediumCritter = new MediumCritter(0, 0);
-		Critter largeCritter = new LargeCritter(0,0);
+		Critter regularCritter;
+		Critter mediumCritter;
+		Critter largeCritter;
+		Critter bossCritter;
 
 		switch (waveNumber) {
 		case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:
 			for (int i = 0; i < waveNumber * 2; i++) {
+				regularCritter = new RegularCritter(0, 0);
 				group.add(regularCritter);
 			}
 			break;
 		case 11:case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:case 20:
 			for (int i = 0; i < waveNumber * 2; i++) {
+				regularCritter = new RegularCritter(0, 0);
 				group.add(regularCritter);
 			}
 			for (int i = 0; i < waveNumber - 10; i++) {
+				mediumCritter = new MediumCritter(0, 0);
 				group.add(mediumCritter);
 			}
 			break;
 		case 21:case 22:case 23:case 24:case 25:case 26:case 27:case 28:case 29:case 30:
 			for (int i = 0; i < waveNumber * 2; i++) {
+				regularCritter = new RegularCritter(0, 0);
 				group.add(regularCritter);
 			}
 			for (int i = 0; i < waveNumber - 15; i++) {
+				mediumCritter = new MediumCritter(0, 0);
 				group.add(mediumCritter);
 			}
 			for (int i = 0; i < waveNumber - 20; i++) {
+				largeCritter = new LargeCritter(0,0);
 				group.add(largeCritter);
 			}
 			break;
 		case 31:case 32:case 33:case 34:case 35:case 36:case 37:case 38:case 39:case 40:
 			for (int i = 0; i < waveNumber * 2; i++) {
+				regularCritter = new RegularCritter(0, 0);
 				group.add(regularCritter);
 			}
 			for (int i = 0; i < waveNumber - 15; i++) {
+				mediumCritter = new MediumCritter(0, 0);
 				group.add(mediumCritter);
 			}
 			for (int i = 0; i < waveNumber - 25; i++) {
+				largeCritter = new LargeCritter(0,0);
 				group.add(largeCritter);
 			}
 			break;
 		case 41:case 42:case 43:case 44:case 45:case 46:case 47:case 48:case 49:
 			for (int i = 0; i < waveNumber; i++) {
+				regularCritter = new RegularCritter(0, 0);
 				group.add(regularCritter);
 			}
 			for (int i = 0; i < waveNumber - 35; i++) {
+				mediumCritter = new MediumCritter(0, 0);
 				group.add(mediumCritter);
 			}
 			for (int i = 0; i < waveNumber - 20; i++) {
+				largeCritter = new LargeCritter(0,0);
 				group.add(largeCritter);
 			}
 			break;
 		case 50:
+			bossCritter = new BossCritter(0, 0);
 			group.add(bossCritter);
 			break;
 		}
@@ -103,7 +116,7 @@ public class CritterFactory {
 	 * @return Critter at head of queue
 	 */
 	public Critter dispatchOneCritter() {
-		return group.poll();
+		return group.remove();
 	}
 
 	/**
