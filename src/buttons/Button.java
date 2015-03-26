@@ -1,4 +1,4 @@
-package controllers;
+package buttons;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,6 +18,7 @@ public class Button extends JComponent {
 	private boolean selected;
 	private boolean hovered;
 	private MouseMaster mouse_master;
+	private ButtonSelector button_selector;
 	
 	public Button(int posX, int posY, int width, int height) {
 		super();
@@ -27,6 +28,7 @@ public class Button extends JComponent {
 		setPreferredSize(size);
 //		setBorder(BorderFactory.createTitledBorder("Node"));
 		
+		button_selector = ButtonSelector.getInstance();
 		mouse_master = new MouseMaster();
 		addMouseListener(mouse_master);
 		
@@ -60,6 +62,10 @@ public class Button extends JComponent {
 		}
 	}
 	
+	public void setSelection(boolean selected) {
+		this.selected = selected;		
+	}
+	
 	public boolean isSelected() {
 		return selected;
 	}
@@ -67,13 +73,25 @@ public class Button extends JComponent {
 	public boolean isHovered() {
 		return hovered;
 	}
+	
+	private Button getThisButton() {
+		return this;
+	}
 
 	private class MouseMaster extends MouseAdapter {
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-				
-			selected = !selected;
+			
+			if (selected) {
+				button_selector.deselectSelected();
+				button_selector.setSelectedButton(null);
+			}
+			else {
+				button_selector.deselectSelected();
+				button_selector.setSelectedButton(getThisButton());
+				selected = true;
+			}
 
 		}
 		

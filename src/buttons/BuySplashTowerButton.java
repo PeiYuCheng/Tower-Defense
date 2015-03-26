@@ -1,4 +1,4 @@
-package controllers;
+package buttons;
 
 import java.awt.Color;
 import java.awt.Graphics;
