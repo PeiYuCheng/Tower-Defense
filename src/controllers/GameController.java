@@ -13,6 +13,12 @@ import javafx.scene.control.Cell;
 
 import javax.swing.Timer;
 
+import buttons.Button;
+import buttons.BuyRadialTowerButton;
+import buttons.BuyRegularTowerButton;
+import buttons.BuySplashTowerButton;
+import buttons.ClickButton;
+import buttons.UpgradeButton;
 import map.Map;
 import critterModels.Critter;
 import domain.Player;
@@ -24,6 +30,7 @@ public class GameController implements ActionListener {
 	private Player player;
 	private Map map;
 	private Field field;
+	private SideMenu side_menu;
 	private Timer timer;
 	private MouseMaster mouse_master;
 	private ArrayList<Tower> list_of_towers_on_map;
@@ -38,34 +45,54 @@ public class GameController implements ActionListener {
 		
 		mouse_master = new MouseMaster();
 		player = Player.getPlayerInstance();
-		map = Map.createGeneric();
+		map = Map.createGeneric();		
 		list_of_critters_on_map = new ArrayList<>();
 		list_of_towers_on_map = new ArrayList<>();
 		list_of_buttons = new ArrayList<>();
 		
 		//create Field with paint function defined in controller
-		setField(new Field(mouse_master) {
+		setField(new Field() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				doDrawing(g);
+				doFieldDrawing(g);
+		        Toolkit.getDefaultToolkit().sync();
+			}
+		});
+		
+		// populate field with cells
+		for (int i = 0; i < map.Grid.length; i++) {
+			for (int j = 0; j < map.Grid[0].length; j++) {
+				field.add(map.Grid[i][j].getComponent());
+			}
+		}
+		
+		setSideMenu(new SideMenu() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				doMenuDrawing(g);
 		        Toolkit.getDefaultToolkit().sync();
 			}
 		});
 		
 		// Set up the buttons
-		list_of_buttons.add(new BuyRegularTowerButton(610, 80, 30, 30, 30));
-		list_of_buttons.add(new BuySplashTowerButton(670, 80, 30, 30, 30));
-		list_of_buttons.add(new BuyRadialTowerButton(730, 80, 30, 30, 30));
+		side_menu.add(new BuyRegularTowerButton(10, 80, 30, 30));
+		side_menu.add(new BuySplashTowerButton(70, 80, 30, 30));
+		side_menu.add(new BuyRadialTowerButton(130, 80, 30, 30));
+		side_menu.add(new UpgradeButton(10, 200, 30, 30));
 		
 		timer = new Timer(Application.TIMEOUT,this);
 		timer.start();
 		
 	}
 	
-	protected void doDrawing(Graphics g) {
+	protected void doFieldDrawing(Graphics g) {
+		drawGrid(g);
+	}
+	
+	protected void doMenuDrawing(Graphics g) {
 		drawSideMenu(g);
-		drawGrid(g);	
 	}
 	
 	/**
@@ -74,49 +101,21 @@ public class GameController implements ActionListener {
 	 */
 	private void drawGrid(Graphics g) {
 		
-		for (int i = 0; i < map.Grid.length; i++) {
-			for (int j = 0; j < map.Grid[0].length; j++) {
-				map.Grid[i][j].drawCell(g);
-			}
+		for (int i = 0; i < field.getComponents().length; i++) {
+			field.getComponent(i).paint(g);
 		}
 	}
 	
 	private void drawSideMenu(Graphics g) {
 		
-		g.setColor(Color.black);
-		g.fillRect(600, 0, 200, 600);
 		g.setColor(Color.white);
-		g.drawString("Lives: " + player.getLives(), 610, 20);
-		g.drawString("Money: " + player.getMoney(), 610, 40);
-		g.drawString("Towers: ", 610, 70);
+		g.drawString("Lives: " + player.getLives(), 10, 20);
+		g.drawString("Money: " + player.getMoney(), 10, 40);
+		g.drawString("Towers: ", 10, 70);
 		
-		for (Button button : list_of_buttons) {
-			button.drawCell(g);
+		for (int i = 0; i < side_menu.getComponents().length; i++) {
+			side_menu.getComponent(i).paint(g);
 		}
-		
-		// Regular tower button
-//		g.setColor(Color.white);
-//		g.drawRect(610, 80, 30, 30);
-//		g.drawString("Regular", 610, 120);
-//		g.drawString("$" + RegularTower.COST, 610, 130);
-//		g.setColor(RegularTower.TOWER_COLOR);
-//		g.fillOval(612, 82, 26, 26);
-		
-		// AoE tower button
-//		g.setColor(Color.white);
-//		g.drawRect(670, 80, 30, 30);
-//		g.drawString("Splash", 670, 120);
-//		g.drawString("$" + AreaOfEffectTower.COST, 670, 130);
-//		g.setColor(AreaOfEffectTower.TOWER_COLOR);
-//		g.fillOval(672, 82, 26, 26);
-		
-		// Radial tower button
-//		g.setColor(Color.white);
-//		g.drawRect(730, 80, 30, 30);
-//		g.drawString("Radial", 730, 120);
-//		g.drawString("$" + RadialTower.COST, 730, 130);
-//		g.setColor(RadialTower.TOWER_COLOR);
-//		g.fillOval(732, 82, 26, 26);
 		
 	}
 
@@ -160,6 +159,7 @@ public class GameController implements ActionListener {
 		
 		fireTowers();
 		field.repaint();
+		side_menu.repaint();
 		
 	}
 
@@ -200,27 +200,37 @@ public class GameController implements ActionListener {
 		this.mouse_position_at_click = mouse_position_at_click;
 	}
 
+	public SideMenu getSideMenu() {
+		return side_menu;
+	}
+
+	public void setSideMenu(SideMenu side_menu) {
+		this.side_menu = side_menu;
+	}
+
 	private class MouseMaster extends MouseAdapter {
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			
-			// Selects a cell
-			for (int i = 0; i < map.Grid.length; i++) {
-				for (int j = 0; j < map.Grid[0].length; j++) {
-					map.Grid[i][j].selectCell(e.getX(), e.getY());;
-				}
-			}
-			
-			for (Button button : list_of_buttons) {
-				button.selectCell(e.getX(), e.getY());
-			}
-			
-			setMouseClicked(true);
-			int temp[] = new int[2];
-			temp[0] = e.getX();
-			temp[1] = e.getY();
-			setMousePositionAtClick(temp);
+				
+//			System.out.println(e.getComponent().getX());
+//			
+//			// Selects a cell
+//			for (int i = 0; i < map.Grid.length; i++) {
+//				for (int j = 0; j < map.Grid[0].length; j++) {
+//					map.Grid[i][j].selectCell(e.getX(), e.getY());;
+//				}
+//			}
+//			
+//			for (Button button : list_of_buttons) {
+//				button.selectCell(e.getX(), e.getY());
+//			}
+//			
+//			setMouseClicked(true);
+//			int temp[] = new int[2];
+//			temp[0] = e.getX();
+//			temp[1] = e.getY();
+//			setMousePositionAtClick(temp);
 
 		}
 		
@@ -228,17 +238,17 @@ public class GameController implements ActionListener {
 		
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			
-			System.out.println("MOVED! ZOMEGGS");
-			
-			for (Button button : list_of_buttons) {
-				button.hoverCell(e.getX(), e.getY());
-			}
-			
-			int temp[] = new int[2];
-			temp[0] = e.getX();
-			temp[1] = e.getY();
-			setMousePos(temp);
+//			
+//			System.out.println("MOVED! ZOMEGGS");
+//			
+//			for (Button button : list_of_buttons) {
+//				button.hoverCell(e.getX(), e.getY());
+//			}
+//			
+//			int temp[] = new int[2];
+//			temp[0] = e.getX();
+//			temp[1] = e.getY();
+//			setMousePos(temp);
 
 		}
 
