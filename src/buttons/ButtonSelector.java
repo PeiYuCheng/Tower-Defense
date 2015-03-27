@@ -21,12 +21,17 @@ public class ButtonSelector {
 	public void deselectSelected() {
 		if (selectedButton != null) {
 			selectedButton.setSelected(false);
+			selectedButton = null;
 		}
 		CellSelector.getInstance().deselectSelectedCell();
 	}
 
 	public void setSelectedButton(Button selectedButton) {
 		this.selectedButton = selectedButton;
+	}
+	
+	public Button getSelectedButton() {
+		return selectedButton;
 	}
 	
 }

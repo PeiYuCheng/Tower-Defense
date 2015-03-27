@@ -11,15 +11,18 @@ import java.util.Observable;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
+import towerModels.Tower;
+
 import com.sun.javafx.scene.control.SelectedCellsMap;
 
 import map.CellInterface;
 
-public abstract class Cell extends Observable implements CellInterface{
+public abstract class Cell implements CellInterface{
 
 	protected static final int CELL_HEIGHT = 30;
 	protected static final int CELL_WIDTH = 30;
 	protected static final int CELL_SPACING = 30;
+	private static final Color SELECTED_COLOR = new Color(125,244,129);
 	protected Point position;
 	protected Point pixel_position;
 	private Color cell_color;
@@ -29,6 +32,7 @@ public abstract class Cell extends Observable implements CellInterface{
 	private MouseMaster mouse_master;
 	private boolean hovered;
 	private CellSelector cell_selector;
+	private Tower tower_in_cell;
 	
 	public Cell (int x, int y, Color color, boolean selectable) {
 		
@@ -74,7 +78,7 @@ public abstract class Cell extends Observable implements CellInterface{
 			g.setColor(Color.magenta);
 		}
 		else if (hovered) {
-			g.setColor(Color.gray);
+			g.setColor(SELECTED_COLOR);
 		}
 		else{
 			g.setColor(cell_color);
@@ -99,6 +103,26 @@ public abstract class Cell extends Observable implements CellInterface{
 	
 	private Cell getThisCell() {
 		return this;
+	}
+	
+	public Point getPosition() {
+		return position;
+	}
+	
+	public Point getPixelPosition() {
+		return pixel_position;
+	}
+	
+	public Dimension getCellSize() {
+		return new Dimension(CELL_WIDTH, CELL_HEIGHT);
+	}
+	
+	public Tower getTowerInCell() {
+		return tower_in_cell;
+	}
+	
+	public void setTowerInCell(Tower tower) {
+		tower_in_cell = tower;
 	}
 	
 	private class MouseMaster extends MouseAdapter {

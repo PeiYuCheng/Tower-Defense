@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseListener;
 
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 

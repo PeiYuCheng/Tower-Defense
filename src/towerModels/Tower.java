@@ -5,6 +5,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import javax.swing.JComponent;
+
+import map.Cell;
 import critterModels.Critter;
 
 /**
@@ -16,6 +19,7 @@ public abstract class Tower extends Observable {
 
 	private final int MAX_UPGRADE_LEVEL = 3;
 	public enum AI_TYPE {FOLLOW, BACK_FIRST, FRONT_FIRST, RADIAL};
+	private JComponent tower_component;
 	
 	/**
 	 * The cost of a tower.
@@ -92,6 +96,11 @@ public abstract class Tower extends Observable {
 	private ArrayList<Critter> all_critters_on_map;
 	
 	/**
+	 * The cell that contains the Tower.
+	 */
+	private Cell cell;
+	
+	/**
 	 * The x coordinate of the tower.
 	 */
 	private int x_position;
@@ -117,6 +126,14 @@ public abstract class Tower extends Observable {
 		this.active = false;
 		this.time_of_last_fire = 0;
 		this.tower_color = color;
+		
+		tower_component = new JComponent() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				drawTower(g);
+				super.paintComponent(g);
+			}
+		};
 		
 	}
 	
@@ -229,9 +246,10 @@ public abstract class Tower extends Observable {
 	 * @param y_position The y coordinate of the tower.
 	 * @param activate A boolean that if true activates the tower for attacking, false by default.
 	 */
-	public void placeTower(int x_position, int y_position, boolean activate) {
-		this.x_position = x_position;
-		this.y_position = y_position;
+	public void placeTower(Cell cell, boolean activate) {
+		this.cell = cell;
+		this.x_position = cell.getX();
+		this.y_position = cell.getY();
 		active = activate;
 		setChanged();
 		notifyObservers();
@@ -561,11 +579,15 @@ public abstract class Tower extends Observable {
 		return tower_color;
 	}
 
-	public void drawTower(Graphics g) {
+	private void drawTower(Graphics g) {
 
 		g.setColor(this.getTowerColor());
-		g.drawRect(x_position, y_position, 15, 15);
+		g.drawOval(cell.getPixelPosition().x, cell.getPixelPosition().y, cell.getCellSize().width, cell.getCellSize().height);
 
+	}
+	
+	public JComponent getComponent() {
+		return tower_component;
 	}
 	
 }

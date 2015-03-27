@@ -6,8 +6,11 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+
+import towerModels.Tower;
 
 public abstract class Button extends JComponent {
 
@@ -60,6 +63,10 @@ public abstract class Button extends JComponent {
 		else {
 			g.setColor(button_color);
 		}
+	}
+	
+	public Tower getNewTower() {
+		return null;
 	}
 	
 	public void setSelected(boolean selected) {

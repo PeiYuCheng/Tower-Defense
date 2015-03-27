@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
 import towerModels.RadialTower;
+import towerModels.Tower;
 
 public class BuyRadialTowerButton extends ToggleButton {
 
@@ -23,6 +24,11 @@ public class BuyRadialTowerButton extends ToggleButton {
 		g.drawString("$" + RadialTower.COST, position.x, position.y + 60);
 		g.setColor(RadialTower.TOWER_COLOR);
 		g.fillOval(position.x + 2, position.y + 2, size.width - 4, size.height - 4);
+	}
+	
+	@Override
+	public Tower getNewTower() {
+		return tower_factory.getNewRadialTower();
 	}
 
 }

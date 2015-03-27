@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
 import towerModels.AreaOfEffectTower;
+import towerModels.Tower;
 
 public class BuySplashTowerButton extends ToggleButton {
 
@@ -27,4 +28,10 @@ public class BuySplashTowerButton extends ToggleButton {
 		g.fillOval(position.x + 2, position.y + 2, size.width - 4, size.height - 4);
 	}
 
+	@Override
+	public Tower getNewTower() {
+		return tower_factory.getNewAreaOfEffectTower();
+	}
+
+	
 }

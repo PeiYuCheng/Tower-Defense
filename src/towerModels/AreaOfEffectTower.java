@@ -31,6 +31,9 @@ public class AreaOfEffectTower extends Tower {
 	 * @param all_critters The list of all the critters on the map.
 	 */
 	private void findAreaOfEffectTargets(ArrayList<Critter> all_critters) {
+		if (all_critters.isEmpty()) {
+			return;
+		}
 		Critter current_target_critter = this.getCurrentTargetCritter();
 		area_of_effect_targets = this.detectCritters(all_critters, current_target_critter.getPosX(),
 				current_target_critter.getPosY(), AREA_OF_EFFECT);		
@@ -44,7 +47,11 @@ public class AreaOfEffectTower extends Tower {
 	public boolean fire() {
 		
 		int amount_of_damage;
-
+		
+		if (area_of_effect_targets.isEmpty()) {
+			return false;
+		}
+		
 		amount_of_damage = this.getPower()*this.getUpgradeLevel();
 		detectCritterTargets(getAllCrittersOnMap());
 		findAreaOfEffectTargets(this.getAllCrittersOnMap());

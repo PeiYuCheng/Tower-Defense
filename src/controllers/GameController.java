@@ -14,12 +14,13 @@ import javafx.scene.control.Cell;
 import javax.swing.Timer;
 
 import buttons.Button;
+import buttons.ButtonSelector;
 import buttons.BuyRadialTowerButton;
 import buttons.BuyRegularTowerButton;
 import buttons.BuySplashTowerButton;
 import buttons.ClickButton;
 import buttons.UpgradeButton;
-import map.Map;
+import map.*;
 import critterModels.Critter;
 import domain.Player;
 import presentation.*;
@@ -29,6 +30,8 @@ public class GameController implements ActionListener {
 
 	private Player player;
 	private Map map;
+	private ButtonSelector button_selector;
+	private CellSelector cell_selector;
 	private Field field;
 	private SideMenu side_menu;
 	private Timer timer;
@@ -46,6 +49,8 @@ public class GameController implements ActionListener {
 		mouse_master = new MouseMaster();
 		player = Player.getPlayerInstance();
 		map = Map.createGeneric();		
+		button_selector = ButtonSelector.getInstance();
+		cell_selector = CellSelector.getInstance();
 		list_of_critters_on_map = new ArrayList<>();
 		list_of_towers_on_map = new ArrayList<>();
 		list_of_buttons = new ArrayList<>();
@@ -131,32 +136,39 @@ public class GameController implements ActionListener {
 	
 	private void buyTower() {
 		
+		Button button = button_selector.getSelectedButton();
+		Tower newTower;
 		
+		if (button != null) {
+			newTower = button.getNewTower();
+		}
+		else {
+			newTower = null;
+		}
 		
-	}
-	
-	private void placeTower() {
+		map.Cell towersCell = cell_selector.getSelectedCell();
 		
-		field.getGraphics().setColor(Color.BLACK);
-		field.getGraphics().drawRect(mouse_position_at_click[0], mouse_position_at_click[1], 15, 15);
-		field.paint(field.getGraphics());
-//		field.paintComponents(field.getGraphics());
+		if ((newTower != null) && (towersCell != null)) {
+			list_of_towers_on_map.add(newTower);
+			field.add(newTower.getComponent());
+			newTower.placeTower(towersCell, true);
+			button_selector.deselectSelected();
+			cell_selector.deselectSelectedCell();
+			
+		}
+		
 	}
 	
 	private void sellTower(Tower tower) {
 		player.changeMoney(tower.getRefundValue());
+		field.remove(tower.getComponent());
 		list_of_towers_on_map.remove(tower);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
-		if (mouseClicked) {
-			mouseClicked = false;
-			System.out.println("x="+mouse_position_at_click[0]+" y="+mouse_position_at_click[1]);
-			placeTower();
-		}
-		
+		buyTower();
 		fireTowers();
 		field.repaint();
 		side_menu.repaint();

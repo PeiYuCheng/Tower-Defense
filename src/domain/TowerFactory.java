@@ -4,13 +4,13 @@ import towerModels.*;
 
 public class TowerFactory {
 
-	private TowerFactory tower_factory;
+	private static TowerFactory tower_factory;
 	
 	private TowerFactory() {
 		
 	}
 	
-	public TowerFactory getInstance() {
+	public static TowerFactory getInstance() {
 		if (tower_factory == null) {
 			tower_factory = new TowerFactory();
 		}
