@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javafx.scene.control.Cell;
 
+import javax.swing.JLayeredPane;
 import javax.swing.Timer;
 
 import buttons.Button;
@@ -68,7 +69,7 @@ public class GameController implements ActionListener {
 		// populate field with cells
 		for (int i = 0; i < map.Grid.length; i++) {
 			for (int j = 0; j < map.Grid[0].length; j++) {
-				field.add(map.Grid[i][j].getComponent());
+				field.getLayeredPane().add(map.Grid[i][j].getComponent(), new Integer(0));
 			}
 		}
 		
@@ -105,10 +106,7 @@ public class GameController implements ActionListener {
 	 * @param g
 	 */
 	private void drawGrid(Graphics g) {
-		
-		for (int i = 0; i < field.getComponents().length; i++) {
-			field.getComponent(i).paint(g);
-		}
+		field.getLayeredPane().repaint();
 	}
 	
 	private void drawSideMenu(Graphics g) {
@@ -149,10 +147,14 @@ public class GameController implements ActionListener {
 		map.Cell towersCell = cell_selector.getSelectedCell();
 		
 		if ((newTower != null) && (towersCell != null)) {
-			list_of_towers_on_map.add(newTower);
-			field.add(newTower.getComponent());
-			newTower.placeTower(towersCell, true);
-			button_selector.deselectSelected();
+			
+			if (towersCell.cellAvailable()) {
+				list_of_towers_on_map.add(newTower);
+				newTower.placeTower(towersCell, true);
+				field.getLayeredPane().add(newTower.getComponent(), new Integer(1));
+				button_selector.deselectSelected();
+			}
+			
 			cell_selector.deselectSelectedCell();
 			
 		}

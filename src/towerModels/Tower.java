@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import map.Cell;
@@ -130,11 +131,12 @@ public abstract class Tower extends Observable {
 		tower_component = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
+				tower_component.setBounds(cell.getPixelPosition().x, cell.getPixelPosition().y, 
+						cell.getCellSize().width, cell.getCellSize().height);
 				drawTower(g);
 				super.paintComponent(g);
 			}
 		};
-		
 	}
 	
 	/**
@@ -253,6 +255,9 @@ public abstract class Tower extends Observable {
 		active = activate;
 		setChanged();
 		notifyObservers();
+		
+		tower_component.setBounds(cell.getPixelPosition().x, cell.getPixelPosition().y, 
+				cell.getCellSize().width, cell.getCellSize().height);
 	}
 	
 	/**
@@ -580,9 +585,9 @@ public abstract class Tower extends Observable {
 	}
 
 	private void drawTower(Graphics g) {
-
+		
 		g.setColor(this.getTowerColor());
-		g.drawOval(cell.getPixelPosition().x, cell.getPixelPosition().y, cell.getCellSize().width, cell.getCellSize().height);
+		g.fillOval(0, 0, cell.getCellSize().width, cell.getCellSize().height);
 
 	}
 	

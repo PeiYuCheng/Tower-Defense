@@ -19,9 +19,9 @@ import map.CellInterface;
 
 public abstract class Cell implements CellInterface{
 
-	protected static final int CELL_HEIGHT = 30;
-	protected static final int CELL_WIDTH = 30;
-	protected static final int CELL_SPACING = 30;
+	protected static final int CELL_HEIGHT = 40;
+	protected static final int CELL_WIDTH = 40;
+	protected static final int CELL_SPACING = 40;
 	private static final Color SELECTED_COLOR = new Color(125,244,129);
 	protected Point position;
 	protected Point pixel_position;
@@ -45,16 +45,13 @@ public abstract class Cell implements CellInterface{
 		component = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
-				setLocation(pixel_position);
+				setBounds(pixel_position.x, pixel_position.y, CELL_WIDTH, CELL_HEIGHT);
 				drawCell(g);
 				super.paintComponent(g);
 			}
 		};
 		
-		component.setPreferredSize(new Dimension(CELL_WIDTH, CELL_HEIGHT));
-		component.setLocation(pixel_position);
-		
-//		component.setBorder(BorderFactory.createTitledBorder("Node"));
+		component.setBounds(pixel_position.x, pixel_position.y, CELL_WIDTH, CELL_HEIGHT);
 		
 		mouse_master = new MouseMaster();
 		component.addMouseListener(mouse_master);
@@ -68,9 +65,10 @@ public abstract class Cell implements CellInterface{
 	private void drawCell(Graphics g) {
 		
 		chooseColor(g);
-		g.fillRect(position.x*CELL_SPACING, position.y*CELL_SPACING, CELL_WIDTH, CELL_HEIGHT);
+		g.fillRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
 		g.setColor(Color.black);
-		g.drawRect(position.x*CELL_SPACING, position.y*CELL_SPACING, CELL_WIDTH, CELL_HEIGHT);
+		g.drawRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
+		
 	}
 	
 	public void chooseColor(Graphics g) {
@@ -123,6 +121,10 @@ public abstract class Cell implements CellInterface{
 	
 	public void setTowerInCell(Tower tower) {
 		tower_in_cell = tower;
+	}
+	
+	public boolean cellAvailable() {
+		return tower_in_cell == null;
 	}
 	
 	private class MouseMaster extends MouseAdapter {
