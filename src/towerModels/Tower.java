@@ -253,6 +253,9 @@ public abstract class Tower extends Observable {
 		this.x_position = cell.getX();
 		this.y_position = cell.getY();
 		active = activate;
+		
+		cell.setTowerInCell(this);
+		
 		setChanged();
 		notifyObservers();
 		

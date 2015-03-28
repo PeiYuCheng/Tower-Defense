@@ -7,6 +7,7 @@ public class ButtonSelector {
 
 	private static ButtonSelector cell_button;
 	private Button selectedButton;
+	private boolean sellTowerSelected;
 	
 	private ButtonSelector() {
 	}
@@ -32,6 +33,14 @@ public class ButtonSelector {
 	
 	public Button getSelectedButton() {
 		return selectedButton;
+	}
+	
+	public void setSellTowerSelected(boolean sellTower) {
+		sellTowerSelected = sellTower;
+	}
+	
+	public boolean isSellTowerSelected() {
+		return sellTowerSelected;
 	}
 	
 }

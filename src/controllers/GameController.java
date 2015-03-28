@@ -14,13 +14,7 @@ import javafx.scene.control.Cell;
 import javax.swing.JLayeredPane;
 import javax.swing.Timer;
 
-import buttons.Button;
-import buttons.ButtonSelector;
-import buttons.BuyRadialTowerButton;
-import buttons.BuyRegularTowerButton;
-import buttons.BuySplashTowerButton;
-import buttons.ClickButton;
-import buttons.UpgradeButton;
+import buttons.*;
 import map.*;
 import critterModels.Critter;
 import domain.Player;
@@ -87,6 +81,7 @@ public class GameController implements ActionListener {
 		side_menu.add(new BuySplashTowerButton(70, 80, 30, 30));
 		side_menu.add(new BuyRadialTowerButton(130, 80, 30, 30));
 		side_menu.add(new UpgradeButton(10, 200, 30, 30));
+		side_menu.add(new SellTowerButton(70, 200, 30, 30));
 		
 		timer = new Timer(Application.TIMEOUT,this);
 		timer.start();
@@ -137,22 +132,29 @@ public class GameController implements ActionListener {
 		Button button = button_selector.getSelectedButton();
 		Tower newTower;
 		
+		// check selected button
 		if (button != null) {
 			newTower = button.getNewTower();
 		}
 		else {
-			newTower = null;
+			return;
+		}
+		
+		// check player money
+		if (player.getMoney() < newTower.getCost()) {
+			return;
 		}
 		
 		map.Cell towersCell = cell_selector.getSelectedCell();
 		
-		if ((newTower != null) && (towersCell != null)) {
+		if (towersCell != null) {
 			
 			if (towersCell.cellAvailable()) {
 				list_of_towers_on_map.add(newTower);
 				newTower.placeTower(towersCell, true);
 				field.getLayeredPane().add(newTower.getComponent(), new Integer(1));
 				button_selector.deselectSelected();
+				player.changeMoney(-newTower.getCost());
 			}
 			
 			cell_selector.deselectSelectedCell();
@@ -161,16 +163,36 @@ public class GameController implements ActionListener {
 		
 	}
 	
-	private void sellTower(Tower tower) {
-		player.changeMoney(tower.getRefundValue());
-		field.remove(tower.getComponent());
-		list_of_towers_on_map.remove(tower);
+	private void sellTower() {
+		
+		map.Cell towersCell = cell_selector.getSelectedCell();
+		Tower soldTower;
+		
+		if ((towersCell == null)) {
+			button_selector.setSellTowerSelected(false);
+			return;
+		}
+		
+		soldTower = towersCell.getTowerInCell();
+		
+		if (button_selector.isSellTowerSelected() && (soldTower != null)) {
+				
+				field.getLayeredPane().remove(soldTower.getComponent());
+				list_of_towers_on_map.remove(soldTower);
+				player.changeMoney(soldTower.getRefundValue());
+				button_selector.deselectSelected();
+				cell_selector.deselectSelectedCell();
+				button_selector.setSellTowerSelected(false);
+				
+		}
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
 		buyTower();
+		sellTower();
 		fireTowers();
 		field.repaint();
 		side_menu.repaint();

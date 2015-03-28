@@ -21,7 +21,7 @@ public abstract class Button extends JComponent {
 	private boolean selected;
 	private boolean hovered;
 	private MouseMaster mouse_master;
-	private ButtonSelector button_selector;
+	protected ButtonSelector button_selector;
 	
 	public Button(int posX, int posY, int width, int height) {
 		super();

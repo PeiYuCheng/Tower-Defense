@@ -4,7 +4,7 @@ package domain;
 public class Player {
 	
 	private final int LIVES_AT_START = 10;
-	private final int MONEY_AT_START = 0;
+	private final int MONEY_AT_START = 1000;
 	
 	private int lives;
 	private int money;
