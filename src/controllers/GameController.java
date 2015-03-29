@@ -168,14 +168,19 @@ public class GameController implements ActionListener {
 		map.Cell towersCell = cell_selector.getSelectedCell();
 		Tower soldTower;
 		
-		if ((towersCell == null)) {
+		if (towersCell == null) {
 			button_selector.setSellTowerSelected(false);
 			return;
 		}
 		
 		soldTower = towersCell.getTowerInCell();
 		
-		if (button_selector.isSellTowerSelected() && (soldTower != null)) {
+		if (soldTower == null) {
+			button_selector.setSellTowerSelected(false);
+			return;
+		}
+		
+		if (button_selector.isSellTowerSelected()) {
 				
 				field.getLayeredPane().remove(soldTower.getComponent());
 				list_of_towers_on_map.remove(soldTower);
@@ -187,12 +192,47 @@ public class GameController implements ActionListener {
 		}
 		
 	}
+	
+	private void upgradeTower() {
+		
+		map.Cell towersCell = cell_selector.getSelectedCell();
+		Tower upgradeTower;
+		
+		if ((towersCell == null)) {
+			button_selector.setUpgradeTowerSelected(false);
+			return;
+		}
+		
+		upgradeTower = towersCell.getTowerInCell();
+		
+		if (upgradeTower == null) {
+			button_selector.setUpgradeTowerSelected(false);
+			return;
+		}
+		
+		// check player money
+		if (player.getMoney() < upgradeTower.getUpgradeCost()) {
+			button_selector.setUpgradeTowerSelected(false);
+			return;
+		}
+		
+		if (button_selector.isUpgradeTowerSelected()) {
+			
+			if (upgradeTower.upgradeTower()) {
+				player.changeMoney(-upgradeTower.getUpgradeCost());
+			}
+				button_selector.setUpgradeTowerSelected(false);
+				
+		}
+		
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
 		buyTower();
 		sellTower();
+		upgradeTower();
 		fireTowers();
 		field.repaint();
 		side_menu.repaint();

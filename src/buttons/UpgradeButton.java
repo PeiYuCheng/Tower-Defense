@@ -23,5 +23,11 @@ public class UpgradeButton extends ClickButton {
 		
 	}
 
+	@Override
+	protected void OnRelease() {
+		button_selector.setUpgradeTowerSelected(true);
+		setSelected(false);
+	}
+	
 
 }

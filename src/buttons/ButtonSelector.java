@@ -8,6 +8,7 @@ public class ButtonSelector {
 	private static ButtonSelector cell_button;
 	private Button selectedButton;
 	private boolean sellTowerSelected;
+	private boolean upgradeTowerSelected;
 	
 	private ButtonSelector() {
 	}
@@ -41,6 +42,14 @@ public class ButtonSelector {
 	
 	public boolean isSellTowerSelected() {
 		return sellTowerSelected;
+	}
+	
+	public void setUpgradeTowerSelected(boolean upgradeTower) {
+		upgradeTowerSelected = upgradeTower;
+	}
+	
+	public boolean isUpgradeTowerSelected() {
+		return upgradeTowerSelected;
 	}
 	
 }

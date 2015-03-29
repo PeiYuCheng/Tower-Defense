@@ -265,13 +265,16 @@ public abstract class Tower extends Observable {
 	
 	/**
 	 * Raises the upgrade level of the tower by 1.
+	 * @return True if the tower was upgraded.
 	 */
-	public void upgradeTower() {
+	public boolean upgradeTower() {
 		if (upgrade_level < MAX_UPGRADE_LEVEL) {
 			upgrade_level++;
 			setChanged();
 			notifyObservers();
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -591,6 +594,14 @@ public abstract class Tower extends Observable {
 		
 		g.setColor(this.getTowerColor());
 		g.fillOval(0, 0, cell.getCellSize().width, cell.getCellSize().height);
+		
+		g.setColor(Color.red);
+		if (upgrade_level >= 2) {
+			g.drawOval(cell.getCellSize().width/8, cell.getCellSize().height/8, cell.getCellSize().width*3/4, cell.getCellSize().height*3/4);
+		}
+		if (upgrade_level >= 3) {
+			g.drawOval(cell.getCellSize().width/4, cell.getCellSize().height/4, cell.getCellSize().width/2, cell.getCellSize().height/2);
+		}
 
 	}
 	
