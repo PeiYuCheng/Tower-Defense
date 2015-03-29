@@ -1,5 +1,11 @@
 package critterModels;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import map.Map;
+
 /**
  * <h3>
  * The Regular Critter Class</h3>
@@ -23,10 +29,21 @@ public class RegularCritter extends Critter {
 	private static final int MAX_HEALTH = 100;
 	private static final int DAMAGING_POWER = 1;
 	private static final int MOVING_SPEED = 10;
+	private static final Dimension SIZE = new Dimension(5, 5);
+	private static final Color COLOUR = Color.BLUE;
 
 	public RegularCritter(int startX, int startY) {
 		super(MAX_HEALTH, MOVING_SPEED, DAMAGING_POWER, REWARD);
 		setPosX(startX);
 		setPosY(startY);
+		setSize(SIZE);
+		setColour(COLOUR);
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		// TODO Auto-generated method stub
+		g.fillRect(getPosX(), getPosY(), SIZE.width, SIZE.height);
+		g.setColor(COLOUR);
 	}
 }

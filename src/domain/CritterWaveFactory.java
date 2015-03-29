@@ -21,13 +21,25 @@ import critterModels.RegularCritter;
  * @author Justin Asfour
  * @version 1.0
  */
-public class CritterFactory {
+public class CritterWaveFactory {
 
+	private static CritterWaveFactory critter_factory;
+	
 	private static final int FINAL_WAVE = 50;
 	private Queue<Critter> group;
 
+	private CritterWaveFactory() {
+	}
+	
+	public static CritterWaveFactory getInstance() {
+		if (critter_factory == null)
+			critter_factory = new CritterWaveFactory();
+		return critter_factory;
+	}
+
 	/**
-	 * The method creates a group of <b>Critter</b>. The number of critters in
+	 * The method creates a group of <b>Critter</b>. 
+	 * It implements the Singleton Design Pattern. The number of critters in
 	 * each group changes based on each wave. As the player progresses through
 	 * the game, the number of critters and the type that get dispatched changes
 	 * instead of the strength of the critters. This is how difficulty is
@@ -35,7 +47,7 @@ public class CritterFactory {
 	 * 
 	 * @param waveNumber This parameter will change whenever the Player finishes a wave
 	 */
-	public CritterFactory(int waveNumber) {
+	public Queue<Critter> createWave(int waveNumber) {
 		group = new LinkedList<Critter>();
 		// TODO: add real start position for boss and regular
 		Critter regularCritter;
@@ -107,16 +119,16 @@ public class CritterFactory {
 			group.add(bossCritter);
 			break;
 		}
+		return group;
 	}
-
 	/**
-	 * This method empties the CritterFactory. Its a helper method for the next
+	 * This method empties the CritterWaveFactory. Its a helper method for the next
 	 * one which is <b>dispatchAllCritter()</b>.
 	 * 
 	 * @return Critter at head of queue
 	 */
 	public Critter dispatchOneCritter() {
-		return group.remove();
+		return group.poll();
 	}
 
 	/**
@@ -148,17 +160,6 @@ public class CritterFactory {
 							+ " Critter and begins walking from start tile to end tile");
 			i++;
 		}
-	}
-
-	/**
-	 * This method deals with the path finding algorithm to make sure that the
-	 * Critters make it from the beginning to the end. We will be implementing
-	 * the A* algorithm to make sure of this
-	 */
-	public void startWalking() {
-		// TODO: implement path finding algorithm to get the critters to walk
-		// along path
-		dispatchAllCritters();
 	}
 
 	// /////////////////////
