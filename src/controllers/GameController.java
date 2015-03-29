@@ -2,6 +2,7 @@ package controllers;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -115,6 +116,7 @@ public class GameController implements ActionListener {
 			side_menu.getComponent(i).paint(g);
 		}
 		
+		printTowerStats(g, new Point(10,400));
 	}
 
 	private void fireTowers() {
@@ -225,6 +227,40 @@ public class GameController implements ActionListener {
 				
 		}
 		
+	}
+	
+	private void printTowerStats(Graphics g, Point position) {
+		
+		g.setColor(Color.white);
+		g.drawString("Tower stats:", position.x, position.y + 15);
+		
+		if (cell_selector.getSelectedCell() == null) {
+			return;
+		}
+		
+		Tower tower = cell_selector.getSelectedCell().getTowerInCell();
+		
+		if (tower == null) {
+			return;
+		}
+		
+		int upgradeLevel = tower.getUpgradeLevel();
+		
+		g.drawString("Level: " + upgradeLevel, position.x, position.y + 30);
+		g.drawString("Power: " + tower.getPower(), position.x, position.y + 45);
+		g.drawString("Range: " + tower.getRange(), position.x, position.y + 60);
+		g.drawString("Rate of fire: " + tower.getRateOfFire(), position.x, position.y + 75);
+		if (upgradeLevel == 3) {
+			g.drawString("Upgrade cost: ---", position.x, position.y + 90);
+		}
+		else {
+			g.drawString("Upgrade cost: " + tower.getUpgradeCost(), position.x, position.y + 90);
+		}
+		g.drawString("Sell value: " + tower.getRefundValue(), position.x, position.y + 105);
+		g.drawString("Attack mode: " + tower.getAttackMode().toString(), position.x, position.y + 120);
+//		g.drawString("Has pyro damage: " + tower.hasPyroDamage());
+//		g.drawString("Has slow damage: " + tower.hasSlowDamage());
+//		g.drawString("Is active: " + tower.isActive());
 	}
 
 	@Override
