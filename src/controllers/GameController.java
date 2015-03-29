@@ -31,18 +31,12 @@ public class GameController implements ActionListener {
 	private Field field;
 	private SideMenu side_menu;
 	private Timer timer;
-	private MouseMaster mouse_master;
 	private ArrayList<Tower> list_of_towers_on_map;
 	private ArrayList<Critter> list_of_critters_on_map;
 	private ArrayList<Button> list_of_buttons;
 	
-	private boolean mouseClicked;
-	private int mousePos[];
-	private int mouse_position_at_click[];
-	
 	public GameController() {
 		
-		mouse_master = new MouseMaster();
 		player = Player.getPlayerInstance();
 		map = Map.createGeneric();		
 		button_selector = ButtonSelector.getInstance();
@@ -287,30 +281,6 @@ public class GameController implements ActionListener {
 	public void setField(Field field) {
 		this.field = field;
 	}
-	
-	public boolean isMouseClicked() {
-		return mouseClicked;
-	}
-
-	public void setMouseClicked(boolean mouseClicked) {
-		this.mouseClicked = mouseClicked;
-	}
-
-	public int[] getMousePos() {
-		return mousePos;
-	}
-
-	public void setMousePos(int mousePos[]) {
-		this.mousePos = mousePos;
-	}
-
-	public int[] getMousePositionAtClick() {
-		return mouse_position_at_click;
-	}
-
-	public void setMousePositionAtClick(int mouse_position_at_click[]) {
-		this.mouse_position_at_click = mouse_position_at_click;
-	}
 
 	public SideMenu getSideMenu() {
 		return side_menu;
@@ -318,52 +288,6 @@ public class GameController implements ActionListener {
 
 	public void setSideMenu(SideMenu side_menu) {
 		this.side_menu = side_menu;
-	}
-
-	private class MouseMaster extends MouseAdapter {
-		
-		@Override
-		public void mouseClicked(MouseEvent e) {
-				
-//			System.out.println(e.getComponent().getX());
-//			
-//			// Selects a cell
-//			for (int i = 0; i < map.Grid.length; i++) {
-//				for (int j = 0; j < map.Grid[0].length; j++) {
-//					map.Grid[i][j].selectCell(e.getX(), e.getY());;
-//				}
-//			}
-//			
-//			for (Button button : list_of_buttons) {
-//				button.selectCell(e.getX(), e.getY());
-//			}
-//			
-//			setMouseClicked(true);
-//			int temp[] = new int[2];
-//			temp[0] = e.getX();
-//			temp[1] = e.getY();
-//			setMousePositionAtClick(temp);
-
-		}
-		
-		
-		
-		@Override
-		public void mouseMoved(MouseEvent e) {
-//			
-//			System.out.println("MOVED! ZOMEGGS");
-//			
-//			for (Button button : list_of_buttons) {
-//				button.hoverCell(e.getX(), e.getY());
-//			}
-//			
-//			int temp[] = new int[2];
-//			temp[0] = e.getX();
-//			temp[1] = e.getY();
-//			setMousePos(temp);
-
-		}
-
 	}
 
 	
