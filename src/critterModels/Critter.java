@@ -36,7 +36,7 @@ import domain.Player;
  * @version 1.0
  */
 
-public abstract class Critter extends Observable{
+public abstract class Critter extends Observable {
 
 	private int health;
 	private int movingSpeed;
@@ -57,6 +57,8 @@ public abstract class Critter extends Observable{
 		this.damagePlayer = false;
 		this.position = new Point();
 		this.size = new Dimension();
+		this.mapKnownToCritters = Map.createGeneric();
+		this.pathToWalk = (ArrayList<Cell>) mapKnownToCritters.path.clone();
 	}
 
 	// //////////////////////
@@ -80,14 +82,15 @@ public abstract class Critter extends Observable{
 	/**
 	 * This method rewards player for killing a critter
 	 * 
-	 * @param p which is of the Player Class
+	 * @param p
+	 *            which is of the Player Class
 	 */
 
 	// TODO: Implement later in game controller
-//	public void reward(Player p) {
-//		if (isDead())
-//			p.cash += reward;
-//	}
+	// public void reward(Player p) {
+	// if (isDead())
+	// p.cash += reward;
+	// }
 
 	/**
 	 * This method indicates that the critter is hit.
@@ -95,51 +98,59 @@ public abstract class Critter extends Observable{
 	 * @return <b>true</b> if the critter is hit reduces the critter health
 	 *         appropriately based on the tower's power.
 	 */
-//	public boolean isHit() {
-//		// TODO: check if tower hit critter then reduce health appropriately and
-//		// add animation to hit
-//		if (Tower.ATTACK) {
-//			health -= Tower.DAMAGE;
-//			setChanged();
-//			notifyObservers();
-//			return true;
-//		} else
-//			return false;
-//	}
+	// public boolean isHit() {
+	// // TODO: check if tower hit critter then reduce health appropriately and
+	// // add animation to hit
+	// if (Tower.ATTACK) {
+	// health -= Tower.DAMAGE;
+	// setChanged();
+	// notifyObservers();
+	// return true;
+	// } else
+	// return false;
+	// }
 
 	/**
 	 * This method checks if the critter has reached the exit and then reduces
 	 * the player's health appropriately.
-	 * @param p of Player class
+	 * 
+	 * @param p
+	 *            of Player class
 	 */
 	// TODO: Implement later in game controller
 	public void damage(Player p) {
 		p.changeLives(-damagingPower);
 	}
-	
+
 	/**
-	 * This method is used to damage Critter by taking in 3 parameters the tower's attack, 
-	 * and which negative effect will hurt it. The effect is a boolean which is changed in the game 
-	 * controller for a certain time.
+	 * This method is used to damage Critter by taking in 3 parameters the
+	 * tower's attack, and which negative effect will hurt it. The effect is a
+	 * boolean which is changed in the game controller for a certain time.
 	 * 
-	 * @param amountOfDamageTaken: The damage that is taken from the tower
-	 * @param negativePowerEffect: The boolean value that will define a change in the critter's power
-	 * @param negativeSpeedEffect: The boolean value that will define a slowdown in the critter's movement
+	 * @param amountOfDamageTaken
+	 *            : The damage that is taken from the tower
+	 * @param negativePowerEffect
+	 *            : The boolean value that will define a change in the critter's
+	 *            power
+	 * @param negativeSpeedEffect
+	 *            : The boolean value that will define a slowdown in the
+	 *            critter's movement
 	 */
-	public void damageCritter(int amountOfDamageTaken, boolean negativePowerEffect, boolean negativeSpeedEffect) {
+	public void damageCritter(int amountOfDamageTaken,
+			boolean negativePowerEffect, boolean negativeSpeedEffect) {
 
 		this.health -= amountOfDamageTaken;
 		int currentSpeed = this.getMovingSpeed();
-		
+
 		if (negativeSpeedEffect)
 			this.movingSpeed = currentSpeed - 10;
 		else
 			this.movingSpeed = currentSpeed;
-		
+
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	/**
 	 * Abstract method created to provide generic drawing of each type of
 	 * critter
@@ -147,47 +158,52 @@ public abstract class Critter extends Observable{
 	 * @param g
 	 */
 	public abstract void draw(Graphics g);
-	
-	
+
 	/**
 	 * This method deals with the path finding algorithm to make sure that the
 	 * Critters make it from the beginning to the end. We will be implementing
 	 * the A* algorithm to make sure of this
 	 */
-	public void startWalking(Map gameMap) {
+	public void startWalking() {
 		// TODO: implement path finding algorithm to get the critters to walk
 		// along path
-		
-		this.mapKnownToCritters = gameMap;
-		pathToWalk = mapKnownToCritters.path;
-		
+
 		Iterator<Cell> iterator = pathToWalk.iterator();
-		
+
 		if (iterator.hasNext()) {
+			// Acquire the current path cell and the next one
+			// in order for the critter to move from one to the other
 			Cell currentCellOnPath = iterator.next();
-			iterator.remove();
 			Cell nextCellOnPath = iterator.next();
-			iterator.remove();
 
 			int currentX = currentCellOnPath.getX();
 			int nextX = nextCellOnPath.getX();
 			int currentY = currentCellOnPath.getY();
-			int nextY = nextCellOnPath.getY();
-
-			// Critter starts moving on the first tile
+			int nextY = nextCellOnPath.getY();			
+			
+			// Critter starts on the current cell
 			position.setLocation(currentX, currentY);
 
 			if (currentX == nextX)
 				position.y += movingSpeed;
 			else if (currentY == nextY)
 				position.x += movingSpeed;
+			
+			// Once the critter reaches the next cell
+			// the current cell is removed from the list
+			if (position.x == currentX && position.y == currentY) {
+				iterator.remove();
+			}
 
-		// Critter has reached last tile => attack player
-		} else 
+			// Critter has reached last tile => attack player
+		} else {
 			System.out.println("Critter has reached the end");
 			this.damagePlayer = true;
+		}
+		setChanged();
+		notifyObservers();
 	}
-	
+
 	// /////////////////////
 	// Getters & Setters //
 	// /////////////////////

@@ -140,12 +140,13 @@ public class GameController implements ActionListener {
 //		}
 //	}
 //	
-//	private void damagePlayer() {
-//		for (Critter critter : list_of_critters_on_map) {
-//			if (critter.isDamagePlayer())
-//				player.setLives(-critter.getDamagingPower());
-//		}
-//
+	private void damagePlayer() {
+		for (Critter critter : list_of_critters_on_map) {
+			if (critter.isDamagePlayer())
+				player.setLives(-critter.getDamagingPower());
+		}
+	}
+
 	private void fireTowers() {
 		
 		for (Tower tower : list_of_towers_on_map) {

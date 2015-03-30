@@ -16,11 +16,11 @@ import domain.CritterWaveFactory;
 public class CritterTest {
 
 	// Class to be tested
+	Map gameMap =  Map.createGeneric();
 	Critter testRegular = new RegularCritter(0, 0);
 	int waveNumber = 10;
 	int regularHealth = testRegular.getHealth();
 	int towerDamage = 10;
-	Map gameMap =  Map.createGeneric();
 	ArrayList<Cell> walkingPath = gameMap.path;
 	int initialPosition = walkingPath.get(0).getX();
 	
@@ -44,7 +44,8 @@ public class CritterTest {
 	
 	@Test
 	public void critterWalking_test() {
-		testRegular.startWalking(gameMap);
+		testRegular.startWalking();
+		testRegular.startWalking();
 		assertEquals((testRegular.getPosX()-testRegular.getMovingSpeed()), initialPosition);
 	}
 }
