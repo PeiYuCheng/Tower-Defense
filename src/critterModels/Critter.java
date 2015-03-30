@@ -13,7 +13,7 @@ import java.util.Observable;
 import javax.imageio.ImageIO;
 
 import map.Cell;
-import map.Map;
+import map.EasyMap;
 import domain.Player;
 
 /**
@@ -46,7 +46,7 @@ public abstract class Critter extends Observable{
 	private Dimension size;
 	private boolean damagePlayer;
 	private Color colour;
-	private Map mapKnownToCritters;
+	private EasyMap mapKnownToCritters;
 	private ArrayList<Cell> pathToWalk;
 
 	public Critter(int health, int movingSpeed, int damagingPower, int reward) {
@@ -154,7 +154,7 @@ public abstract class Critter extends Observable{
 	 * Critters make it from the beginning to the end. We will be implementing
 	 * the A* algorithm to make sure of this
 	 */
-	public void startWalking(Map gameMap) {
+	public void startWalking(EasyMap gameMap) {
 		// TODO: implement path finding algorithm to get the critters to walk
 		// along path
 		
