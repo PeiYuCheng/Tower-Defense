@@ -213,6 +213,7 @@ public class GameController implements ActionListener {
 				
 				field.getLayeredPane().remove(soldTower.getComponent());
 				list_of_towers_on_map.remove(soldTower);
+				cell_selector.getSelectedCell().setTowerInCell(null);
 				player.changeMoney(soldTower.getRefundValue());
 				button_selector.deselectSelected();
 				cell_selector.deselectSelectedCell();
