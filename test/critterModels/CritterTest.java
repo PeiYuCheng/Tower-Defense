@@ -44,9 +44,9 @@ public class CritterTest {
 
 	@Test
 	public void critterWalking_test() {
-		while (testRegular.getPosition().getLocation() != gameMap.ExitCell.getPosition()) {
+		while (!testRegular.hasReachedExit()) {
 			testRegular.startWalking();
 		}
-		assertEquals(testRegular.getPosition(), gameMap.ExitCell.getPosition());
+		assertEquals(testRegular.getCell_position(), gameMap.ExitCell.getPosition());
 	}
 }
