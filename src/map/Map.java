@@ -166,12 +166,6 @@ public class Map{
 				MyMap.addGridCell(aCell);
 				MyMap.addPathCell(aCell);
 				
-
-				//add a bad pathCell to test
-//				aCell = new PathCell(2,6);
-//				MyMap.addGridCell(aCell);
-//				MyMap.addPathCell(aCell);
-				//
 				aCell = new PathCell(3,5);
 				MyMap.addGridCell(aCell);
 				MyMap.addPathCell(aCell);
