@@ -31,6 +31,7 @@ public class CritterObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		attackCritter();
+		System.out.println("The critter is walking");
 	}
 
 }

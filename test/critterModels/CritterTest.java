@@ -16,14 +16,14 @@ import domain.CritterWaveFactory;
 public class CritterTest {
 
 	// Class to be tested
+
 	Critter testRegular = new RegularCritter(0, 0);
 	int waveNumber = 10;
 	int regularHealth = testRegular.getHealth();
 	int towerDamage = 10;
-	Map gameMap =  Map.createGeneric();
+	Map gameMap = Map.createGeneric();
 	ArrayList<Cell> walkingPath = gameMap.path;
-	int initialPosition = walkingPath.get(0).getX();
-	
+
 	CritterWaveFactory wave = CritterWaveFactory.getInstance();
 	Queue<Critter> critterOnMap = wave.createWave(waveNumber);
 
@@ -41,10 +41,12 @@ public class CritterTest {
 		Critter test2 = wave.dispatchOneCritter();
 		assertNotSame(test1, test2);
 	}
-	
+
 	@Test
 	public void critterWalking_test() {
-		testRegular.startWalking(gameMap);
-		assertEquals((testRegular.getPosX()-testRegular.getMovingSpeed()), initialPosition);
+		while (testRegular.getPosition().getLocation() != gameMap.ExitCell.getPosition()) {
+			testRegular.startWalking();
+		}
+		assertEquals(testRegular.getPosition(), gameMap.ExitCell.getPosition());
 	}
 }
