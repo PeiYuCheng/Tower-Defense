@@ -2,11 +2,7 @@ package map;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.util.pathfinding.PathFindingContext;
-import org.newdawn.slick.util.pathfinding.TileBasedMap;
-
-
-public class Map implements TileBasedMap{
+public class Map{
 	
 	private int Width;
 	private int Height;
@@ -163,36 +159,5 @@ public class Map implements TileBasedMap{
 				MyMap.setExitCell(aCell);
 				
 				return MyMap;
-	}
-
-	@Override
-	public boolean blocked(PathFindingContext context, int tx, int ty) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public float getCost(PathFindingContext context, int tx, int ty) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getHeightInTiles() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getWidthInTiles() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void pathFinderVisited(int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+	}	
 }

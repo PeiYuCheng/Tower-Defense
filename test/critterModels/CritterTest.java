@@ -2,17 +2,30 @@ package critterModels;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Queue;
+
+import map.Cell;
+import map.Map;
+
 import org.junit.Test;
 
-import domain.CritterFactory;
+import domain.CritterWaveFactory;
 
 public class CritterTest {
 
 	// Class to be tested
 	Critter testRegular = new RegularCritter(0, 0);
-	CritterFactory wave = new CritterFactory(10);
+	int waveNumber = 10;
 	int regularHealth = testRegular.getHealth();
 	int towerDamage = 10;
+	Map gameMap =  Map.createGeneric();
+	ArrayList<Cell> walkingPath = gameMap.path;
+	int initialPosition = walkingPath.get(0).getX();
+	
+	CritterWaveFactory wave = CritterWaveFactory.getInstance();
+	Queue<Critter> critterOnMap = wave.createWave(waveNumber);
 
 	// Unit test to check if the critter's health actually goes down
 	@Test
@@ -28,5 +41,10 @@ public class CritterTest {
 		Critter test2 = wave.dispatchOneCritter();
 		assertNotSame(test1, test2);
 	}
-
+	
+	@Test
+	public void critterWalking_test() {
+		testRegular.startWalking(gameMap);
+		assertEquals((testRegular.getPosX()-testRegular.getMovingSpeed()), initialPosition);
+	}
 }

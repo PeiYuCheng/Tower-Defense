@@ -30,6 +30,7 @@ public class GameController implements ActionListener {
 	private CellSelector cell_selector;
 	private Field field;
 	private SideMenu side_menu;
+//	private MainMenu main_menu;
 	private Timer timer;
 	private ArrayList<Tower> list_of_towers_on_map;
 	private ArrayList<Critter> list_of_critters_on_map;
@@ -54,6 +55,15 @@ public class GameController implements ActionListener {
 		        Toolkit.getDefaultToolkit().sync();
 			}
 		});
+		
+//		setMain_menu(new MainMenu() {
+//			@Override
+//			public void paintComponent(Graphics g) {
+//				super.paintComponent(g);
+//				doFieldDrawing(g);
+//		        Toolkit.getDefaultToolkit().sync();
+//			}
+//		});
 		
 		// populate field with cells
 		for (int i = 0; i < map.Grid.length; i++) {
@@ -91,6 +101,10 @@ public class GameController implements ActionListener {
 		drawSideMenu(g);
 	}
 	
+	protected void doMainMenuDrawing(Graphics g) {
+		drawMainMenu(g);
+	}
+	
 	/**
 	 * Draws all the cells in the grid
 	 * @param g
@@ -109,10 +123,29 @@ public class GameController implements ActionListener {
 		for (int i = 0; i < side_menu.getComponents().length; i++) {
 			side_menu.getComponent(i).paint(g);
 		}
+	}
+	
+	private void drawMainMenu(Graphics g) {
+		g.setColor(Color.white);
+		g.drawString("Tower Defense", 100, 20);
+		g.drawString("Play Game", 100, 40);
+		g.drawString("Options", 100, 70);
+		g.drawString("Quit Game", 100, 120);
 		
 		printTowerStats(g, new Point(10,400));
+		
 	}
-
+//		for (int i = 0; i < main_menu.getComponents().length; i++) {
+//			main_menu.getComponent(i).paint(g);
+//		}
+//	}
+//	
+//	private void damagePlayer() {
+//		for (Critter critter : list_of_critters_on_map) {
+//			if (critter.isDamagePlayer())
+//				player.setLives(-critter.getDamagingPower());
+//		}
+//
 	private void fireTowers() {
 		
 		for (Tower tower : list_of_towers_on_map) {
@@ -289,6 +322,18 @@ public class GameController implements ActionListener {
 	public void setSideMenu(SideMenu side_menu) {
 		this.side_menu = side_menu;
 	}
+	
+	
+
+//	public MainMenu getMain_menu() {
+//		return main_menu;
+//	}
+//
+//	public void setMain_menu(MainMenu main_menu) {
+//		this.main_menu = main_menu;
+//	}
+
+
 
 	
 }

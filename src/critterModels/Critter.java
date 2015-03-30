@@ -1,7 +1,19 @@
 package critterModels;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 
+import javax.imageio.ImageIO;
+
+import map.Cell;
+import map.Map;
 import domain.Player;
 
 /**
@@ -30,13 +42,21 @@ public abstract class Critter extends Observable{
 	private int movingSpeed;
 	private int damagingPower;
 	private int reward;
-	private int posX, posY;
+	private Point position;
+	private Dimension size;
+	private boolean damagePlayer;
+	private Color colour;
+	private Map mapKnownToCritters;
+	private ArrayList<Cell> pathToWalk;
 
 	public Critter(int health, int movingSpeed, int damagingPower, int reward) {
 		this.health = health;
 		this.movingSpeed = movingSpeed;
 		this.damagingPower = damagingPower;
 		this.reward = reward;
+		this.damagePlayer = false;
+		this.position = new Point();
+		this.size = new Dimension();
 	}
 
 	// //////////////////////
@@ -88,28 +108,13 @@ public abstract class Critter extends Observable{
 //	}
 
 	/**
-	 * This method indicates that the critter has reached the exit.
-	 * 
-	 * @return <b>true</b> if the critter has made it to the exit.
-	 */
-	public boolean hasReachedExit() {
-		// TODO: check if critter has reached exit tile.
-//		if (posX == Tile.END_TILE[0] && posY == Tile.END_TILE[1])
-			return true;
-//		else
-//			return false;
-	}
-
-	/**
 	 * This method checks if the critter has reached the exit and then reduces
 	 * the player's health appropriately.
 	 * @param p of Player class
 	 */
 	// TODO: Implement later in game controller
 	public void damage(Player p) {
-		if (hasReachedExit())
-			p.setLives(p.getLives() - damagingPower);
-		// TODO: Player.Health -= DAMAGING_POWER;
+		p.changeLives(-damagingPower);
 	}
 	
 	/**
@@ -134,6 +139,55 @@ public abstract class Critter extends Observable{
 		setChanged();
 		notifyObservers();
 	}
+	
+	/**
+	 * Abstract method created to provide generic drawing of each type of
+	 * critter
+	 * 
+	 * @param g
+	 */
+	public abstract void draw(Graphics g);
+	
+	
+	/**
+	 * This method deals with the path finding algorithm to make sure that the
+	 * Critters make it from the beginning to the end. We will be implementing
+	 * the A* algorithm to make sure of this
+	 */
+	public void startWalking(Map gameMap) {
+		// TODO: implement path finding algorithm to get the critters to walk
+		// along path
+		
+		this.mapKnownToCritters = gameMap;
+		pathToWalk = mapKnownToCritters.path;
+		
+		Iterator<Cell> iterator = pathToWalk.iterator();
+		
+		if (iterator.hasNext()) {
+			Cell currentCellOnPath = iterator.next();
+			iterator.remove();
+			Cell nextCellOnPath = iterator.next();
+			iterator.remove();
+
+			int currentX = currentCellOnPath.getX();
+			int nextX = nextCellOnPath.getX();
+			int currentY = currentCellOnPath.getY();
+			int nextY = nextCellOnPath.getY();
+
+			// Critter starts moving on the first tile
+			position.setLocation(currentX, currentY);
+
+			if (currentX == nextX)
+				position.y += movingSpeed;
+			else if (currentY == nextY)
+				position.x += movingSpeed;
+
+		// Critter has reached last tile => attack player
+		} else 
+			System.out.println("Critter has reached the end");
+			this.damagePlayer = true;
+	}
+	
 	// /////////////////////
 	// Getters & Setters //
 	// /////////////////////
@@ -171,18 +225,50 @@ public abstract class Critter extends Observable{
 	}
 
 	public int getPosX() {
-		return posX;
+		return position.x;
 	}
 
 	public void setPosX(int posX) {
-		this.posX = posX;
+		this.position.x = posX;
 	}
 
 	public int getPosY() {
-		return posY;
+		return position.y;
 	}
 
 	public void setPosY(int posY) {
-		this.posY = posY;
+		this.position.y = posY;
+	}
+
+	public Dimension getSize() {
+		return size;
+	}
+
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
+
+	public Color getColour() {
+		return colour;
+	}
+
+	public void setColour(Color colour) {
+		this.colour = colour;
+	}
+
+	public boolean isDamagePlayer() {
+		return damagePlayer;
+	}
+
+	public void setDamagePlayer(boolean damagePlayer) {
+		this.damagePlayer = damagePlayer;
+	}
+
+	public Point getPosition() {
+		return position;
+	}
+
+	public void setPosition(Point position) {
+		this.position = position;
 	}
 }

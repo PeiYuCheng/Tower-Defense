@@ -40,6 +40,7 @@ public class Application extends JFrame {
 		add(container);
 		container.add(controller.getField());
 		container.add(controller.getSideMenu());
+//		container.add(controller.getMain_menu());
 		setSize(SCREEN_WIDTH,SCREEN_HEIGHT);	
 		setTitle(APP_NAME);
 		pack();
