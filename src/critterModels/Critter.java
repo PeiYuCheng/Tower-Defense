@@ -15,6 +15,7 @@ import java.util.Observable;
 import javax.imageio.ImageIO;
 
 import map.Cell;
+import map.EasyMap;
 import map.Map;
 import domain.Player;
 
@@ -49,8 +50,11 @@ public abstract class Critter extends Observable {
 	private Dimension size;
 	private boolean damagePlayer;
 	private Color colour;
+<<<<<<< HEAD
+=======
 	private Map mapKnownToCritters;
 	private List<Cell> pathToWalk;
+>>>>>>> fe2b563f753f7e4593931f8bcc0f1b058afd2a40
 
 	public Critter(int health, int movingSpeed, int damagingPower, int reward) {
 		this.health = health;
@@ -174,7 +178,13 @@ public abstract class Critter extends Observable {
 	 * This method deals with the path finding algorithm to make sure that the
 	 * Critters make it from the beginning to the end. 
 	 */
+<<<<<<< HEAD
+=======
 	public void startWalking() {
+<<<<<<< HEAD
+=======
+>>>>>>> fe2b563f753f7e4593931f8bcc0f1b058afd2a40
+>>>>>>> c6577d0fdac32ff313f34406dfdbdcff5145f95b
 
 		ListIterator<Cell> iterator = pathToWalk.listIterator();
 

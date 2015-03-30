@@ -2,7 +2,9 @@ package map;
 
 import java.util.ArrayList;
 
-public class Map{
+import javax.swing.JComponent;
+
+public class HardMap implements IMap{
 	
 	private int Width;
 	private int Height;
@@ -11,17 +13,27 @@ public class Map{
 	public Cell ExitCell;
 	public ArrayList<Cell> path;
 
-	public Map(int w, int h){
+	public HardMap(int w, int h){
 		Width = w;
 		Height = h;
 		Grid = new Cell[Width][Height];
 		path = new ArrayList<Cell>();
+		
+		createGeneric();
 	}
 	
 	public void setEntryCell(Cell aCell){
 		EntryCell = aCell;
 	}
+	@Override
+	public Cell getEntryCell() {
+		return EntryCell;
+	}
 
+	@Override
+	public Cell getExitCell() {
+		return ExitCell;
+	}	
 	public void setExitCell(Cell aCell){
 		ExitCell = aCell;
 	}
@@ -35,7 +47,20 @@ public class Map{
 	public void addPathCell(Cell aCell){
 		path.add(aCell);
 	}
-	
+	@Override
+	public JComponent getComponent(int x, int y) {
+		return Grid[x][y].getComponent();
+	}
+
+	@Override
+	public int getMapWidth() {
+		return Width;
+	}
+
+	@Override
+	public int getMapHeight() {
+		return Height;
+	}
 	public boolean validate(){
 		boolean valid = true;
 		
@@ -87,19 +112,16 @@ public class Map{
 		return valid;
 	}
 	
-	public static Map createGeneric() {
-		//user set width and height of map
-				int mapWidth = 8;
-				int mapHeight = 8;
-				
-				Map MyMap = new Map(mapWidth, mapHeight);
+	public void createGeneric() {
+
+				//FixedMap MyMap = new FixedMap(mapWidth, mapHeight);
 				Cell aCell;
 				
 				//set every cell to SceneryCell first
-				for(int i=0; i<mapHeight; i++){
-					for(int j=0; j<mapWidth; j++){
+				for(int i=0; i<Height; i++){
+					for(int j=0; j<Width; j++){
 						aCell = new SceneryCell(i,j);
-						MyMap.addGridCell(aCell);
+						this.addGridCell(aCell);
 					}
 				}
 				
@@ -107,52 +129,59 @@ public class Map{
 				// set the selected cells to PathCell
 				// set the EntryCell chosen by user to EntryCell
 				aCell = new PathCell(0,5);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
-				MyMap.setEntryCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
+				this.setEntryCell(aCell);
 				
 				aCell = new PathCell(1,5);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				
 				aCell = new PathCell(2,5);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				
+				//add a bad pathCell to test
+				aCell = new PathCell(2,6);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
+				//
 				aCell = new PathCell(3,5);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				
 				aCell = new PathCell(3,4);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				
 				aCell = new PathCell(3,3);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				
 				aCell = new PathCell(3,2);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				
 				aCell = new PathCell(4,2);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				
 				aCell = new PathCell(5,2);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				
 				aCell = new PathCell(6,2);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				
 				aCell = new PathCell(7,2);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+				this.addGridCell(aCell);
+				this.addPathCell(aCell);
 				// set this ExitCell chosen by user to ExitCell
-				MyMap.setExitCell(aCell);
-				
-				return MyMap;
-	}	
+				this.setExitCell(aCell);
+	}
+
+
+
+
 }
