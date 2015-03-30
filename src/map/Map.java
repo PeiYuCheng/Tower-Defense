@@ -29,7 +29,7 @@ public class Map{
 	public void addGridCell(Cell aCell){
 		int i = aCell.getX();
 		int j = aCell.getY();
-		Grid[j][i] = aCell;
+		Grid[i][j] = aCell;
 	}
 	
 	public void addPathCell(Cell aCell){
@@ -87,6 +87,53 @@ public class Map{
 		return valid;
 	}
 	
+	private void sortPathCells() {
+		
+		ArrayList<Cell> path = new ArrayList<>();
+		Cell lastCell = null;
+		Cell currentCell;
+		Cell[] nextCell = new Cell[4];
+		
+		currentCell = EntryCell;
+		path.add(EntryCell);
+		
+		while(currentCell != null) {
+			
+			nextCell[0] = Grid[boundNumber(currentCell.position.x - 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid.length - 1)];
+			nextCell[1] = Grid[boundNumber(currentCell.position.x + 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid.length - 1)];
+			nextCell[2] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y - 1, 0, Grid.length - 1)];
+			nextCell[3] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y + 1, 0, Grid.length - 1)];
+			
+			for (int i = 0; i < nextCell.length; i++) {
+				if (nextCell[i] != currentCell && nextCell[i] != lastCell && nextCell[i] instanceof PathCell) {
+					lastCell = currentCell;
+					currentCell = nextCell[i];
+					path.add(currentCell);
+					break;
+				}
+				if (i == 3) {
+					currentCell = null;
+				}
+			}
+		}
+		
+		this.path = path;
+		
+		
+	}
+	
+	private int boundNumber(int number, int lowerBound, int upperBound) {
+		if (number < lowerBound) {
+			return lowerBound;
+		}
+		else if (number > upperBound) {
+			return upperBound;
+		}
+		else {
+			return number;
+		}
+	}
+	
 	public static Map createGeneric() {
 		//user set width and height of map
 				int mapWidth = 8;
@@ -120,9 +167,9 @@ public class Map{
 				MyMap.addPathCell(aCell);
 				
 				//add a bad pathCell to test
-				aCell = new PathCell(2,6);
-				MyMap.addGridCell(aCell);
-				MyMap.addPathCell(aCell);
+//				aCell = new PathCell(2,6);
+//				MyMap.addGridCell(aCell);
+//				MyMap.addPathCell(aCell);
 				//
 				aCell = new PathCell(3,5);
 				MyMap.addGridCell(aCell);
@@ -157,6 +204,8 @@ public class Map{
 				MyMap.addPathCell(aCell);
 				// set this ExitCell chosen by user to ExitCell
 				MyMap.setExitCell(aCell);
+				
+				MyMap.sortPathCells();
 				
 				return MyMap;
 	}	
