@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Observable;
 
 import javax.imageio.ImageIO;
@@ -42,12 +44,13 @@ public abstract class Critter extends Observable {
 	private int movingSpeed;
 	private int damagingPower;
 	private int reward;
+	private boolean critterSpawned;
 	private Point position;
 	private Dimension size;
 	private boolean damagePlayer;
 	private Color colour;
 	private Map mapKnownToCritters;
-	private ArrayList<Cell> pathToWalk;
+	private List<Cell> pathToWalk;
 
 	public Critter(int health, int movingSpeed, int damagingPower, int reward) {
 		this.health = health;
@@ -55,6 +58,7 @@ public abstract class Critter extends Observable {
 		this.damagingPower = damagingPower;
 		this.reward = reward;
 		this.damagePlayer = false;
+		this.critterSpawned = true;
 		this.position = new Point();
 		this.size = new Dimension();
 		this.mapKnownToCritters = Map.createGeneric();
@@ -168,31 +172,38 @@ public abstract class Critter extends Observable {
 		// TODO: implement path finding algorithm to get the critters to walk
 		// along path
 
-		Iterator<Cell> iterator = pathToWalk.iterator();
+		ListIterator<Cell> iterator = pathToWalk.listIterator();
 
 		if (iterator.hasNext()) {
 			// Acquire the current path cell and the next one
 			// in order for the critter to move from one to the other
 			Cell currentCellOnPath = iterator.next();
 			Cell nextCellOnPath = iterator.next();
+			int firstItemInList = 0;
 
-			int currentX = currentCellOnPath.getX();
-			int nextX = nextCellOnPath.getX();
-			int currentY = currentCellOnPath.getY();
-			int nextY = nextCellOnPath.getY();			
+			int currentX = (int) (currentCellOnPath.getPixelPosition().getX() + currentCellOnPath.getCellSize().getWidth() / 2);
+			int nextX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
+			int currentY = (int) (currentCellOnPath.getPixelPosition().getY() + currentCellOnPath.getCellSize().getHeight() / 2);
+			int nextY = (int) (nextCellOnPath.getPixelPosition().getY() + nextCellOnPath.getCellSize().getHeight() / 2);			
 			
 			// Critter starts on the current cell
-			position.setLocation(currentX, currentY);
+			if (critterSpawned) {
+				position.setLocation(currentX, currentY);
+				critterSpawned = false;
+			}
 
 			if (currentX == nextX)
-				position.y += movingSpeed;
+				if (nextY - currentY < 0)
+					position.y -= movingSpeed;
+				else
+					position.y += movingSpeed;
 			else if (currentY == nextY)
 				position.x += movingSpeed;
 			
 			// Once the critter reaches the next cell
 			// the current cell is removed from the list
-			if (position.x == currentX && position.y == currentY) {
-				iterator.remove();
+			if (position.x == nextX && position.y == nextY) {
+				pathToWalk.remove(firstItemInList);
 			}
 
 			// Critter has reached last tile => attack player
