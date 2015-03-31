@@ -71,7 +71,7 @@ public abstract class Critter extends Observable {
 			@Override
 			protected void paintComponent(Graphics g) {
 				setBorder(BorderFactory.createTitledBorder("Node"));
-				setBounds(pixelPosition.x, pixelPosition.y, size.width, size.height);
+				setBounds(pixel_position.x, pixel_position.y, size.width, size.height);
 				drawCritter(g);
 				drawHealthBar(g);
 				super.paintComponent(g);
@@ -208,7 +208,6 @@ public abstract class Critter extends Observable {
 			// Acquire the current path cell and the next one
 			// in order for the critter to move from one to the other
 			Cell nextCellOnPath = iterator.next();
-<<<<<<< HEAD
 			int firstItemInList = 0;
 
 			int currentX = (int) (currentCellOnPath.getPixelPosition().getX() + currentCellOnPath.getCellSize().getWidth() / 2);
@@ -218,110 +217,22 @@ public abstract class Critter extends Observable {
 			
 			// Critter starts on the current cell
 			if (critterSpawned) {
-				pixelPosition.setLocation(currentX, currentY);
+				pixel_position.setLocation(currentX, currentY);
 				critterSpawned = false;
 			}
 
 			if (currentX == nextX)
 				if (nextY - currentY < 0)
-					pixelPosition.y -= movingSpeed;
+					pixel_position.y -= movingSpeed;
 				else
-					pixelPosition.y += movingSpeed;
+					pixel_position.y += movingSpeed;
 			else if (currentY == nextY)
-				pixelPosition.x += movingSpeed;
+				pixel_position.x += movingSpeed;
 			
 			// Once the critter reaches the next cell
 			// the current cell is removed from the list
-			if (pixelPosition.x == nextX && pixelPosition.y == nextY) {
+			if (pixel_position.x == nextX && pixel_position.y == nextY) {
 				pathToWalk.remove(firstItemInList);
-=======
-			if (iterator.hasNext()) {
-				int firstItemInList = 0;
-
-				int currentPixelPositionX = (int) (currentCellOnPath.getPixelPosition().getX() + currentCellOnPath.getCellSize().getWidth() / 2);
-				int nextPixelPostionX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
-				int currentPixelPositionY = (int) (currentCellOnPath.getPixelPosition().getY() + currentCellOnPath.getCellSize().getHeight() / 2);
-				int nextPixelPositionY = (int) (nextCellOnPath.getPixelPosition().getY() + nextCellOnPath.getCellSize().getHeight() / 2);			
-
-				int currentCellPositionX = currentCellOnPath.getX();
-				int nextCellPositionX = nextCellOnPath.getX();
-				int currentCellPositionY = currentCellOnPath.getY();
-				int nextCellPositionY = nextCellOnPath.getY();
-
-				// Critter spawns on starting cell
-				if (critterSpawned) {
-					pixel_position.setLocation(currentPixelPositionX, currentPixelPositionY);
-					cell_position.setLocation(currentCellPositionX, currentCellPositionY);
-					critterSpawned = false;
-				}
-
-				// Critter movement during game loop
-				if (currentPixelPositionX == nextPixelPostionX) {
-					if (nextPixelPositionY - currentPixelPositionY < 0) {
-						// Move Up
-						pixel_position.y -= movingSpeed;
-					}
-					else {
-						//Move Down
-						pixel_position.y += movingSpeed;
-					}
-				}
-				else if (currentPixelPositionY == nextPixelPositionY) {
-					pixel_position.x += movingSpeed;
-				}
-
-				// Once the critter reaches the next cell
-				// the current cell is removed from the list
-				if (pixel_position.x == nextPixelPostionX && pixel_position.y == nextPixelPositionY) {
-					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
-					pathToWalk.remove(firstItemInList);
-					System.out.println(cell_position.toString());
-				}
-			} else {
-				/*
-				 * This is a copy of the top part but it prevents the
-				 * NoSuchElementException from occurring. It continues the iteration
-				 * until the exit cell is reached
-				 */
-				int firstItemInList = 0;
-
-				int currentPixelPositionX = (int) (currentCellOnPath.getPixelPosition().getX() + currentCellOnPath.getCellSize().getWidth() / 2);
-				int nextPixelPostionX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
-				int currentPixelPositionY = (int) (currentCellOnPath.getPixelPosition().getY() + currentCellOnPath.getCellSize().getHeight() / 2);
-				int nextPixelPositionY = (int) (nextCellOnPath.getPixelPosition().getY() + nextCellOnPath.getCellSize().getHeight() / 2);			
-
-				int nextCellPositionX = nextCellOnPath.getX();
-				int nextCellPositionY = nextCellOnPath.getY();
-
-				// Critter movement during game loop
-				if (currentPixelPositionX == nextPixelPostionX) {
-					if (nextPixelPositionY - currentPixelPositionY < 0) {
-						// Move Up
-						pixel_position.y -= movingSpeed;
-					}
-					else {
-						//Move Down
-						pixel_position.y += movingSpeed;
-					}
-				}
-				else if (currentPixelPositionY == nextPixelPositionY) {
-					pixel_position.x += movingSpeed;
-				}
-
-				// Once the critter reaches the next cell
-				// the current cell is removed from the list
-				if (pixel_position.x == nextPixelPostionX && pixel_position.y == nextPixelPositionY) {
-					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
-					pathToWalk.remove(firstItemInList);
-					System.out.println(cell_position.toString());
-				}
-
-				// Critter has reached last tile => attack player
-				if (hasReachedExit()) {
-					System.out.println("Critter has reached the end");
-					this.damagePlayer = true;
-				}
->>>>>>> b41d2439b02ae6387c5daa6047bcca0c5fb109cd
 			}
 		}
 		setChanged();
@@ -365,21 +276,6 @@ public abstract class Critter extends Observable {
 	}
 
 	public int getPosX() {
-<<<<<<< HEAD
-		return pixelPosition.x;
-	}
-
-	public void setPosX(int posX) {
-		this.pixelPosition.x = posX;
-	}
-
-	public int getPosY() {
-		return pixelPosition.y;
-	}
-
-	public void setPosY(int posY) {
-		this.pixelPosition.y = posY;
-=======
 		return pixel_position.x;
 	}
 
@@ -393,7 +289,6 @@ public abstract class Critter extends Observable {
 
 	public void setPosY(int posY) {
 		this.pixel_position.y = posY;
->>>>>>> b41d2439b02ae6387c5daa6047bcca0c5fb109cd
 	}
 
 	public Dimension getSize() {
@@ -422,6 +317,7 @@ public abstract class Critter extends Observable {
 
 	public JComponent getComponent() {
 		return component;
+	}
 
 	public Point getPixel_position() {
 		return pixel_position;
