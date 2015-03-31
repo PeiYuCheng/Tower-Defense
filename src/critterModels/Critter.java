@@ -66,6 +66,7 @@ public abstract class Critter extends Observable {
 		this.critterSpawned = true;
 		this.pixel_position = new Point();
 		this.cell_position = new Point();
+		this.pathToWalk = new ArrayList<>();
 		this.size = new Dimension();
 		component = new JComponent() {
 			@Override
@@ -394,6 +395,6 @@ public abstract class Critter extends Observable {
 	
 	public void setMapKnownToCritters (Map map) {
 		mapKnownToCritters = map;
-		pathToWalk = map.getPath();
+		pathToWalk.addAll(map.getPath());
 	}
 }

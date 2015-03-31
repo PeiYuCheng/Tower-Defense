@@ -378,7 +378,7 @@ private void printTowerStats(Graphics g, Point position) {
 		deployCritters();
 		moveCritters();
 		startWave();
-		damagePlayer();
+		killCritter();
 		fireTowers();
 		field.repaint();
 		side_menu.repaint();

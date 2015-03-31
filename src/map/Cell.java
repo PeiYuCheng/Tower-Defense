@@ -127,6 +127,11 @@ public abstract class Cell implements CellInterface{
 		return tower_in_cell == null;
 	}
 	
+	@Override
+	public String toString() {
+		return "{" + position.x + ", " + position.y + "}";
+	}
+	
 	private class MouseMaster extends MouseAdapter {
 		
 		@Override

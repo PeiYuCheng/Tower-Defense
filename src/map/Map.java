@@ -32,7 +32,7 @@ public abstract class Map {
 	public void addGridCell(Cell aCell){
 		int i = aCell.getX();
 		int j = aCell.getY();
-		Grid[j][i] = aCell;
+		Grid[i][j] = aCell;
 	}
 	
 	public void addPathCell(Cell aCell){
@@ -117,7 +117,7 @@ public abstract class Map {
 	
 	protected void sortPathCells() {
 		
-		//ArrayList<Cell> path = new ArrayList<>();
+		ArrayList<Cell> path = new ArrayList<>();
 		Cell lastCell = null;
 		Cell currentCell;
 		Cell[] nextCell = new Cell[4];
@@ -145,7 +145,7 @@ public abstract class Map {
 			}
 		}
 		
-		//this.path = path;
+		this.path = path;
 		
 		
 	}
