@@ -1,5 +1,7 @@
 package map;
 
+import java.util.ArrayList;
+
 import javax.swing.JComponent;
 
 public interface IMap {
@@ -11,7 +13,8 @@ public interface IMap {
 	public void setExitCell(Cell aCell);
 	public Cell getExitCell();
 	public void addGridCell(Cell aCell);	
-	public void addPathCell(Cell aCell);	
+	public void addPathCell(Cell aCell);
+	public ArrayList<Cell> getPath();
 	public boolean validate();
 	
 }

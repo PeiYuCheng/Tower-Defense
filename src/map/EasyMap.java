@@ -47,6 +47,11 @@ public class EasyMap implements IMap{
 	public void addPathCell(Cell aCell){
 		path.add(aCell);
 	}
+
+	@Override
+	public ArrayList<Cell> getPath() {
+		return path;
+	}
 	@Override
 	public JComponent getComponent(int x, int y) {
 		return Grid[x][y].getComponent();
@@ -110,6 +115,53 @@ public class EasyMap implements IMap{
 		}
 		
 		return valid;
+	}
+	
+	private void sortPathCells() {
+		
+		ArrayList<Cell> path = new ArrayList<>();
+		Cell lastCell = null;
+		Cell currentCell;
+		Cell[] nextCell = new Cell[4];
+		
+		currentCell = EntryCell;
+		path.add(EntryCell);
+		
+		while(currentCell != null) {
+			
+			nextCell[0] = Grid[boundNumber(currentCell.position.x - 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid.length - 1)];
+			nextCell[1] = Grid[boundNumber(currentCell.position.x + 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid.length - 1)];
+			nextCell[2] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y - 1, 0, Grid.length - 1)];
+			nextCell[3] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y + 1, 0, Grid.length - 1)];
+			
+			for (int i = 0; i < nextCell.length; i++) {
+				if (nextCell[i] != currentCell && nextCell[i] != lastCell && nextCell[i] instanceof PathCell) {
+					lastCell = currentCell;
+					currentCell = nextCell[i];
+					path.add(currentCell);
+					break;
+				}
+				if (i == 3) {
+					currentCell = null;
+				}
+			}
+		}
+		
+		this.path = path;
+		
+		
+	}
+	
+	private int boundNumber(int number, int lowerBound, int upperBound) {
+		if (number < lowerBound) {
+			return lowerBound;
+		}
+		else if (number > upperBound) {
+			return upperBound;
+		}
+		else {
+			return number;
+		}
 	}
 	
 	public void createGeneric() {
@@ -299,5 +351,7 @@ public class EasyMap implements IMap{
 				this.addPathCell(aCell);
 				// set this ExitCell chosen by user to ExitCell
 				this.setExitCell(aCell);
+				
+				sortPathCells();
 	}
 }
