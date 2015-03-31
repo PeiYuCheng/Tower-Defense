@@ -72,8 +72,8 @@ public class RadialTower extends Tower {
 			x_match = false;
 			y_match = false;
 			for (int j = 0; j < x_coordinate_target_points.size(); j++) {
-				x_match = (current_critter.getPosX() == x_coordinate_target_points.get(j).intValue());
-				y_match = (current_critter.getPosY() == y_coordinate_target_points.get(j).intValue());
+				x_match = (current_critter.getCell_position().x == x_coordinate_target_points.get(j).intValue());
+				y_match = (current_critter.getCell_position().y == y_coordinate_target_points.get(j).intValue());
 				
 				if (x_match && y_match) {
 					radial_targets.add(current_critter);

@@ -280,10 +280,6 @@ public abstract class Critter extends Observable {
 					pathToWalk.remove(firstItemInList);
 				}
 
-				// Critter has reached last tile => attack player
-				if (hasReachedExit()) {
-					this.damagePlayer = true;
-				}
 			}
 		}
 		component.setBounds(pixel_position.x, pixel_position.y, size.width, size.height);

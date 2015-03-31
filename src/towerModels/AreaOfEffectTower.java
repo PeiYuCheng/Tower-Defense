@@ -35,8 +35,12 @@ public class AreaOfEffectTower extends Tower {
 			return;
 		}
 		Critter current_target_critter = this.getCurrentTargetCritter();
-		area_of_effect_targets = this.detectCritters(all_critters, current_target_critter.getPosX(),
-				current_target_critter.getPosY(), AREA_OF_EFFECT);		
+		
+		if (current_target_critter == null) {
+			return;
+		}
+		area_of_effect_targets = this.detectCritters(all_critters, current_target_critter.getCell_position().x,
+				current_target_critter.getCell_position().y, AREA_OF_EFFECT);		
 	}
 		
 	/**
@@ -48,13 +52,13 @@ public class AreaOfEffectTower extends Tower {
 		
 		int amount_of_damage;
 		
-		if (area_of_effect_targets.isEmpty()) {
-			return false;
-		}
-		
 		amount_of_damage = this.getPower()*this.getUpgradeLevel();
 		detectCritterTargets(getAllCrittersOnMap());
 		findAreaOfEffectTargets(this.getAllCrittersOnMap());
+		
+		if (area_of_effect_targets.isEmpty()) {
+			return false;
+		}
 		
 		// TODO invoke the damage method of the critter
 		if (canFire() && this.getCurrentTargetCritter() != null) {

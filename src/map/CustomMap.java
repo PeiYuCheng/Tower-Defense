@@ -47,6 +47,15 @@ public class CustomMap implements IMap{
 	public void addPathCell(Cell aCell){
 		path.add(aCell);
 	}
+	
+	public void toggleCell(Cell cell){
+		if (cell instanceof SceneryCell) {
+			cell = new PathCell(cell.getX(), cell.getY());
+		}
+		else {
+			cell = new SceneryCell(cell.getX(), cell.getY());
+		}
+	}
 
 	@Override
 	public ArrayList<Cell> getPath() {

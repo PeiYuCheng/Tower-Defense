@@ -221,7 +221,7 @@ public abstract class Tower extends Observable {
 		// Adds all the critters in the radius of the range of the tower into a separate ArrayList to be returned by the method
 		for (int i = 0; i < all_critters.size(); i++) {
 			current_critter = all_critters.get(i);
-			current_distance = Math.pow(current_critter.getPosX() - x_position, 2) + Math.pow(current_critter.getPosY() - y_position, 2);
+			current_distance = Math.pow(current_critter.getCell_position().x - x_position, 2) + Math.pow(current_critter.getCell_position().y - y_position, 2);
 			if (current_distance <= Math.pow(range, 2)) {
 				critters_in_range.add(current_critter);
 			}
@@ -307,7 +307,7 @@ public abstract class Tower extends Observable {
 	 * Chooses a target critter based on the attack mode of the tower.
 	 * @param target_critters A list of the critters in the range of the tower.
 	 */
-	private void chooseTargetCritter(ArrayList<Critter> target_critters) {
+	protected void chooseTargetCritter(ArrayList<Critter> target_critters) {
 		
 		if (target_critters.size() == 0) {
 			current_target_critter = null;
