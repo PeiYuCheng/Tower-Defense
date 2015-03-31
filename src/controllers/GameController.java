@@ -28,7 +28,7 @@ import towerModels.*;
 public class GameController implements ActionListener {
 
 	private Player player;
-	private IMap map;
+	private Map map;
 	private ButtonSelector button_selector;
 	private CellSelector cell_selector;
 	private Field field;
@@ -51,7 +51,7 @@ public class GameController implements ActionListener {
 		
 		player = Player.getPlayerInstance();
 		//map = FixedMap.createGeneric();	
-		map = MapFactory.getUniqueInstance().createMap(EASY_MAP,12,4);
+		map = MapFactory.getUniqueInstance().createMap(HARD_MAP,0,0);
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
 		list_of_critters_on_map = new ArrayList<>();
@@ -80,8 +80,8 @@ public class GameController implements ActionListener {
 //		});
 		
 		// populate field with cells
-		for (int i = 0; i < map.getMapWidth(); i++) {
-			for (int j = 0; j < map.getMapHeight(); j++) {
+		for (int i = 0; i < map.getMapHeight(); i++) {
+			for (int j = 0; j < map.getMapWidth(); j++) {
 				field.getLayeredPane().add(map.getComponent(i,j), new Integer(0));
 			}
 		}
@@ -156,6 +156,16 @@ public class GameController implements ActionListener {
 //		}
 //	}
 //	
+	private void damagePlayer() {
+		for (Critter critter : list_of_critters_on_map) {
+			if (critter.isDamagePlayer()) {
+				player.changeLives(-critter.getDamagingPower());
+				field.getLayeredPane().remove(critter.getComponent());
+				list_of_critters_on_map.remove(critter);
+				break;
+			}
+		}
+	}
 
 	private void fireTowers() {
 		
@@ -268,9 +278,6 @@ public class GameController implements ActionListener {
 		
 	}
 	
-	/**
-	 * Loads the list of critters on the map with all the critters in the new wave.
-	 */
 	private void startWave() {
 		
 		if (button_selector.isStartWave()) {
@@ -306,7 +313,7 @@ public class GameController implements ActionListener {
 		}
 	}
 	
-	private void killCritter() {
+private void killCritter() {
 		if (!list_of_critters_on_map.isEmpty()) {
 			for (Critter critter : list_of_critters_on_map) {
 				if (critter.hasReachedExit()) {
@@ -326,7 +333,7 @@ public class GameController implements ActionListener {
 		}
 	}
 	
-	private void printTowerStats(Graphics g, Point position) {
+private void printTowerStats(Graphics g, Point position) {
 		
 		g.setColor(Color.white);
 		g.drawString("Tower stats:", position.x, position.y + 15);
@@ -366,10 +373,12 @@ public class GameController implements ActionListener {
 		buyTower();
 		sellTower();
 		upgradeTower();
+
 		startWave();
 		deployCritters();
 		moveCritters();
-		killCritter();
+		startWave();
+		damagePlayer();
 		fireTowers();
 		field.repaint();
 		side_menu.repaint();
