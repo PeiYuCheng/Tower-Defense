@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Queue;
 
 import javafx.scene.control.Cell;
 
@@ -18,6 +19,7 @@ import javax.swing.Timer;
 import buttons.*;
 import map.*;
 import critterModels.Critter;
+import domain.CritterWaveFactory;
 import domain.Player;
 import presentation.*;
 import towerModels.*;
@@ -35,6 +37,8 @@ public class GameController implements ActionListener {
 	private ArrayList<Tower> list_of_towers_on_map;
 	private ArrayList<Critter> list_of_critters_on_map;
 	private ArrayList<Button> list_of_buttons;
+	private CritterWaveFactory critter_factory;
+	private int waveNumber = 1;
 	
 	public GameController() {
 		
@@ -45,6 +49,7 @@ public class GameController implements ActionListener {
 		list_of_critters_on_map = new ArrayList<>();
 		list_of_towers_on_map = new ArrayList<>();
 		list_of_buttons = new ArrayList<>();
+		critter_factory = CritterWaveFactory.getInstance();
 		
 		//create Field with paint function defined in controller
 		setField(new Field() {
@@ -87,6 +92,7 @@ public class GameController implements ActionListener {
 		side_menu.add(new BuyRadialTowerButton(130, 80, 30, 30));
 		side_menu.add(new UpgradeButton(10, 200, 30, 30));
 		side_menu.add(new SellTowerButton(70, 200, 30, 30));
+		side_menu.add(new StartWaveButton(100, 20, 30, 30));
 		
 		timer = new Timer(Application.TIMEOUT,this);
 		timer.start();
@@ -258,6 +264,31 @@ public class GameController implements ActionListener {
 		
 	}
 	
+	private void startWave() {
+		
+		Queue<Critter> critters;
+		Critter current_critter;
+		
+		if (button_selector.isStartWave()) {
+			
+			if (list_of_critters_on_map.isEmpty()) {
+
+				critters = critter_factory.createWave(waveNumber);
+				waveNumber++;
+				
+				while (!critters.isEmpty()) {
+					current_critter = critters.poll();
+					list_of_critters_on_map.add(current_critter);
+					field.getLayeredPane().add(current_critter.getComponent(), new Integer(1));
+					current_critter.startWalking();
+				}
+			}
+				
+		}
+		button_selector.setUpgradeTowerSelected(false);
+		
+	}
+	
 	private void printTowerStats(Graphics g, Point position) {
 		
 		g.setColor(Color.white);
@@ -298,6 +329,7 @@ public class GameController implements ActionListener {
 		buyTower();
 		sellTower();
 		upgradeTower();
+		startWave();
 		fireTowers();
 		field.repaint();
 		side_menu.repaint();

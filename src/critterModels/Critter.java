@@ -13,6 +13,8 @@ import java.util.ListIterator;
 import java.util.Observable;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 
 import map.Cell;
 import map.Map;
@@ -45,12 +47,13 @@ public abstract class Critter extends Observable {
 	private int damagingPower;
 	private int reward;
 	private boolean critterSpawned;
-	private Point position;
+	private Point pixelPosition;
 	private Dimension size;
 	private boolean damagePlayer;
 	private Color colour;
 	private Map mapKnownToCritters;
 	private List<Cell> pathToWalk;
+	private JComponent component;
 
 	public Critter(int health, int movingSpeed, int damagingPower, int reward) {
 		this.health = health;
@@ -59,15 +62,37 @@ public abstract class Critter extends Observable {
 		this.reward = reward;
 		this.damagePlayer = false;
 		this.critterSpawned = true;
-		this.position = new Point();
+		this.pixelPosition = new Point();
 		this.size = new Dimension();
 		this.mapKnownToCritters = Map.createGeneric();
 		this.pathToWalk = (ArrayList<Cell>) mapKnownToCritters.path.clone();
+		component = new JComponent() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				setBorder(BorderFactory.createTitledBorder("Node"));
+				setBounds(pixelPosition.x, pixelPosition.y, size.width, size.height);
+				drawCritter(g);
+				drawHealthBar(g);
+				super.paintComponent(g);
+			}
+		};
 	}
 
 	// //////////////////////
 	// Behavioral Methods //
 	// //////////////////////
+
+	protected void drawHealthBar(Graphics g) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void drawCritter(Graphics g) {
+		
+		g.setColor(Color.pink);
+		g.fillRect(0, 0, size.width, size.height);
+		
+	}
 
 	/**
 	 * This method keeps track of whether the critter is dead or not
@@ -188,21 +213,21 @@ public abstract class Critter extends Observable {
 			
 			// Critter starts on the current cell
 			if (critterSpawned) {
-				position.setLocation(currentX, currentY);
+				pixelPosition.setLocation(currentX, currentY);
 				critterSpawned = false;
 			}
 
 			if (currentX == nextX)
 				if (nextY - currentY < 0)
-					position.y -= movingSpeed;
+					pixelPosition.y -= movingSpeed;
 				else
-					position.y += movingSpeed;
+					pixelPosition.y += movingSpeed;
 			else if (currentY == nextY)
-				position.x += movingSpeed;
+				pixelPosition.x += movingSpeed;
 			
 			// Once the critter reaches the next cell
 			// the current cell is removed from the list
-			if (position.x == nextX && position.y == nextY) {
+			if (pixelPosition.x == nextX && pixelPosition.y == nextY) {
 				pathToWalk.remove(firstItemInList);
 			}
 
@@ -252,19 +277,19 @@ public abstract class Critter extends Observable {
 	}
 
 	public int getPosX() {
-		return position.x;
+		return pixelPosition.x;
 	}
 
 	public void setPosX(int posX) {
-		this.position.x = posX;
+		this.pixelPosition.x = posX;
 	}
 
 	public int getPosY() {
-		return position.y;
+		return pixelPosition.y;
 	}
 
 	public void setPosY(int posY) {
-		this.position.y = posY;
+		this.pixelPosition.y = posY;
 	}
 
 	public Dimension getSize() {
@@ -292,10 +317,14 @@ public abstract class Critter extends Observable {
 	}
 
 	public Point getPosition() {
-		return position;
+		return pixelPosition;
 	}
 
 	public void setPosition(Point position) {
-		this.position = position;
+		this.pixelPosition = position;
+	}
+	
+	public JComponent getComponent() {
+		return component;
 	}
 }

@@ -9,6 +9,7 @@ public class ButtonSelector {
 	private Button selectedButton;
 	private boolean sellTowerSelected;
 	private boolean upgradeTowerSelected;
+	private boolean start_wave;
 	
 	private ButtonSelector() {
 	}
@@ -50,6 +51,14 @@ public class ButtonSelector {
 	
 	public boolean isUpgradeTowerSelected() {
 		return upgradeTowerSelected;
+	}
+
+	public void setStartWave(boolean start_wave) {
+		this.start_wave = start_wave = true;
+	}
+	
+	public boolean isStartWave() {
+		return start_wave;
 	}
 	
 }
