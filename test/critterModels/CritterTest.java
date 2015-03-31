@@ -20,7 +20,7 @@ public class CritterTest {
 	int waveNumber = 10;
 	int regularHealth = testRegular.getHealth();
 	int towerDamage = 10;
-	IMap gameMap = MapFactory.getUniqueInstance().createMap(1, 0, 0);
+	Map gameMap = MapFactory.getUniqueInstance().createMap(1, 0, 0);
 	ArrayList<Cell> walkingPath = gameMap.getPath();
 
 	CritterWaveFactory wave = CritterWaveFactory.getInstance();

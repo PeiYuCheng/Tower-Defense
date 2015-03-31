@@ -13,9 +13,9 @@ public class MapFactory {
 		return uniqueInstance;
 	}
 	
-	public IMap createMap(int flag, int width, int height) {
+	public Map createMap(int flag, int width, int height) {
 		mapType = flag;
-		if (mapType == 0){
+		if (mapType == 0 && width<15 && height <15){
 			return new CustomMap(width,height);
 		}
 		else if (mapType == 1){

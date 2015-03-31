@@ -51,7 +51,7 @@ public abstract class Critter extends Observable {
 	private Dimension size;
 	private boolean damagePlayer;
 	private Color colour;
-	private IMap mapKnownToCritters;
+	private Map mapKnownToCritters;
 	private List<Cell> pathToWalk;
 	private JComponent component;
 
