@@ -41,7 +41,7 @@ public class HardMap implements IMap{
 	public void addGridCell(Cell aCell){
 		int i = aCell.getX();
 		int j = aCell.getY();
-		Grid[j][i] = aCell;
+		Grid[i][j] = aCell;
 	}
 	
 	public void addPathCell(Cell aCell){
@@ -70,8 +70,8 @@ public class HardMap implements IMap{
 		boolean valid = true;
 		
 		//check if the grid completely filled with cells
-		for(int i=0; i<Height; i++){
-			for(int j=0; j<Width; j++){				
+		for(int i=0; i<Width; i++){
+			for(int j=0; j<Height; j++){				
 				if(Grid[i][j] == null){
 					valid = false;
 				} else {
@@ -170,8 +170,8 @@ public class HardMap implements IMap{
 				Cell aCell;
 				
 				//set every cell to SceneryCell first
-				for(int i=0; i<Height; i++){
-					for(int j=0; j<Width; j++){
+				for(int i=0; i<Width; i++){
+					for(int j=0; j<Height; j++){
 						aCell = new SceneryCell(i,j);
 						this.addGridCell(aCell);
 					}
