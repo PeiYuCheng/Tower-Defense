@@ -27,7 +27,7 @@ import towerModels.*;
 public class GameController implements ActionListener {
 
 	private Player player;
-	private Map map;
+	private IMap map;
 	private ButtonSelector button_selector;
 	private CellSelector cell_selector;
 	private Field field;
@@ -39,11 +39,16 @@ public class GameController implements ActionListener {
 	private ArrayList<Button> list_of_buttons;
 	private CritterWaveFactory critter_factory;
 	private int waveNumber = 1;
+	private static final int CUSTOM_MAP = 0;
+	private static final int EASY_MAP = 1;
+	private static final int HARD_MAP = 2;
+
 	
 	public GameController() {
 		
 		player = Player.getPlayerInstance();
-		map = Map.createGeneric();		
+		//map = FixedMap.createGeneric();	
+		map = MapFactory.getUniqueInstance().createMap(EASY_MAP,0,0);
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
 		list_of_critters_on_map = new ArrayList<>();
@@ -71,9 +76,9 @@ public class GameController implements ActionListener {
 //		});
 		
 		// populate field with cells
-		for (int i = 0; i < map.Grid.length; i++) {
-			for (int j = 0; j < map.Grid[0].length; j++) {
-				field.getLayeredPane().add(map.Grid[i][j].getComponent(), new Integer(0));
+		for (int i = 0; i < map.getMapHeight(); i++) {
+			for (int j = 0; j < map.getMapWidth(); j++) {
+				field.getLayeredPane().add(map.getComponent(i,j), new Integer(0));
 			}
 		}
 		

@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Queue;
 
-import map.Cell;
-import map.Map;
+import map.*;
 
 import org.junit.Test;
 
@@ -21,8 +20,8 @@ public class CritterTest {
 	int waveNumber = 10;
 	int regularHealth = testRegular.getHealth();
 	int towerDamage = 10;
-	Map gameMap = Map.createGeneric();
-	ArrayList<Cell> walkingPath = gameMap.path;
+	IMap gameMap = MapFactory.getUniqueInstance().createMap(1, 0, 0);
+	ArrayList<Cell> walkingPath = gameMap.getPath();
 
 	CritterWaveFactory wave = CritterWaveFactory.getInstance();
 	Queue<Critter> critterOnMap = wave.createWave(waveNumber);
@@ -44,9 +43,10 @@ public class CritterTest {
 
 	@Test
 	public void critterWalking_test() {
-		while (testRegular.getPosition().getLocation() != gameMap.ExitCell.getPosition()) {
+		while (!testRegular.hasReachedExit()) {
 			testRegular.startWalking();
 		}
-		assertEquals(testRegular.getPosition(), gameMap.ExitCell.getPosition());
+		assertEquals(testRegular.getCell_position(), gameMap.getExitCell().getPosition());
 	}
 }
+
