@@ -1,4 +1,4 @@
-/*package critterModels;
+package critterModels;
 
 import static org.junit.Assert.*;
 
@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Queue;
 
-import map.Cell;
-import map.EasyMap;
+import map.*;
 
 import org.junit.Test;
 
@@ -21,12 +20,8 @@ public class CritterTest {
 	int waveNumber = 10;
 	int regularHealth = testRegular.getHealth();
 	int towerDamage = 10;
-<<<<<<< HEAD
-	EasyMap gameMap =  EasyMap.createGeneric();
-=======
-	Map gameMap = Map.createGeneric();
->>>>>>> fe2b563f753f7e4593931f8bcc0f1b058afd2a40
-	ArrayList<Cell> walkingPath = gameMap.path;
+	IMap gameMap = MapFactory.getUniqueInstance().createMap(1, 0, 0);
+	ArrayList<Cell> walkingPath = gameMap.getPath();
 
 	CritterWaveFactory wave = CritterWaveFactory.getInstance();
 	Queue<Critter> critterOnMap = wave.createWave(waveNumber);
@@ -51,7 +46,7 @@ public class CritterTest {
 		while (!testRegular.hasReachedExit()) {
 			testRegular.startWalking();
 		}
-		assertEquals(testRegular.getCell_position(), gameMap.ExitCell.getPosition());
+		assertEquals(testRegular.getCell_position(), gameMap.getExitCell().getPosition());
 	}
 }
-*/
+
