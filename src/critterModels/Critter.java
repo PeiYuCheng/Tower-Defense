@@ -43,6 +43,7 @@ import domain.Player;
 public abstract class Critter extends Observable {
 
 	private int health;
+	private int max_health;
 	private int movingSpeed;
 	private int damagingPower;
 	private int reward;
@@ -53,12 +54,16 @@ public abstract class Critter extends Observable {
 	private Color colour;
 	private Map mapKnownToCritters;
 	private List<Cell> pathToWalk;
-	private JComponent component;
+	private JComponent critter_component;
+	private JComponent healthbar_component;
 	private boolean deployed;
 	public static final long DEPLOY_TIME = 1000;
+	public static final int HEALTH_BAR_WIDTH = 20;
+	public static final int HEALTH_BAR_HEIGHT = 5;
 
 	public Critter(int health, int movingSpeed, int damagingPower, int reward) {
 		this.health = health;
+		this.max_health = health;
 		this.movingSpeed = movingSpeed;
 		this.damagingPower = damagingPower;
 		this.reward = reward;
@@ -68,15 +73,23 @@ public abstract class Critter extends Observable {
 		this.cell_position = new Point();
 		this.pathToWalk = new ArrayList<>();
 		this.size = new Dimension();
-		component = new JComponent() {
+		critter_component = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				setBounds(pixel_position.x, pixel_position.y, size.width, size.height);
 				drawCritter(g);
+				super.paintComponent(g);
+			}
+		};
+		healthbar_component = new JComponent() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				setBounds(pixel_position.x - HEALTH_BAR_WIDTH/2 + size.width/2, pixel_position.y - 15, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
 				drawHealthBar(g);
 				super.paintComponent(g);
 			}
 		};
+		
 	}
 
 	// //////////////////////
@@ -85,8 +98,13 @@ public abstract class Critter extends Observable {
 
 	protected void drawHealthBar(Graphics g) {
 		
-		g.setColor(Color.white);
-		g.drawString("" + this.getHealth(), 0, 0);
+		g.setColor(Color.RED);
+		g.fillRect(0, 0, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 0, HEALTH_BAR_WIDTH*health/max_health, HEALTH_BAR_HEIGHT);
+		g.setColor(Color.black);
+		g.drawRect(0, 0, HEALTH_BAR_WIDTH*health/max_health, HEALTH_BAR_HEIGHT);
+		
 		
 	}
 
@@ -283,7 +301,8 @@ public abstract class Critter extends Observable {
 
 			}
 		}
-		component.setBounds(pixel_position.x, pixel_position.y, size.width, size.height);
+		critter_component.setBounds(pixel_position.x, pixel_position.y, size.width, size.height);
+		healthbar_component.setBounds(pixel_position.x - HEALTH_BAR_WIDTH/2 + size.width/2, pixel_position.y - 15, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
 		setChanged();
 		notifyObservers();
 	}
@@ -364,8 +383,12 @@ public abstract class Critter extends Observable {
 		this.damagePlayer = damagePlayer;
 	}
 
-	public JComponent getComponent() {
-		return component;
+	public JComponent getCritterComponent() {
+		return critter_component;
+	}
+	
+	public JComponent getHealthbarComponent() {
+		return healthbar_component;
 	}
 
 	public Point getPixel_position() {

@@ -125,7 +125,11 @@ public class GameController implements ActionListener {
 	 * @param g
 	 */
 	private void drawGrid(Graphics g) {
-		field.getLayeredPane().paintAll(g);
+		
+		for (int i = 0; i < field.getLayeredPane().getComponents().length; i++) {
+			field.getLayeredPane().getComponent(i).paint(g);
+		}
+		
 		field.getLayeredPane().repaint();
 	}
 	
@@ -155,17 +159,7 @@ public class GameController implements ActionListener {
 //			main_menu.getComponent(i).paint(g);
 //		}
 //	}
-//	
-	private void damagePlayer() {
-		for (Critter critter : list_of_critters_on_map) {
-			if (critter.isDamagePlayer()) {
-				player.changeLives(-critter.getDamagingPower());
-				field.getLayeredPane().remove(critter.getComponent());
-				list_of_critters_on_map.remove(critter);
-				break;
-			}
-		}
-	}
+//
 
 	private void fireTowers() {
 		
@@ -299,7 +293,8 @@ public class GameController implements ActionListener {
 			if (System.currentTimeMillis() - time_of_last_deploy > Critter.DEPLOY_TIME) {
 				current_critter = critter_buffer.poll();
 				list_of_critters_on_map.add(current_critter);
-				field.getLayeredPane().add(current_critter.getComponent(), new Integer(1));
+				field.getLayeredPane().add(current_critter.getCritterComponent(), new Integer(1));
+				field.getLayeredPane().add(current_critter.getHealthbarComponent(), new Integer(2));
 				time_of_last_deploy = System.currentTimeMillis();
 			}
 		}
@@ -318,13 +313,15 @@ private void killCritter() {
 			for (Critter critter : list_of_critters_on_map) {
 				if (critter.hasReachedExit()) {
 					player.changeLives(-critter.getDamagingPower());
-					field.getLayeredPane().remove(critter.getComponent());
+					field.getLayeredPane().remove(critter.getCritterComponent());
+					field.getLayeredPane().remove(critter.getHealthbarComponent());
 					list_of_critters_on_map.remove(critter);
 					break;
 				}
 				else if (critter.isDead()) {
 					player.changeMoney(critter.getReward());
-					field.getLayeredPane().remove(critter.getComponent());
+					field.getLayeredPane().remove(critter.getCritterComponent());
+					field.getLayeredPane().remove(critter.getHealthbarComponent());
 					list_of_critters_on_map.remove(critter);
 					break;
 				}
@@ -370,16 +367,20 @@ private void printTowerStats(Graphics g, Point position) {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
+		// Tower logic
 		buyTower();
 		sellTower();
 		upgradeTower();
+		fireTowers();
 
+		// Critter logic
 		startWave();
 		deployCritters();
 		moveCritters();
 		startWave();
 		killCritter();
-		fireTowers();
+		
+		// Repainting
 		field.repaint();
 		side_menu.repaint();
 		
