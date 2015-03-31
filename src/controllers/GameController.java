@@ -283,7 +283,7 @@ public class GameController implements ActionListener {
 		if (button_selector.isStartWave()) {
 			
 			if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty()) {
-				critter_buffer = critter_factory.createWave(waveNumber);
+				critter_buffer = critter_factory.createWave(waveNumber, map);
 				waveNumber++;
 			}
 		

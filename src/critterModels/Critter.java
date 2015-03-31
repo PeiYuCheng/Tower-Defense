@@ -67,8 +67,6 @@ public abstract class Critter extends Observable {
 		this.pixel_position = new Point();
 		this.cell_position = new Point();
 		this.size = new Dimension();
-		this.mapKnownToCritters = MapFactory.getUniqueInstance().createMap(1, 0, 0);
-		this.pathToWalk = mapKnownToCritters.getPath();		
 		component = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -392,5 +390,10 @@ public abstract class Critter extends Observable {
 
 	public void setDeployed(boolean deployed) {
 		this.deployed = deployed;
+	}
+	
+	public void setMapKnownToCritters (Map map) {
+		mapKnownToCritters = map;
+		pathToWalk = map.getPath();
 	}
 }

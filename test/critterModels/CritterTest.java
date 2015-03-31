@@ -24,7 +24,7 @@ public class CritterTest {
 	ArrayList<Cell> walkingPath = gameMap.getPath();
 
 	CritterWaveFactory wave = CritterWaveFactory.getInstance();
-	Queue<Critter> critterOnMap = wave.createWave(waveNumber);
+	Queue<Critter> critterOnMap = wave.createWave(waveNumber, gameMap);
 
 	// Unit test to check if the critter's health actually goes down
 	@Test

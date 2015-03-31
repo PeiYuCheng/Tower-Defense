@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import map.Map;
 import critterModels.BossCritter;
 import critterModels.Critter;
 import critterModels.LargeCritter;
@@ -47,7 +48,7 @@ public class CritterWaveFactory {
 	 * 
 	 * @param waveNumber This parameter will change whenever the Player finishes a wave
 	 */
-	public Queue<Critter> createWave(int waveNumber) {
+	public Queue<Critter> createWave(int waveNumber, Map map) {
 		group = new LinkedList<Critter>();
 		// TODO: add real start position for boss and regular
 		Critter regularCritter;
@@ -119,6 +120,11 @@ public class CritterWaveFactory {
 			group.add(bossCritter);
 			break;
 		}
+		
+		for (Critter critter : group) {
+			critter.setMapKnownToCritters(map);
+		}
+		
 		return group;
 	}
 	/**
