@@ -54,6 +54,8 @@ public abstract class Critter extends Observable {
 	private IMap mapKnownToCritters;
 	private List<Cell> pathToWalk;
 	private JComponent component;
+	private boolean deployed;
+	public static final long DEPLOY_TIME = 1000;
 
 	public Critter(int health, int movingSpeed, int damagingPower, int reward) {
 		this.health = health;
@@ -382,5 +384,13 @@ public abstract class Critter extends Observable {
 	public void setCell_position(Point cell_position) {
 		this.cell_position = cell_position;
 
+	}
+
+	public boolean isDeployed() {
+		return deployed;
+	}
+
+	public void setDeployed(boolean deployed) {
+		this.deployed = deployed;
 	}
 }

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import javafx.scene.control.Cell;
@@ -36,6 +37,8 @@ public class GameController implements ActionListener {
 	private Timer timer;
 	private ArrayList<Tower> list_of_towers_on_map;
 	private ArrayList<Critter> list_of_critters_on_map;
+	private Queue<Critter> critter_buffer;
+	private long time_of_last_deploy;
 	private ArrayList<Button> list_of_buttons;
 	private CritterWaveFactory critter_factory;
 	private int waveNumber = 1;
@@ -55,6 +58,7 @@ public class GameController implements ActionListener {
 		list_of_towers_on_map = new ArrayList<>();
 		list_of_buttons = new ArrayList<>();
 		critter_factory = CritterWaveFactory.getInstance();
+		critter_buffer = new LinkedList<>();
 		
 		//create Field with paint function defined in controller
 		setField(new Field() {
@@ -269,26 +273,29 @@ public class GameController implements ActionListener {
 	 */
 	private void startWave() {
 		
-		Queue<Critter> critters;
-		Critter current_critter;
-		
 		if (button_selector.isStartWave()) {
 			
-			if (list_of_critters_on_map.isEmpty()) {
-
-				critters = critter_factory.createWave(waveNumber);
+			if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty()) {
+				critter_buffer = critter_factory.createWave(waveNumber);
 				waveNumber++;
-				
-				while (!critters.isEmpty()) {
-					current_critter = critters.poll();
-					list_of_critters_on_map.add(current_critter);
-					field.getLayeredPane().add(current_critter.getComponent(), new Integer(1));
-				}
 			}
-				
-		}
-		button_selector.setStartWave(false);
 		
+			button_selector.setStartWave(false);
+		}
+	}
+	
+	private void deployCritters() {
+		
+		Critter current_critter = null;
+		
+		if (!critter_buffer.isEmpty()) {
+			if (System.currentTimeMillis() - time_of_last_deploy > Critter.DEPLOY_TIME) {
+				current_critter = critter_buffer.poll();
+				list_of_critters_on_map.add(current_critter);
+				field.getLayeredPane().add(current_critter.getComponent(), new Integer(1));
+				time_of_last_deploy = System.currentTimeMillis();
+			}
+		}
 	}
 	
 	private void moveCritters() {
@@ -314,7 +321,7 @@ public class GameController implements ActionListener {
 					list_of_critters_on_map.remove(critter);
 					break;
 				}
-				System.out.println(critter.getHealth());
+//				System.out.println(critter.getHealth());
 			}
 		}
 	}
@@ -337,9 +344,9 @@ public class GameController implements ActionListener {
 		int upgradeLevel = tower.getUpgradeLevel();
 		
 		g.drawString("Level: " + upgradeLevel, position.x, position.y + 30);
-		g.drawString("Power: " + tower.getPower(), position.x, position.y + 45);
-		g.drawString("Range: " + tower.getRange(), position.x, position.y + 60);
-		g.drawString("Rate of fire: " + tower.getRateOfFire(), position.x, position.y + 75);
+		g.drawString("Power: " + tower.actualPower(), position.x, position.y + 45);
+		g.drawString("Range: " + tower.actualRange(), position.x, position.y + 60);
+		g.drawString("Rate of fire: " + tower.actualRateOfFire(), position.x, position.y + 75);
 		if (upgradeLevel == 3) {
 			g.drawString("Upgrade cost: ---", position.x, position.y + 90);
 		}
@@ -360,6 +367,7 @@ public class GameController implements ActionListener {
 		sellTower();
 		upgradeTower();
 		startWave();
+		deployCritters();
 		moveCritters();
 		killCritter();
 		fireTowers();

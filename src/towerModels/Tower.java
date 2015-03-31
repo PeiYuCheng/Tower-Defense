@@ -239,7 +239,7 @@ public abstract class Tower extends Observable {
 	 * index pointing to the critter closest to the entrance.
 	 */
 	private void detectCrittersInRangeOfTower(ArrayList<Critter> all_critters) {
-		detectCritters(all_critters, this.x_position, this.y_position, this.range);
+		detectCritters(all_critters, this.x_position, this.y_position, actualRange());
 	}
 	
 	/**
@@ -355,7 +355,7 @@ public abstract class Tower extends Observable {
 		int amount_of_damage;
 
 		detectCritterTargets(all_critters_on_map);
-		amount_of_damage = power;
+		amount_of_damage = actualPower();
 		// TODO invoke the damage method of the critter
 		if (canFire() && this.getCurrentTargetCritter() != null) {
 			current_target_critter.damageCritter(amount_of_damage, pyro_damage, slow_damage);
@@ -372,7 +372,7 @@ public abstract class Tower extends Observable {
 	 */
 	protected boolean canFire() {
 		
-		long fire_time = (long)(1000*(1/(double)rate_of_fire));
+		long fire_time = (long)(1000*(1/(double)actualRateOfFire()));
 		
 		if (System.currentTimeMillis() - time_of_last_fire > fire_time) {
 			return true;
@@ -607,6 +607,18 @@ public abstract class Tower extends Observable {
 	
 	public JComponent getComponent() {
 		return tower_component;
+	}
+	
+	public int actualPower() {
+		return power*upgrade_level;
+	}
+	
+	public int actualRange() {
+		return range*upgrade_level;
+	}
+	
+	public int actualRateOfFire() {
+		return rate_of_fire*upgrade_level;
 	}
 	
 }

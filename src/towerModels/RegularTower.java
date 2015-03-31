@@ -11,7 +11,7 @@ public class RegularTower extends Tower {
 
 	public static final int COST = 50;
 	private static final int REFUND_VALUE = 30;
-	private static final int RANGE = 3;
+	private static final int RANGE = 1;
 	private static final int POWER = 5;
 	private static final int RATE_OF_FIRE = 1;
 	public static final Color TOWER_COLOR = Color.blue;
