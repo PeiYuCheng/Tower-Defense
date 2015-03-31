@@ -204,35 +204,96 @@ public abstract class Critter extends Observable {
 		ListIterator<Cell> iterator = pathToWalk.listIterator();
 
 		Cell currentCellOnPath = iterator.next();
-		if (iterator.hasNext() || pathToWalk.size() == 1) {
+		if (iterator.hasNext()) {
 			// Acquire the current path cell and the next one
 			// in order for the critter to move from one to the other
 			Cell nextCellOnPath = iterator.next();
-			int firstItemInList = 0;
+			if (iterator.hasNext()) {
+				int firstItemInList = 0;
 
-			int currentX = (int) (currentCellOnPath.getPixelPosition().getX() + currentCellOnPath.getCellSize().getWidth() / 2);
-			int nextX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
-			int currentY = (int) (currentCellOnPath.getPixelPosition().getY() + currentCellOnPath.getCellSize().getHeight() / 2);
-			int nextY = (int) (nextCellOnPath.getPixelPosition().getY() + nextCellOnPath.getCellSize().getHeight() / 2);			
-			
-			// Critter starts on the current cell
-			if (critterSpawned) {
-				pixel_position.setLocation(currentX, currentY);
-				critterSpawned = false;
-			}
+				int currentPixelPositionX = (int) (currentCellOnPath.getPixelPosition().getX() + currentCellOnPath.getCellSize().getWidth() / 2);
+				int nextPixelPostionX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
+				int currentPixelPositionY = (int) (currentCellOnPath.getPixelPosition().getY() + currentCellOnPath.getCellSize().getHeight() / 2);
+				int nextPixelPositionY = (int) (nextCellOnPath.getPixelPosition().getY() + nextCellOnPath.getCellSize().getHeight() / 2);			
 
-			if (currentX == nextX)
-				if (nextY - currentY < 0)
-					pixel_position.y -= movingSpeed;
-				else
-					pixel_position.y += movingSpeed;
-			else if (currentY == nextY)
-				pixel_position.x += movingSpeed;
-			
-			// Once the critter reaches the next cell
-			// the current cell is removed from the list
-			if (pixel_position.x == nextX && pixel_position.y == nextY) {
-				pathToWalk.remove(firstItemInList);
+				int currentCellPositionX = currentCellOnPath.getX();
+				int nextCellPositionX = nextCellOnPath.getX();
+				int currentCellPositionY = currentCellOnPath.getY();
+				int nextCellPositionY = nextCellOnPath.getY();
+
+				// Critter spawns on starting cell
+				if (critterSpawned) {
+					pixel_position.setLocation(currentPixelPositionX, currentPixelPositionY);
+					cell_position.setLocation(currentCellPositionX, currentCellPositionY);
+					critterSpawned = false;
+				}
+
+				// Critter movement during game loop
+				if (currentPixelPositionX == nextPixelPostionX) {
+					if (nextPixelPositionY - currentPixelPositionY < 0) {
+						// Move Up
+						pixel_position.y -= movingSpeed;
+					}
+					else {
+						//Move Down
+						pixel_position.y += movingSpeed;
+					}
+				}
+				else if (currentPixelPositionY == nextPixelPositionY) {
+					pixel_position.x += movingSpeed;
+				}
+
+				// Once the critter reaches the next cell
+				// the current cell is removed from the list
+				if (pixel_position.x == nextPixelPostionX && pixel_position.y == nextPixelPositionY) {
+					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
+					pathToWalk.remove(firstItemInList);
+					System.out.println(cell_position.toString());
+				}
+			} else {
+				/*
+				 * This is a copy of the top part but it prevents the
+				 * NoSuchElementException from occurring. It continues the iteration
+				 * until the exit cell is reached
+				 */
+				int firstItemInList = 0;
+
+				int currentPixelPositionX = (int) (currentCellOnPath.getPixelPosition().getX() + currentCellOnPath.getCellSize().getWidth() / 2);
+				int nextPixelPostionX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
+				int currentPixelPositionY = (int) (currentCellOnPath.getPixelPosition().getY() + currentCellOnPath.getCellSize().getHeight() / 2);
+				int nextPixelPositionY = (int) (nextCellOnPath.getPixelPosition().getY() + nextCellOnPath.getCellSize().getHeight() / 2);			
+
+				int nextCellPositionX = nextCellOnPath.getX();
+				int nextCellPositionY = nextCellOnPath.getY();
+
+				// Critter movement during game loop
+				if (currentPixelPositionX == nextPixelPostionX) {
+					if (nextPixelPositionY - currentPixelPositionY < 0) {
+						// Move Up
+						pixel_position.y -= movingSpeed;
+					}
+					else {
+						//Move Down
+						pixel_position.y += movingSpeed;
+					}
+				}
+				else if (currentPixelPositionY == nextPixelPositionY) {
+					pixel_position.x += movingSpeed;
+				}
+
+				// Once the critter reaches the next cell
+				// the current cell is removed from the list
+				if (pixel_position.x == nextPixelPostionX && pixel_position.y == nextPixelPositionY) {
+					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
+					pathToWalk.remove(firstItemInList);
+					System.out.println(cell_position.toString());
+				}
+
+				// Critter has reached last tile => attack player
+				if (hasReachedExit()) {
+					System.out.println("Critter has reached the end");
+					this.damagePlayer = true;
+				}
 			}
 		}
 		setChanged();
