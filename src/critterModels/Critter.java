@@ -84,13 +84,15 @@ public abstract class Critter extends Observable {
 	// //////////////////////
 
 	protected void drawHealthBar(Graphics g) {
-		// TODO Auto-generated method stub
+		
+		g.setColor(Color.white);
+		g.drawString("" + this.getHealth(), 15, 15);
 		
 	}
 
 	protected void drawCritter(Graphics g) {
 		
-		g.setColor(Color.pink);
+		g.setColor(Color.black);
 		g.fillRect(0, 0, size.width, size.height);
 		
 	}
@@ -188,14 +190,6 @@ public abstract class Critter extends Observable {
 	}
 
 	/**
-	 * Abstract method created to provide generic drawing of each type of
-	 * critter
-	 * 
-	 * @param g
-	 */
-	public abstract void draw(Graphics g);
-
-	/**
 	 * This method deals with the path finding algorithm to make sure that the
 	 * Critters make it from the beginning to the end. 
 	 */
@@ -248,7 +242,6 @@ public abstract class Critter extends Observable {
 				if (pixel_position.x == nextPixelPostionX && pixel_position.y == nextPixelPositionY) {
 					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
 					pathToWalk.remove(firstItemInList);
-					System.out.println(cell_position.toString());
 				}
 			} else {
 				/*
@@ -286,16 +279,15 @@ public abstract class Critter extends Observable {
 				if (pixel_position.x == nextPixelPostionX && pixel_position.y == nextPixelPositionY) {
 					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
 					pathToWalk.remove(firstItemInList);
-					System.out.println(cell_position.toString());
 				}
 
 				// Critter has reached last tile => attack player
 				if (hasReachedExit()) {
-					System.out.println("Critter has reached the end");
 					this.damagePlayer = true;
 				}
 			}
 		}
+		component.setBounds(pixel_position.x, pixel_position.y, size.width, size.height);
 		setChanged();
 		notifyObservers();
 	}

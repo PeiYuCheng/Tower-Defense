@@ -121,6 +121,7 @@ public class GameController implements ActionListener {
 	 * @param g
 	 */
 	private void drawGrid(Graphics g) {
+		field.getLayeredPane().paintAll(g);
 		field.getLayeredPane().repaint();
 	}
 	
@@ -134,6 +135,8 @@ public class GameController implements ActionListener {
 		for (int i = 0; i < side_menu.getComponents().length; i++) {
 			side_menu.getComponent(i).paint(g);
 		}
+		
+		printTowerStats(g, new Point(10,400));
 	}
 	
 	private void drawMainMenu(Graphics g) {
@@ -142,8 +145,6 @@ public class GameController implements ActionListener {
 		g.drawString("Play Game", 100, 40);
 		g.drawString("Options", 100, 70);
 		g.drawString("Quit Game", 100, 120);
-		
-		printTowerStats(g, new Point(10,400));
 		
 	}
 //		for (int i = 0; i < main_menu.getComponents().length; i++) {
@@ -294,6 +295,14 @@ public class GameController implements ActionListener {
 		
 	}
 	
+	private void moveCritters() {
+		if (!list_of_critters_on_map.isEmpty()) {
+			for (Critter critter : list_of_critters_on_map) {
+				critter.startWalking();
+			}
+		}
+	}
+	
 	private void printTowerStats(Graphics g, Point position) {
 		
 		g.setColor(Color.white);
@@ -334,6 +343,7 @@ public class GameController implements ActionListener {
 		buyTower();
 		sellTower();
 		upgradeTower();
+		moveCritters();
 		startWave();
 		fireTowers();
 		field.repaint();

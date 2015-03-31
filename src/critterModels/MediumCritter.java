@@ -40,10 +40,4 @@ public class MediumCritter extends Critter {
 		setColour(COLOUR);
 	}
 
-	@Override
-	public void draw(Graphics g) {
-		// TODO Auto-generated method stub
-		g.fillRect(getPosX(), getPosY(), SIZE.width, SIZE.height);
-		g.setColor(COLOUR);
-	}
 }
