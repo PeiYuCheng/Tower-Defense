@@ -154,8 +154,12 @@ public class GameController implements ActionListener {
 //	
 	private void damagePlayer() {
 		for (Critter critter : list_of_critters_on_map) {
-			if (critter.isDamagePlayer())
-				player.setLives(-critter.getDamagingPower());
+			if (critter.isDamagePlayer()) {
+				player.changeLives(-critter.getDamagingPower());
+				field.getLayeredPane().remove(critter.getComponent());
+				list_of_critters_on_map.remove(critter);
+				break;
+			}
 		}
 	}
 
@@ -291,7 +295,7 @@ public class GameController implements ActionListener {
 			}
 				
 		}
-		button_selector.setUpgradeTowerSelected(false);
+		button_selector.setStartWave(false);
 		
 	}
 	
@@ -345,6 +349,7 @@ public class GameController implements ActionListener {
 		upgradeTower();
 		moveCritters();
 		startWave();
+		damagePlayer();
 		fireTowers();
 		field.repaint();
 		side_menu.repaint();

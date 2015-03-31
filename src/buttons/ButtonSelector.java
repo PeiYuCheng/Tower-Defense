@@ -54,7 +54,7 @@ public class ButtonSelector {
 	}
 
 	public void setStartWave(boolean start_wave) {
-		this.start_wave = start_wave = true;
+		this.start_wave = start_wave;
 	}
 	
 	public boolean isStartWave() {

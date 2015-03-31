@@ -70,7 +70,6 @@ public abstract class Critter extends Observable {
 		component = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
-				setBorder(BorderFactory.createTitledBorder("Node"));
 				setBounds(pixel_position.x, pixel_position.y, size.width, size.height);
 				drawCritter(g);
 				drawHealthBar(g);
@@ -86,7 +85,7 @@ public abstract class Critter extends Observable {
 	protected void drawHealthBar(Graphics g) {
 		
 		g.setColor(Color.white);
-		g.drawString("" + this.getHealth(), 15, 15);
+		g.drawString("" + this.getHealth(), 0, 0);
 		
 	}
 
