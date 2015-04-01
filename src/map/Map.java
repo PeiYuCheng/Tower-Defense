@@ -55,15 +55,6 @@ public abstract class Map {
 		return Height;
 	}
 	
-	public void toggleCell(Cell cell){
-		if (cell instanceof SceneryCell) {
-			cell = new PathCell(cell.getX(), cell.getY());
-		}
-		else {
-			cell = new SceneryCell(cell.getX(), cell.getY());
-		}
-	}
-	
 	public boolean validate(){
 		boolean valid = true;
 		
@@ -150,7 +141,7 @@ public abstract class Map {
 		
 	}
 	
-	private int boundNumber(int number, int lowerBound, int upperBound) {
+	public static int boundNumber(int number, int lowerBound, int upperBound) {
 		if (number < lowerBound) {
 			return lowerBound;
 		}

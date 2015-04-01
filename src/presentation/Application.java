@@ -1,5 +1,7 @@
 package presentation;
 
+import java.awt.CardLayout;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,7 +25,10 @@ public class Application extends JFrame {
 	
 	
 	protected GameController controller = new GameController();
-	private JPanel container;
+	private static JPanel container;
+	private JPanel main_game;
+	private JPanel main_menu;
+	private CardLayout card_layout;
 	
 	public  Application(){
 		init();
@@ -34,14 +39,25 @@ public class Application extends JFrame {
 	 */
 	private void init(){
 		
-		// create a container for all the frames in the game
 		container = new JPanel();
-		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+		card_layout = controller.getCardLayout();
+		container.setLayout(card_layout);
 		add(container);
-		container.add(controller.getField());
-		container.add(controller.getSideMenu());
-//		container.add(controller.getMain_menu());
-		setSize(SCREEN_WIDTH,SCREEN_HEIGHT);	
+		
+		// create a container for all the frames in the main game JPanel
+		main_game = new JPanel();
+		main_game.setLayout(new BoxLayout(main_game, BoxLayout.X_AXIS));
+		container.add(main_game, GameController.CARD_MAIN_GAME);
+		main_game.add(controller.getField());
+		main_game.add(controller.getSideMenu());
+		
+		// create a container for all the frames in the main menu JPanel
+		main_menu = new JPanel();
+		main_menu.setLayout(new BoxLayout(main_menu, BoxLayout.X_AXIS));
+		container.add(main_menu, GameController.CARD_MAIN_MENU);
+		main_menu.add(controller.getMainMenu());
+		
+		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);	
 		setTitle(APP_NAME);
 		pack();
 		
@@ -49,5 +65,12 @@ public class Application extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
+		
+		card_layout.show(container, GameController.CARD_MAIN_MENU);
+		
+	}
+	
+	public static JPanel getCardContainer() {
+		return container;
 	}
 }

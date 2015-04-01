@@ -1,5 +1,6 @@
 package controllers;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -31,9 +32,11 @@ public class GameController implements ActionListener {
 	private Map map;
 	private ButtonSelector button_selector;
 	private CellSelector cell_selector;
-	private Field field;
-	private SideMenu side_menu;
-//	private MainMenu main_menu;
+	private Field game_field;
+	private SideMenu game_side_menu;
+	private Field custom_map_field;
+	private SideMenu custom_map_side_menu;
+	private MainMenu main_menu;
 	private Timer timer;
 	private ArrayList<Tower> list_of_towers_on_map;
 	private ArrayList<Critter> list_of_critters_on_map;
@@ -42,23 +45,25 @@ public class GameController implements ActionListener {
 	private ArrayList<Button> list_of_buttons;
 	private CritterWaveFactory critter_factory;
 	private int waveNumber = 1;
-	private static final int CUSTOM_MAP = 0;
-	private static final int EASY_MAP = 1;
-	private static final int HARD_MAP = 2;
+	private CardLayout card_layout;
+	private boolean gameStarted;
+	private int mapx;
+	private int mamapxpy;
+	
+	public static final int CUSTOM_MAP = 0;
+	public static final int EASY_MAP = 1;
+	public static final int HARD_MAP = 2;
+	
+	public static final String CARD_MAIN_MENU = "Main Menu";
+	public static final String CARD_MAIN_GAME = "Main Game";
 
 	
 	public GameController() {
 		
 		player = Player.getPlayerInstance();
-		//map = FixedMap.createGeneric();	
-		map = MapFactory.getUniqueInstance().createMap(HARD_MAP,0,0);
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
-		list_of_critters_on_map = new ArrayList<>();
-		list_of_towers_on_map = new ArrayList<>();
-		list_of_buttons = new ArrayList<>();
-		critter_factory = CritterWaveFactory.getInstance();
-		critter_buffer = new LinkedList<>();
+		setCardLayout(new CardLayout());
 		
 		//create Field with paint function defined in controller
 		setField(new Field() {
@@ -70,21 +75,14 @@ public class GameController implements ActionListener {
 			}
 		});
 		
-//		setMain_menu(new MainMenu() {
-//			@Override
-//			public void paintComponent(Graphics g) {
-//				super.paintComponent(g);
-//				doFieldDrawing(g);
-//		        Toolkit.getDefaultToolkit().sync();
-//			}
-//		});
-		
-		// populate field with cells
-		for (int i = 0; i < map.getMapHeight(); i++) {
-			for (int j = 0; j < map.getMapWidth(); j++) {
-				field.getLayeredPane().add(map.getComponent(i,j), new Integer(0));
+		setMainMenu(new MainMenu() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				doMainMenuDrawing(g);
+		        Toolkit.getDefaultToolkit().sync();
 			}
-		}
+		});
 		
 		setSideMenu(new SideMenu() {
 			@Override
@@ -95,17 +93,39 @@ public class GameController implements ActionListener {
 			}
 		});
 		
-		// Set up the buttons
-		side_menu.add(new BuyRegularTowerButton(10, 80, 30, 30));
-		side_menu.add(new BuySplashTowerButton(70, 80, 30, 30));
-		side_menu.add(new BuyRadialTowerButton(130, 80, 30, 30));
-		side_menu.add(new UpgradeButton(10, 200, 30, 30));
-		side_menu.add(new SellTowerButton(70, 200, 30, 30));
-		side_menu.add(new StartWaveButton(100, 20, 30, 30));
+		// Set up the side menu buttons
+		game_side_menu.add(new BuyRegularTowerButton(10, 80, 30, 30));
+		game_side_menu.add(new BuySplashTowerButton(70, 80, 30, 30));
+		game_side_menu.add(new BuyRadialTowerButton(130, 80, 30, 30));
+		game_side_menu.add(new UpgradeButton(10, 200, 30, 30));
+		game_side_menu.add(new SellTowerButton(70, 200, 30, 30));
+		game_side_menu.add(new StartWaveButton(100, 20, 30, 30));
+		
+		// Set up the main menu buttons
+		main_menu.add(new StartEasyGameButton(200, 200, 150, 50));
+		main_menu.add(new StartHardGameButton(200, 300, 150, 50));
+		main_menu.add(new StartCustomGameButton(200, 400, 150, 50));
 		
 		timer = new Timer(Application.TIMEOUT,this);
 		timer.start();
 		
+	}
+	
+	private void initiateGame(int mapChoice) {
+		gameStarted = true;
+		map = MapFactory.getUniqueInstance().createMap(mapChoice,15,15);
+		list_of_critters_on_map = new ArrayList<>();
+		list_of_towers_on_map = new ArrayList<>();
+		list_of_buttons = new ArrayList<>();
+		critter_factory = CritterWaveFactory.getInstance();
+		critter_buffer = new LinkedList<>();
+		
+		// populate field with cells
+		for (int i = 0; i < map.getMapHeight(); i++) {
+			for (int j = 0; j < map.getMapWidth(); j++) {
+				game_field.getLayeredPane().add(map.getComponent(i,j), new Integer(0));
+			}
+		}
 	}
 	
 	protected void doFieldDrawing(Graphics g) {
@@ -126,11 +146,11 @@ public class GameController implements ActionListener {
 	 */
 	private void drawGrid(Graphics g) {
 		
-		for (int i = 0; i < field.getLayeredPane().getComponents().length; i++) {
-			field.getLayeredPane().getComponent(i).paint(g);
+		for (int i = 0; i < game_field.getLayeredPane().getComponents().length; i++) {
+			game_field.getLayeredPane().getComponent(i).paint(g);
 		}
 		
-		field.getLayeredPane().repaint();
+		game_field.getLayeredPane().repaint();
 	}
 	
 	private void drawSideMenu(Graphics g) {
@@ -140,26 +160,20 @@ public class GameController implements ActionListener {
 		g.drawString("Money: " + player.getMoney(), 10, 40);
 		g.drawString("Towers: ", 10, 70);
 		
-		for (int i = 0; i < side_menu.getComponents().length; i++) {
-			side_menu.getComponent(i).paint(g);
+		for (int i = 0; i < game_side_menu.getComponents().length; i++) {
+			game_side_menu.getComponent(i).paint(g);
 		}
 		
 		printTowerStats(g, new Point(10,400));
 	}
 	
 	private void drawMainMenu(Graphics g) {
-		g.setColor(Color.white);
-		g.drawString("Tower Defense", 100, 20);
-		g.drawString("Play Game", 100, 40);
-		g.drawString("Options", 100, 70);
-		g.drawString("Quit Game", 100, 120);
+
+		for (int i = 0; i < main_menu.getComponents().length; i++) {
+			main_menu.getComponent(i).paint(g);
+		}
 		
 	}
-//		for (int i = 0; i < main_menu.getComponents().length; i++) {
-//			main_menu.getComponent(i).paint(g);
-//		}
-//	}
-//
 
 	private void fireTowers() {
 		
@@ -196,7 +210,7 @@ public class GameController implements ActionListener {
 			if (towersCell.cellAvailable()) {
 				list_of_towers_on_map.add(newTower);
 				newTower.placeTower(towersCell, true);
-				field.getLayeredPane().add(newTower.getComponent(), new Integer(1));
+				game_field.getLayeredPane().add(newTower.getComponent(), new Integer(1));
 				button_selector.deselectSelected();
 				player.changeMoney(-newTower.getCost());
 			}
@@ -226,7 +240,7 @@ public class GameController implements ActionListener {
 		
 		if (button_selector.isSellTowerSelected()) {
 				
-				field.getLayeredPane().remove(soldTower.getComponent());
+				game_field.getLayeredPane().remove(soldTower.getComponent());
 				list_of_towers_on_map.remove(soldTower);
 				cell_selector.getSelectedCell().setTowerInCell(null);
 				player.changeMoney(soldTower.getRefundValue());
@@ -293,8 +307,8 @@ public class GameController implements ActionListener {
 			if (System.currentTimeMillis() - time_of_last_deploy > Critter.DEPLOY_TIME) {
 				current_critter = critter_buffer.poll();
 				list_of_critters_on_map.add(current_critter);
-				field.getLayeredPane().add(current_critter.getCritterComponent(), new Integer(1));
-				field.getLayeredPane().add(current_critter.getHealthbarComponent(), new Integer(2));
+				game_field.getLayeredPane().add(current_critter.getCritterComponent(), new Integer(1));
+				game_field.getLayeredPane().add(current_critter.getHealthbarComponent(), new Integer(2));
 				time_of_last_deploy = System.currentTimeMillis();
 			}
 		}
@@ -308,20 +322,20 @@ public class GameController implements ActionListener {
 		}
 	}
 	
-private void killCritter() {
+	private void killCritter() {
 		if (!list_of_critters_on_map.isEmpty()) {
 			for (Critter critter : list_of_critters_on_map) {
 				if (critter.hasReachedExit()) {
 					player.changeLives(-critter.getDamagingPower());
-					field.getLayeredPane().remove(critter.getCritterComponent());
-					field.getLayeredPane().remove(critter.getHealthbarComponent());
+					game_field.getLayeredPane().remove(critter.getCritterComponent());
+					game_field.getLayeredPane().remove(critter.getHealthbarComponent());
 					list_of_critters_on_map.remove(critter);
 					break;
 				}
 				else if (critter.isDead()) {
 					player.changeMoney(critter.getReward());
-					field.getLayeredPane().remove(critter.getCritterComponent());
-					field.getLayeredPane().remove(critter.getHealthbarComponent());
+					game_field.getLayeredPane().remove(critter.getCritterComponent());
+					game_field.getLayeredPane().remove(critter.getHealthbarComponent());
 					list_of_critters_on_map.remove(critter);
 					break;
 				}
@@ -330,16 +344,22 @@ private void killCritter() {
 		}
 	}
 	
-private void printTowerStats(Graphics g, Point position) {
+	private void printTowerStats(Graphics g, Point position) {
+		
+		Tower tower;
 		
 		g.setColor(Color.white);
 		g.drawString("Tower stats:", position.x, position.y + 15);
 		
-		if (cell_selector.getSelectedCell() == null) {
+		if (button_selector.getSelectedButton() != null) {
+			tower = button_selector.getSelectedButton().getNewTower();
+		}
+		else if (cell_selector.getSelectedCell() == null) {
 			return;
 		}
-		
-		Tower tower = cell_selector.getSelectedCell().getTowerInCell();
+		else {
+			tower = cell_selector.getSelectedCell().getTowerInCell();
+		}
 		
 		if (tower == null) {
 			return;
@@ -363,26 +383,41 @@ private void printTowerStats(Graphics g, Point position) {
 //		g.drawString("Has slow damage: " + tower.hasSlowDamage());
 //		g.drawString("Is active: " + tower.isActive());
 	}
+	
+	private void startGame() {
+		if (!gameStarted) {
+			if (button_selector.isStartGame()) {
+				initiateGame(button_selector.getMapType());
+				button_selector.setStartGame(false);
+				card_layout.show(Application.getCardContainer(), CARD_MAIN_GAME);
+			}
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
-		// Tower logic
-		buyTower();
-		sellTower();
-		upgradeTower();
-		fireTowers();
-
-		// Critter logic
-		startWave();
-		deployCritters();
-		moveCritters();
-		startWave();
-		killCritter();
+		startGame();
 		
-		// Repainting
-		field.repaint();
-		side_menu.repaint();
+		if (gameStarted) {
+			// Tower logic
+			buyTower();
+			sellTower();
+			upgradeTower();
+			fireTowers();
+	
+			// Critter logic
+			startWave();
+			deployCritters();
+			moveCritters();
+			startWave();
+			killCritter();
+		}
+		
+			// Repainting
+			game_field.repaint();
+			game_side_menu.repaint();
+			main_menu.repaint();
 		
 	}
 
@@ -392,32 +427,35 @@ private void printTowerStats(Graphics g, Point position) {
 	 */
 	
 	public Field getField() {
-		return field;
+		return game_field;
 	}
 
 	public void setField(Field field) {
-		this.field = field;
+		this.game_field = field;
 	}
 
 	public SideMenu getSideMenu() {
-		return side_menu;
+		return game_side_menu;
 	}
 
 	public void setSideMenu(SideMenu side_menu) {
-		this.side_menu = side_menu;
+		this.game_side_menu = side_menu;
 	}
-	
-	
 
-//	public MainMenu getMain_menu() {
-//		return main_menu;
-//	}
-//
-//	public void setMain_menu(MainMenu main_menu) {
-//		this.main_menu = main_menu;
-//	}
+	public MainMenu getMainMenu() {
+		return main_menu;
+	}
 
+	public void setMainMenu(MainMenu main_menu) {
+		this.main_menu = main_menu;
+	}
 
+	public CardLayout getCardLayout() {
+		return card_layout;
+	}
 
+	public void setCardLayout(CardLayout card_layout) {
+		this.card_layout = card_layout;
+	}
 	
 }

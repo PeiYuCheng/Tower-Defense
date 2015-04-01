@@ -10,6 +10,8 @@ public class ButtonSelector {
 	private boolean sellTowerSelected;
 	private boolean upgradeTowerSelected;
 	private boolean start_wave;
+	private boolean start_game;
+	private int map_type;
 	
 	private ButtonSelector() {
 	}
@@ -59,6 +61,22 @@ public class ButtonSelector {
 	
 	public boolean isStartWave() {
 		return start_wave;
+	}
+
+	public int getMapType() {
+		return map_type;
+	}
+
+	public void setMapType(int map_type) {
+		this.map_type = map_type;
+	}
+
+	public boolean isStartGame() {
+		return start_game;
+	}
+
+	public void setStartGame(boolean start_game) {
+		this.start_game = start_game;
 	}
 	
 }

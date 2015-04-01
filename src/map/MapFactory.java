@@ -15,8 +15,8 @@ public class MapFactory {
 	
 	public Map createMap(int flag, int width, int height) {
 		mapType = flag;
-		if (mapType == 0 && width<15 && height <15){
-			return new CustomMap(width,height);
+		if (mapType == 0){
+			return new CustomMap(Map.boundNumber(width, 0, 15), Map.boundNumber(height, 0, 15));
 		}
 		else if (mapType == 1){
 			return new EasyMap(15,15);

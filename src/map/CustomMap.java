@@ -15,6 +15,14 @@ public class CustomMap extends Map{
 		createGeneric();
 	}
 	
+	public void toggleCell(Cell cell) {
+		if (cell instanceof SceneryCell) {
+			Grid[cell.getX()][cell.getY()] = new PathCell(cell.getX(), cell.getY());
+		}
+		else {
+			Grid[cell.getX()][cell.getY()] = new SceneryCell(cell.getX(), cell.getY());
+		}
+	}
 	
 	public void createGeneric() {
 
