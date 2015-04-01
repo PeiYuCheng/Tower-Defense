@@ -129,37 +129,6 @@ public abstract class Critter extends Observable {
 	}
 
 	/**
-	 * This method rewards player for killing a critter
-	 * 
-	 * @param p
-	 *            which is of the Player Class
-	 */
-
-	// TODO: Implement later in game controller
-	// public void reward(Player p) {
-	// if (isDead())
-	// p.cash += reward;
-	// }
-
-	/**
-	 * This method indicates that the critter is hit.
-	 * 
-	 * @return <b>true</b> if the critter is hit reduces the critter health
-	 *         appropriately based on the tower's power.
-	 */
-	// public boolean isHit() {
-	// // TODO: check if tower hit critter then reduce health appropriately and
-	// // add animation to hit
-	// if (Tower.ATTACK) {
-	// health -= Tower.DAMAGE;
-	// setChanged();
-	// notifyObservers();
-	// return true;
-	// } else
-	// return false;
-	// }
-
-	/**
 	 * This method checks if the critter has reached the exit and then reduces
 	 * the player's health appropriately.
 	 * 
@@ -200,6 +169,10 @@ public abstract class Critter extends Observable {
 		notifyObservers();
 	}
 
+	/**
+	 * Indicates whether the <b>Critter</b> has made it to the exit
+	 * @return <b>true</b> if reached exit cell else <b>false</b>
+	 */
 	public boolean hasReachedExit() {
 		if (pathToWalk.size() == 1)
 			return true;
@@ -329,7 +302,6 @@ public abstract class Critter extends Observable {
 					pathToWalk.remove(firstItemInList);
 					System.out.println(cell_position.toString());
 				}
-
 			}
 		}
 		critter_component.setBounds(pixel_position.x, pixel_position.y, size.width, size.height);
