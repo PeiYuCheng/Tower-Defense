@@ -6,13 +6,13 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import towerModels.Tower;
 
-public abstract class Button extends JComponent {
+public abstract class Button extends JComponent  {
 
 	protected static final Color BUTTON_COLOR = Color.black;
 	protected int button_spacing;
@@ -105,7 +105,7 @@ public abstract class Button extends JComponent {
 		hovered = false;
 	}
 
-	private class MouseMaster extends MouseAdapter {
+	private class MouseMaster extends MouseAdapter implements Serializable{
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {

@@ -2,9 +2,7 @@ package critterModels;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-
-import map.EasyMap;
+import java.io.Serializable;
 
 /**
  * <h3>
@@ -22,13 +20,13 @@ import map.EasyMap;
  * @version 1.0
  */
 
-public class RegularCritter extends Critter {
+public class RegularCritter extends Critter implements Serializable {
 
 	// final constants
 	private static final int REWARD = 10;
 	private static final int MAX_HEALTH = 100;
 	private static final int DAMAGING_POWER = 1;
-	private static final int MOVING_SPEED = 1;
+	private static final int MOVING_SPEED = 3;
 	private static final Dimension SIZE = new Dimension(5, 5);
 	private static final Color COLOUR = Color.BLUE;
 

@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -22,7 +23,7 @@ import critterModels.RegularCritter;
  * @author Justin Asfour
  * @version 1.0
  */
-public class CritterWaveFactory {
+public class CritterWaveFactory implements Serializable{
 
 	private static CritterWaveFactory critter_factory;
 	

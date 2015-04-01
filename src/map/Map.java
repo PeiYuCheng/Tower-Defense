@@ -1,10 +1,11 @@
 package map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
-public abstract class Map {
+public abstract class Map implements Serializable{
 	
 	protected int Width;
 	protected int Height;

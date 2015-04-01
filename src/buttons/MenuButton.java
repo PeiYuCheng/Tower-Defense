@@ -4,12 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
 
-public class UpgradeButton extends ClickButton implements Serializable {
+public class MenuButton extends ClickButton implements Serializable {
 
-	public UpgradeButton(int posX, int posY, int width, int height) {
+	public MenuButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);
+		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
 	public void drawButton(Graphics g) {
 		
@@ -17,16 +18,12 @@ public class UpgradeButton extends ClickButton implements Serializable {
 		g.fillRect(position.x, position.y, size.width, size.height);
 		g.setColor(Color.white);
 		g.drawRect(position.x, position.y, size.width, size.height);
-		g.drawString("Upgrade", position.x, position.y + 45);
-//		g.drawString("$" + AreaOfEffectTower.COST, position.x, position.y + 60);
-		
-	}
-
-	@Override
-	protected void OnRelease() {
-		button_selector.setUpgradeTowerSelected(true);
-		setSelected(false);
+		g.drawString("Start Game", position.x, position.y);
 	}
 	
-
+	@Override
+	protected void OnRelease() {
+//		button_selector.setStart_game(true);
+		setSelected(false);
+	}
 }

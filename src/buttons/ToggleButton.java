@@ -1,9 +1,10 @@
 package buttons;
 
-import domain.TowerFactory;
-import towerModels.Tower;
+import java.io.Serializable;
 
-public class ToggleButton extends Button {
+import domain.TowerFactory;
+
+public class ToggleButton extends Button implements Serializable {
 
 	private ButtonSelector button_selector;
 	protected TowerFactory tower_factory;

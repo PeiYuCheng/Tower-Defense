@@ -1,10 +1,9 @@
 package map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import javax.swing.JComponent;
-
-public class CustomMap extends Map{
+public class CustomMap extends Map implements Serializable{
 
 	public CustomMap(int w, int h){
 		Width = w;

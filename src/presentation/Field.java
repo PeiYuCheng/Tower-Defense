@@ -3,14 +3,13 @@ package presentation;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
+import java.io.Serializable;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 
-public class Field extends JPanel {
+public class Field extends JPanel implements Serializable {
 	
 	private JLayeredPane lp;
 	

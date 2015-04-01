@@ -2,9 +2,7 @@ package critterModels;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-
-import map.EasyMap;
+import java.io.Serializable;
 
 /**
  * <h3>
@@ -22,7 +20,7 @@ import map.EasyMap;
  * @version 1.0
  */
 
-public class BossCritter extends Critter {
+public class BossCritter extends Critter implements Serializable {
 
 	private static final int REWARD = 100;
 	private static final int MAX_HEALTH = 800;

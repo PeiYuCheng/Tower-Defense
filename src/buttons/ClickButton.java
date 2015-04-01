@@ -1,6 +1,8 @@
 package buttons;
 
-public class ClickButton extends Button {
+import java.io.Serializable;
+
+public class ClickButton extends Button implements Serializable {
 
 	public ClickButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);

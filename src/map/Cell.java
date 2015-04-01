@@ -6,18 +6,13 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Observable;
+import java.io.Serializable;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import towerModels.Tower;
 
-import com.sun.javafx.scene.control.SelectedCellsMap;
-
-import map.CellInterface;
-
-public abstract class Cell implements CellInterface{
+public abstract class Cell implements CellInterface, Serializable{
 
 	protected static final int CELL_HEIGHT = 40;
 	protected static final int CELL_WIDTH = 40;

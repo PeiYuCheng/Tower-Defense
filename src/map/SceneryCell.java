@@ -1,8 +1,9 @@
 package map;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class SceneryCell extends Cell{
+public class SceneryCell extends Cell implements Serializable{
 
 	private static final Color SCENERY_CELL_COLOR = new Color(48,173,35);
 	private static final boolean SELECTABLE = true;

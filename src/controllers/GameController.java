@@ -7,27 +7,41 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javafx.scene.control.Cell;
-
-import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
-import buttons.*;
-import map.*;
+import map.CellSelector;
+import map.Map;
+import map.MapFactory;
+import presentation.Application;
+import presentation.Field;
+import presentation.SideMenu;
+import towerModels.Tower;
+import buttons.Button;
+import buttons.ButtonSelector;
+import buttons.BuyRadialTowerButton;
+import buttons.BuyRegularTowerButton;
+import buttons.BuySplashTowerButton;
+import buttons.SellTowerButton;
+import buttons.StartWaveButton;
+import buttons.UpgradeButton;
 import critterModels.Critter;
 import domain.CritterWaveFactory;
 import domain.Player;
-import presentation.*;
-import towerModels.*;
 
-public class GameController implements ActionListener {
+public class GameController implements ActionListener, Serializable{
 
+	private File savedGame;
 	private Player player;
 	private Map map;
 	private ButtonSelector button_selector;
@@ -57,24 +71,22 @@ public class GameController implements ActionListener {
 	public static final String CARD_MAIN_MENU = "Main Menu";
 	public static final String CARD_MAIN_GAME = "Main Game";
 
-	
+
 	public GameController() {
-		
+
 		player = Player.getPlayerInstance();
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
-		setCardLayout(new CardLayout());
-		
 		//create Field with paint function defined in controller
 		setField(new Field() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				doFieldDrawing(g);
-		        Toolkit.getDefaultToolkit().sync();
+				Toolkit.getDefaultToolkit().sync();
 			}
 		});
-		
+
 		setMainMenu(new MainMenu() {
 			@Override
 			public void paintComponent(Graphics g) {
@@ -83,13 +95,13 @@ public class GameController implements ActionListener {
 		        Toolkit.getDefaultToolkit().sync();
 			}
 		});
-		
+
 		setSideMenu(new SideMenu() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				doMenuDrawing(g);
-		        Toolkit.getDefaultToolkit().sync();
+				Toolkit.getDefaultToolkit().sync();
 			}
 		});
 		
@@ -108,7 +120,7 @@ public class GameController implements ActionListener {
 		
 		timer = new Timer(Application.TIMEOUT,this);
 		timer.start();
-		
+
 	}
 	
 	private void initiateGame(int mapChoice) {
@@ -119,6 +131,7 @@ public class GameController implements ActionListener {
 		list_of_buttons = new ArrayList<>();
 		critter_factory = CritterWaveFactory.getInstance();
 		critter_buffer = new LinkedList<>();
+		savedGame = new File("src/savedGames/game.txt");
 		
 		// populate field with cells
 		for (int i = 0; i < map.getMapHeight(); i++) {
@@ -127,34 +140,34 @@ public class GameController implements ActionListener {
 			}
 		}
 	}
-	
+
 	protected void doFieldDrawing(Graphics g) {
 		drawGrid(g);
 	}
-	
+
 	protected void doMenuDrawing(Graphics g) {
 		drawSideMenu(g);
 	}
-	
+
 	protected void doMainMenuDrawing(Graphics g) {
 		drawMainMenu(g);
 	}
-	
+
 	/**
 	 * Draws all the cells in the grid
 	 * @param g
 	 */
 	private void drawGrid(Graphics g) {
-		
+
 		for (int i = 0; i < game_field.getLayeredPane().getComponents().length; i++) {
 			game_field.getLayeredPane().getComponent(i).paint(g);
 		}
 		
 		game_field.getLayeredPane().repaint();
 	}
-	
+
 	private void drawSideMenu(Graphics g) {
-		
+
 		g.setColor(Color.white);
 		g.drawString("Lives: " + player.getLives(), 10, 20);
 		g.drawString("Money: " + player.getMoney(), 10, 40);
@@ -162,11 +175,12 @@ public class GameController implements ActionListener {
 		
 		for (int i = 0; i < game_side_menu.getComponents().length; i++) {
 			game_side_menu.getComponent(i).paint(g);
+			
 		}
-		
+
 		printTowerStats(g, new Point(10,400));
 	}
-	
+
 	private void drawMainMenu(Graphics g) {
 
 		for (int i = 0; i < main_menu.getComponents().length; i++) {
@@ -175,21 +189,22 @@ public class GameController implements ActionListener {
 		
 	}
 
+
 	private void fireTowers() {
-		
+
 		for (Tower tower : list_of_towers_on_map) {
 			tower.setAllCrittersOnMap(list_of_critters_on_map);
 			tower.fire();
 		}
-		
+
 	}
-	
-	
+
+
 	private void buyTower() {
-		
+
 		Button button = button_selector.getSelectedButton();
 		Tower newTower;
-		
+
 		// check selected button
 		if (button != null) {
 			newTower = button.getNewTower();
@@ -197,16 +212,16 @@ public class GameController implements ActionListener {
 		else {
 			return;
 		}
-		
+
 		// check player money
 		if (player.getMoney() < newTower.getCost()) {
 			return;
 		}
-		
+
 		map.Cell towersCell = cell_selector.getSelectedCell();
-		
+
 		if (towersCell != null) {
-			
+
 			if (towersCell.cellAvailable()) {
 				list_of_towers_on_map.add(newTower);
 				newTower.placeTower(towersCell, true);
@@ -214,30 +229,30 @@ public class GameController implements ActionListener {
 				button_selector.deselectSelected();
 				player.changeMoney(-newTower.getCost());
 			}
-			
+
 			cell_selector.deselectSelectedCell();
-			
+
 		}
-		
+
 	}
-	
+
 	private void sellTower() {
-		
+
 		map.Cell towersCell = cell_selector.getSelectedCell();
 		Tower soldTower;
-		
+
 		if (towersCell == null) {
 			button_selector.setSellTowerSelected(false);
 			return;
 		}
-		
+
 		soldTower = towersCell.getTowerInCell();
-		
+
 		if (soldTower == null) {
 			button_selector.setSellTowerSelected(false);
 			return;
 		}
-		
+
 		if (button_selector.isSellTowerSelected()) {
 				
 				game_field.getLayeredPane().remove(soldTower.getComponent());
@@ -249,60 +264,60 @@ public class GameController implements ActionListener {
 				button_selector.setSellTowerSelected(false);
 				
 		}
-		
+
 	}
-	
+
 	private void upgradeTower() {
-		
+
 		map.Cell towersCell = cell_selector.getSelectedCell();
 		Tower upgradeTower;
-		
+
 		if ((towersCell == null)) {
 			button_selector.setUpgradeTowerSelected(false);
 			return;
 		}
-		
+
 		upgradeTower = towersCell.getTowerInCell();
-		
+
 		if (upgradeTower == null) {
 			button_selector.setUpgradeTowerSelected(false);
 			return;
 		}
-		
+
 		// check player money
 		if (player.getMoney() < upgradeTower.getUpgradeCost()) {
 			button_selector.setUpgradeTowerSelected(false);
 			return;
 		}
-		
+
 		if (button_selector.isUpgradeTowerSelected()) {
-			
+
 			if (upgradeTower.upgradeTower()) {
 				player.changeMoney(-upgradeTower.getUpgradeCost());
 			}
-				button_selector.setUpgradeTowerSelected(false);
-				
+			button_selector.setUpgradeTowerSelected(false);
+
 		}
-		
+
 	}
-	
+
 	private void startWave() {
-		
+
 		if (button_selector.isStartWave()) {
-			
+
 			if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty()) {
 				critter_buffer = critter_factory.createWave(waveNumber, map);
 				waveNumber++;
 			}
-		
+
 			button_selector.setStartWave(false);
 		}
 	}
-	
+
 	private void deployCritters() {
-		
+
 		Critter current_critter = null;
-		
+
 		if (!critter_buffer.isEmpty()) {
 			if (System.currentTimeMillis() - time_of_last_deploy > Critter.DEPLOY_TIME) {
 				current_critter = critter_buffer.poll();
@@ -313,7 +328,7 @@ public class GameController implements ActionListener {
 			}
 		}
 	}
-	
+
 	private void moveCritters() {
 		if (!list_of_critters_on_map.isEmpty()) {
 			for (Critter critter : list_of_critters_on_map) {
@@ -321,7 +336,7 @@ public class GameController implements ActionListener {
 			}
 		}
 	}
-	
+
 	private void killCritter() {
 		if (!list_of_critters_on_map.isEmpty()) {
 			for (Critter critter : list_of_critters_on_map) {
@@ -339,7 +354,6 @@ public class GameController implements ActionListener {
 					list_of_critters_on_map.remove(critter);
 					break;
 				}
-//				System.out.println(critter.getHealth());
 			}
 		}
 	}
@@ -364,9 +378,9 @@ public class GameController implements ActionListener {
 		if (tower == null) {
 			return;
 		}
-		
+
 		int upgradeLevel = tower.getUpgradeLevel();
-		
+
 		g.drawString("Level: " + upgradeLevel, position.x, position.y + 30);
 		g.drawString("Power: " + tower.actualPower(), position.x, position.y + 45);
 		g.drawString("Range: " + tower.actualRange(), position.x, position.y + 60);
@@ -379,9 +393,66 @@ public class GameController implements ActionListener {
 		}
 		g.drawString("Sell value: " + tower.getRefundValue(), position.x, position.y + 105);
 		g.drawString("Attack mode: " + tower.getAttackMode().toString(), position.x, position.y + 120);
-//		g.drawString("Has pyro damage: " + tower.hasPyroDamage());
-//		g.drawString("Has slow damage: " + tower.hasSlowDamage());
-//		g.drawString("Is active: " + tower.isActive());
+		//		g.drawString("Has pyro damage: " + tower.hasPyroDamage());
+		//		g.drawString("Has slow damage: " + tower.hasSlowDamage());
+		//		g.drawString("Is active: " + tower.isActive());
+	}
+	
+	public void saveGame() {
+		try {
+			FileOutputStream fileStream = new FileOutputStream(savedGame);
+			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
+			
+	        objectStream.writeObject(player);
+	        objectStream.writeObject(map);
+	        objectStream.writeObject(button_selector);
+	        objectStream.writeObject(field);
+	        objectStream.writeObject(side_menu);
+	        objectStream.writeObject(timer);
+	        objectStream.writeObject(list_of_towers_on_map);
+	        objectStream.writeObject(list_of_critters_on_map);
+	        objectStream.writeObject(critter_buffer);
+	        objectStream.writeObject(new Long(time_of_last_deploy));
+	        objectStream.writeObject(list_of_buttons);
+	        objectStream.writeObject(critter_factory);
+	        objectStream.writeObject(new Integer(waveNumber));
+	        
+	        objectStream.close();
+	        fileStream.close();
+	        
+	        JOptionPane.showConfirmDialog(field, "Saved game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+		} catch(Exception e) {
+			JOptionPane.showConfirmDialog(field, e.toString() + "\nFailed to save game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+		}
+	}
+	
+	public void loadGame() {
+		try {
+			FileInputStream fileStream = new FileInputStream(savedGame);
+			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+			
+			player = (Player) objectStream.readObject();
+			map = (Map) objectStream.readObject();
+			button_selector = (ButtonSelector) objectStream.readObject();
+			cell_selector = (CellSelector) objectStream.readObject();
+			field = (Field) objectStream.readObject();
+			side_menu = (SideMenu) objectStream.readObject();
+			timer = (Timer) objectStream.readObject();
+			list_of_towers_on_map = (ArrayList<Tower>) objectStream.readObject();
+			list_of_critters_on_map = (ArrayList<Critter>) objectStream.readObject();
+			critter_buffer = (Queue<Critter>) objectStream.readObject();
+			time_of_last_deploy = (Long) objectStream.readObject();
+			list_of_buttons = (ArrayList<Button>) objectStream.readObject();
+			critter_factory = (CritterWaveFactory) objectStream.readObject();
+			waveNumber = (Integer) objectStream.readObject();
+			
+			fileStream.close();
+			objectStream.close();
+			
+			JOptionPane.showConfirmDialog(field, "Loaded game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+		} catch(Exception e) {
+			JOptionPane.showConfirmDialog(field, e.toString() + "\nFailed to load game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+		}
 	}
 	
 	private void startGame() {
@@ -418,14 +489,14 @@ public class GameController implements ActionListener {
 			game_field.repaint();
 			game_side_menu.repaint();
 			main_menu.repaint();
-		
+
 	}
 
-	
+
 	/*
 	 * Getters and Setters
 	 */
-	
+
 	public Field getField() {
 		return game_field;
 	}
@@ -457,5 +528,5 @@ public class GameController implements ActionListener {
 	public void setCardLayout(CardLayout card_layout) {
 		this.card_layout = card_layout;
 	}
-	
+
 }

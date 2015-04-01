@@ -1,10 +1,11 @@
 package domain;
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
 
 import towerModels.Tower;
 
-public class TowerObserver implements Observer {
+public class TowerObserver implements Observer, Serializable {
 
 	private Tower observed_tower;
 	

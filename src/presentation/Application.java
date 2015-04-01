@@ -1,6 +1,7 @@
 package presentation;
 
 import java.awt.CardLayout;
+import java.io.Serializable;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -14,7 +15,7 @@ import controllers.GameController;
  * @author Jeffrey Kirman
  * This class is the container class for the project
  */
-public class Application extends JFrame {
+public class Application extends JFrame implements Serializable {
 
 	// constants
 	public static final int SCREEN_WIDTH = 800;

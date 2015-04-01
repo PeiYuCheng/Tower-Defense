@@ -1,12 +1,15 @@
 package critterModels;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Queue;
 
-import map.*;
+import map.Cell;
+import map.Map;
+import map.MapFactory;
 
 import org.junit.Test;
 

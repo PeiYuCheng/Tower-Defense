@@ -1,6 +1,9 @@
 package map;
 
-public class CellSelector {
+import java.io.Serializable;
+
+
+public class CellSelector implements Serializable{
 
 	private static CellSelector cell_controller;
 	private Cell selectedCell;

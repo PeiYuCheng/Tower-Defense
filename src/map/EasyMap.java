@@ -1,10 +1,9 @@
 package map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import javax.swing.JComponent;
-
-public class EasyMap extends Map{
+public class EasyMap extends Map implements Serializable{
 	public EasyMap(int w, int h){
 		Width = w;
 		Height = h;
