@@ -56,22 +56,27 @@ public class HardMap extends Map{
 				this.addGridCell(aCell);
 				this.addPathCell(aCell);
 				
+
 				aCell = new PathCell(4,8);
 				this.addGridCell(aCell);
 				this.addPathCell(aCell);
 				
+
 				aCell = new PathCell(5,8);
 				this.addGridCell(aCell);
 				this.addPathCell(aCell);
 				
+
 				aCell = new PathCell(6,8);
 				this.addGridCell(aCell);
 				this.addPathCell(aCell);
 				
+
 				aCell = new PathCell(7,8);
 				this.addGridCell(aCell);
 				this.addPathCell(aCell);
 				
+
 				aCell = new PathCell(7,7);
 				this.addGridCell(aCell);
 				this.addPathCell(aCell);

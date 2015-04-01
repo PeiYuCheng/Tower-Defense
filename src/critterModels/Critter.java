@@ -105,14 +105,13 @@ public abstract class Critter extends Observable {
 		g.setColor(Color.black);
 		g.drawRect(0, 0, HEALTH_BAR_WIDTH*health/max_health, HEALTH_BAR_HEIGHT);
 		
-		
 	}
 
 	protected void drawCritter(Graphics g) {
-		
+
 		g.setColor(Color.black);
 		g.fillRect(0, 0, size.width, size.height);
-		
+
 	}
 
 	/**
@@ -216,15 +215,16 @@ public abstract class Critter extends Observable {
 		ListIterator<Cell> iterator = pathToWalk.listIterator();
 
 		Cell currentCellOnPath = iterator.next();
+		int firstItemInList = 0;
+
 		if (iterator.hasNext()) {
 			// Acquire the current path cell and the next one
 			// in order for the critter to move from one to the other
 			Cell nextCellOnPath = iterator.next();
 			if (iterator.hasNext()) {
-				int firstItemInList = 0;
 
 				int currentPixelPositionX = (int) (currentCellOnPath.getPixelPosition().getX() + currentCellOnPath.getCellSize().getWidth() / 2);
-				int nextPixelPostionX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
+				int nextPixelPositionX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
 				int currentPixelPositionY = (int) (currentCellOnPath.getPixelPosition().getY() + currentCellOnPath.getCellSize().getHeight() / 2);
 				int nextPixelPositionY = (int) (nextCellOnPath.getPixelPosition().getY() + nextCellOnPath.getCellSize().getHeight() / 2);			
 
@@ -241,25 +241,41 @@ public abstract class Critter extends Observable {
 				}
 
 				// Critter movement during game loop
-				if (currentPixelPositionX == nextPixelPostionX) {
+				if (currentPixelPositionX == nextPixelPositionX) {
 					if (nextPixelPositionY - currentPixelPositionY < 0) {
 						// Move Up
 						pixel_position.y -= movingSpeed;
+						if (pixel_position.y - nextPixelPositionY < 0)
+							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
 					}
 					else {
 						//Move Down
 						pixel_position.y += movingSpeed;
-					}
+						if (pixel_position.y - nextPixelPositionY > 0)
+							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
+					}	
 				}
 				else if (currentPixelPositionY == nextPixelPositionY) {
-					pixel_position.x += movingSpeed;
+					if (nextPixelPositionX - currentPixelPositionX > 0) {
+						// Move Right
+						pixel_position.x += movingSpeed;
+						if (pixel_position.x - nextPixelPositionX  > 0)
+							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
+					}
+					else {
+						// Move Left
+						pixel_position.x -= movingSpeed;
+						if (pixel_position.x - nextPixelPositionX  < 0)
+							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
+					}
 				}
 
 				// Once the critter reaches the next cell
 				// the current cell is removed from the list
-				if (pixel_position.x == nextPixelPostionX && pixel_position.y == nextPixelPositionY) {
+				if (pixel_position.x == nextPixelPositionX && pixel_position.y == nextPixelPositionY) {
 					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
 					pathToWalk.remove(firstItemInList);
+					System.out.println(cell_position.toString());
 				}
 			} else {
 				/*
@@ -267,10 +283,9 @@ public abstract class Critter extends Observable {
 				 * NoSuchElementException from occurring. It continues the iteration
 				 * until the exit cell is reached
 				 */
-				int firstItemInList = 0;
 
 				int currentPixelPositionX = (int) (currentCellOnPath.getPixelPosition().getX() + currentCellOnPath.getCellSize().getWidth() / 2);
-				int nextPixelPostionX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
+				int nextPixelPositionX = (int) (nextCellOnPath.getPixelPosition().getX() + nextCellOnPath.getCellSize().getWidth() / 2);
 				int currentPixelPositionY = (int) (currentCellOnPath.getPixelPosition().getY() + currentCellOnPath.getCellSize().getHeight() / 2);
 				int nextPixelPositionY = (int) (nextCellOnPath.getPixelPosition().getY() + nextCellOnPath.getCellSize().getHeight() / 2);			
 
@@ -278,25 +293,41 @@ public abstract class Critter extends Observable {
 				int nextCellPositionY = nextCellOnPath.getY();
 
 				// Critter movement during game loop
-				if (currentPixelPositionX == nextPixelPostionX) {
+				if (currentPixelPositionX == nextPixelPositionX) {
 					if (nextPixelPositionY - currentPixelPositionY < 0) {
 						// Move Up
 						pixel_position.y -= movingSpeed;
+						if (pixel_position.y - nextPixelPositionY < 0)
+							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
 					}
 					else {
 						//Move Down
 						pixel_position.y += movingSpeed;
-					}
+						if (pixel_position.y - nextPixelPositionY > 0)
+							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
+					}	
 				}
 				else if (currentPixelPositionY == nextPixelPositionY) {
-					pixel_position.x += movingSpeed;
+					if (nextPixelPositionX - currentPixelPositionX < 0) {
+						// Move Right
+						pixel_position.x += movingSpeed;
+						if (pixel_position.x - nextPixelPositionX  > 0)
+							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
+					}
+					else {
+						// Move Left
+						pixel_position.x -= movingSpeed;
+						if (pixel_position.x - nextPixelPositionX  < 0)
+							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
+					}
 				}
 
 				// Once the critter reaches the next cell
 				// the current cell is removed from the list
-				if (pixel_position.x == nextPixelPostionX && pixel_position.y == nextPixelPositionY) {
+				if (pixel_position.x == nextPixelPositionX && pixel_position.y == nextPixelPositionY) {
 					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
 					pathToWalk.remove(firstItemInList);
+					System.out.println(cell_position.toString());
 				}
 
 			}
