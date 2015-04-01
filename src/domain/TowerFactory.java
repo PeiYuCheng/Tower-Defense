@@ -1,8 +1,13 @@
 package domain;
 
-import towerModels.*;
+import java.io.Serializable;
 
-public class TowerFactory {
+import towerModels.AreaOfEffectTower;
+import towerModels.RadialTower;
+import towerModels.RegularTower;
+import towerModels.Tower;
+
+public class TowerFactory implements Serializable{
 
 	private static TowerFactory tower_factory;
 	

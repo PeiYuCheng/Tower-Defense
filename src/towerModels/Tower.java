@@ -1,11 +1,10 @@
 package towerModels;
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import map.Cell;
@@ -16,7 +15,7 @@ import critterModels.Critter;
  * @author Jeffrey Kirman (260493368)
  *
  */
-public abstract class Tower extends Observable {
+public abstract class Tower extends Observable implements Serializable{
 
 	private final int MAX_UPGRADE_LEVEL = 3;
 	public enum AI_TYPE {FOLLOW, BACK_FIRST, FRONT_FIRST, RADIAL};

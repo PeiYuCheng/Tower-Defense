@@ -3,13 +3,11 @@ package presentation;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.MouseListener;
-
-
+import java.io.Serializable;
 
 import javax.swing.JPanel;
 
-public class SideMenu extends JPanel {
+public class SideMenu extends JPanel implements Serializable {
 	
 	public SideMenu(){
 		setBackground(Color.black);

@@ -2,12 +2,9 @@ package buttons;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseListener;
+import java.io.Serializable;
 
-import towerModels.AreaOfEffectTower;
-import towerModels.Tower;
-
-public class SellTowerButton extends ClickButton {
+public class SellTowerButton extends ClickButton implements Serializable {
 
 	public SellTowerButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);

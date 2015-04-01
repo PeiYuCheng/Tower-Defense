@@ -2,8 +2,9 @@ package buttons;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public class StartWaveButton extends ClickButton {
+public class StartWaveButton extends ClickButton implements Serializable {
 
 	public StartWaveButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);

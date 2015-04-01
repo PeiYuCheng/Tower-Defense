@@ -1,10 +1,9 @@
 package map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import javax.swing.JComponent;
-
-public class HardMap extends Map{
+public class HardMap extends Map implements Serializable{
 
 	public HardMap(int w, int h){
 		Width = w;

@@ -1,9 +1,10 @@
 package buttons;
 
-import map.Cell;
+import java.io.Serializable;
+
 import map.CellSelector;
 
-public class ButtonSelector {
+public class ButtonSelector implements Serializable{
 
 	private static ButtonSelector cell_button;
 	private Button selectedButton;

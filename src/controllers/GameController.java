@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -37,7 +38,7 @@ import critterModels.Critter;
 import domain.CritterWaveFactory;
 import domain.Player;
 
-public class GameController implements ActionListener {
+public class GameController implements ActionListener, Serializable{
 
 	private File savedGame;
 	private Player player;
@@ -72,7 +73,7 @@ public class GameController implements ActionListener {
 		list_of_buttons = new ArrayList<>();
 		critter_factory = CritterWaveFactory.getInstance();
 		critter_buffer = new LinkedList<>();
-		savedGame = new File("/Castle Defence/src/savedGames/game.txt");
+		savedGame = new File("src/savedGames/game.txt");
 
 		//create Field with paint function defined in controller
 		setField(new Field() {
@@ -377,7 +378,7 @@ public class GameController implements ActionListener {
 		//		g.drawString("Is active: " + tower.isActive());
 	}
 	
-	private void saveGame() {
+	public void saveGame() {
 		try {
 			FileOutputStream fileStream = new FileOutputStream(savedGame);
 			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
@@ -405,7 +406,7 @@ public class GameController implements ActionListener {
 		}
 	}
 	
-	private void loadGame() {
+	public void loadGame() {
 		try {
 			FileInputStream fileStream = new FileInputStream(savedGame);
 			ObjectInputStream objectStream = new ObjectInputStream(fileStream);

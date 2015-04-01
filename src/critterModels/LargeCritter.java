@@ -2,9 +2,7 @@ package critterModels;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-
-import map.EasyMap;
+import java.io.Serializable;
 
 /**
  * <h3>
@@ -22,7 +20,7 @@ import map.EasyMap;
  * @version 1.0
  */
 
-public class LargeCritter extends Critter {
+public class LargeCritter extends Critter implements Serializable {
 
 	// final constants
 	private static final int REWARD = 150;

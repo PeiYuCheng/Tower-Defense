@@ -1,13 +1,14 @@
 package towerModels;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * The tower that simply shoots at a target.
  * @author Jeffrey Kirman (260493368)
  *
  */
-public class RegularTower extends Tower {
+public class RegularTower extends Tower implements Serializable {
 
 	public static final int COST = 50;
 	private static final int REFUND_VALUE = 30;

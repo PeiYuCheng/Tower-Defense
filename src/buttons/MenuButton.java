@@ -2,8 +2,9 @@ package buttons;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public class MenuButton extends ClickButton {
+public class MenuButton extends ClickButton implements Serializable {
 
 	public MenuButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);

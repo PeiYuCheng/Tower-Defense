@@ -2,10 +2,9 @@ package buttons;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-import towerModels.AreaOfEffectTower;
-
-public class UpgradeButton extends ClickButton {
+public class UpgradeButton extends ClickButton implements Serializable {
 
 	public UpgradeButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);

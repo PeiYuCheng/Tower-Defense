@@ -2,12 +2,12 @@ package buttons;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseListener;
+import java.io.Serializable;
 
 import towerModels.AreaOfEffectTower;
 import towerModels.Tower;
 
-public class BuySplashTowerButton extends ToggleButton {
+public class BuySplashTowerButton extends ToggleButton implements Serializable {
 
 
 	

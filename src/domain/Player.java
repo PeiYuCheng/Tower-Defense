@@ -1,7 +1,10 @@
 // Placeholder for the actual critter class
 package domain;
 
-public class Player {
+import java.io.Serializable;
+
+
+public class Player implements Serializable{
 	
 	private final int LIVES_AT_START = 10;
 	private final int MONEY_AT_START = 1000;

@@ -4,20 +4,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Observable;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import map.Cell;
-import map.*;
+import map.Map;
 import domain.Player;
 
 /**

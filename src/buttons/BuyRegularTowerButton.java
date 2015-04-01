@@ -2,13 +2,12 @@ package buttons;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseListener;
+import java.io.Serializable;
 
-import domain.TowerFactory;
 import towerModels.RegularTower;
 import towerModels.Tower;
 
-public class BuyRegularTowerButton extends ToggleButton {
+public class BuyRegularTowerButton extends ToggleButton implements Serializable {
 
 	
 	public BuyRegularTowerButton(int posX, int posY, int width, int height) {

@@ -1,11 +1,12 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
 
 import critterModels.Critter;
 
-public class CritterObserver implements Observer {
+public class CritterObserver implements Observer, Serializable {
 
 	private Critter observedCritter;
 

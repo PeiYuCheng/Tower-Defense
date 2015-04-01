@@ -1,5 +1,6 @@
 package towerModels;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import critterModels.Critter;
@@ -9,7 +10,7 @@ import critterModels.Critter;
  * @author Jeffrey Kirman (260493368)
  *
  */
-public class AreaOfEffectTower extends Tower {
+public class AreaOfEffectTower extends Tower implements Serializable {
 
 	public static final int COST = 70;
 	private static final int REFUND_VALUE = 40;

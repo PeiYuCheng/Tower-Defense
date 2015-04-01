@@ -3,10 +3,11 @@ package presentation;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.io.Serializable;
 
 import javax.swing.JPanel;
 
-public class MainMenu extends JPanel{
+public class MainMenu extends JPanel implements Serializable{
 	
 	public MainMenu() {
 		setBackground(Color.black);

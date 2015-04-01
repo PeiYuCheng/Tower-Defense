@@ -1,9 +1,10 @@
 package map;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 
-public class PathCell extends Cell {
+public class PathCell extends Cell implements Serializable {
 	
 	private static final Color PATH_CELL_COLOR = Color.orange;
 	private static final boolean SELECTABLE = false;

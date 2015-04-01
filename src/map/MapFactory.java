@@ -1,7 +1,10 @@
 package map;
 
+import java.io.Serializable;
 
-public class MapFactory {
+
+
+public class MapFactory implements Serializable{
 	private MapFactory() {
 		
 	}

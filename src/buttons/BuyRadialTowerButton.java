@@ -2,12 +2,12 @@ package buttons;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseListener;
+import java.io.Serializable;
 
 import towerModels.RadialTower;
 import towerModels.Tower;
 
-public class BuyRadialTowerButton extends ToggleButton {
+public class BuyRadialTowerButton extends ToggleButton implements Serializable {
 
 	public BuyRadialTowerButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);
