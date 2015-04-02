@@ -3,14 +3,14 @@ package map;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CustomMap extends Map implements Serializable{
+public class CustomMap extends Map implements Serializable {
 
-	public CustomMap(int w, int h){
+	public CustomMap(int w, int h) {
 		Width = w;
 		Height = h;
 		Grid = new Cell[Width][Height];
 		path = new ArrayList<Cell>();
-		
+
 		createGeneric();
 	}
 	
@@ -25,29 +25,36 @@ public class CustomMap extends Map implements Serializable{
 	
 	public void createGeneric() {
 
-				Cell aCell;
-				
-				//set every cell to SceneryCell first
-				for(int i=0; i<Width; i++){
-					for(int j=0; j<Height; j++){
-						aCell = new SceneryCell(i,j);
-						this.addGridCell(aCell);
-					}
-				}
-/*				
-				aCell = new PathCell(0,5);
+		Cell aCell = null;
+		CellSelector cell_selector = CellSelector.getInstance();
+
+		// set every cell to SceneryCell first
+		for (int i = 0; i < Width; i++) {
+			for (int j = 0; j < Height; j++) {
+				aCell = new SceneryCell(i, j);
+				this.addGridCell(aCell);
+			}
+		}
+
+		if (path.isEmpty()) {
+			if (aCell.isSelected()) {
+				cell_selector.setSelectedCell(aCell);
+				aCell.toggleSelection();
 				this.addGridCell(aCell);
 				this.addPathCell(aCell);
 				this.setEntryCell(aCell);
-				
-				
-				aCell = new PathCell(7,2);
+			}
+		} else {
+			if (aCell.isSelected()) {
+				cell_selector.setSelectedCell(aCell);
+				aCell.toggleSelection();
 				this.addGridCell(aCell);
 				this.addPathCell(aCell);
-				// set this ExitCell chosen by user to ExitCell
-				this.setExitCell(aCell);
-*/	
-				sortPathCells();			
+				this.setEntryCell(aCell);
+			}
+		}
+
+		sortPathCells();
 	}
 
 }

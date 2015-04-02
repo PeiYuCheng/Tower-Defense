@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controllers.GameController;
@@ -73,5 +74,17 @@ public class Application extends JFrame implements Serializable {
 	
 	public static JPanel getCardContainer() {
 		return container;
+	}
+	
+	private void end() {
+		if (controller.getPlayer().isDead()) {
+			int reply = JOptionPane.showConfirmDialog(container, "Game Over: Would you like to Restart", "Tower Defense", JOptionPane.YES_NO_OPTION);
+			if (reply == JOptionPane.YES_OPTION) {
+				Application application = new Application();
+			} else {
+				JOptionPane.showMessageDialog(container, "GoodBye");
+				System.exit(0);
+			}
+		}
 	}
 }

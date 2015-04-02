@@ -65,6 +65,7 @@ public class GameController implements ActionListener, Serializable{
 	private int waveNumber = 1;
 	private CardLayout card_layout;
 	private boolean gameStarted;
+	private boolean waveStarted;
 	private int mapx;
 	private int mamapxpy;
 	
@@ -311,6 +312,7 @@ public class GameController implements ActionListener, Serializable{
 
 			if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty()) {
 				critter_buffer = critter_factory.createWave(waveNumber, map);
+				waveStarted = true;
 				waveNumber++;
 			}
 
@@ -533,4 +535,11 @@ public class GameController implements ActionListener, Serializable{
 		this.card_layout = card_layout;
 	}
 
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 }
