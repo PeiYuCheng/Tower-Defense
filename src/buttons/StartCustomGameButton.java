@@ -3,11 +3,12 @@ package buttons;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.Serializable;
 
 import towerModels.RadialTower;
 import controllers.GameController;
 
-public class StartCustomGameButton extends ClickButton {
+public class StartCustomGameButton extends ClickButton implements Serializable{
 
 	String cardLayout = GameController.CARD_MAIN_GAME;
 	

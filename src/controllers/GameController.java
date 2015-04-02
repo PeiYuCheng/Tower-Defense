@@ -82,6 +82,7 @@ public class GameController implements ActionListener, Serializable{
 		player = Player.getPlayerInstance();
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
+		savedGame = new File("src/savedGames/game.txt");
 		//create Field with paint function defined in controller
 		setField(new Field() {
 			@Override
@@ -136,7 +137,6 @@ public class GameController implements ActionListener, Serializable{
 		list_of_buttons = new ArrayList<>();
 		critter_factory = CritterWaveFactory.getInstance();
 		critter_buffer = new LinkedList<>();
-		savedGame = new File("src/savedGames/game.txt");
 		
 		// populate field with cells
 		for (int i = 0; i < map.getMapHeight(); i++) {
@@ -404,7 +404,7 @@ public class GameController implements ActionListener, Serializable{
 		//		g.drawString("Is active: " + tower.isActive());
 	}
 	
-	public void saveGame() {
+	protected void saveGame() {
 		try {
 			FileOutputStream fileStream = new FileOutputStream(savedGame);
 			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
@@ -412,8 +412,12 @@ public class GameController implements ActionListener, Serializable{
 	        objectStream.writeObject(player);
 	        objectStream.writeObject(map);
 	        objectStream.writeObject(button_selector);
+	        objectStream.writeObject(cell_selector);
 	        objectStream.writeObject(game_field);
 	        objectStream.writeObject(game_side_menu);
+	        objectStream.writeObject(custom_map_field);
+	        objectStream.writeObject(custom_map_side_menu);
+	        objectStream.writeObject(main_menu);
 	        objectStream.writeObject(timer);
 	        objectStream.writeObject(list_of_towers_on_map);
 	        objectStream.writeObject(list_of_critters_on_map);
@@ -422,6 +426,11 @@ public class GameController implements ActionListener, Serializable{
 	        objectStream.writeObject(list_of_buttons);
 	        objectStream.writeObject(critter_factory);
 	        objectStream.writeObject(new Integer(waveNumber));
+	        objectStream.writeObject(card_layout);
+	        objectStream.writeObject(new Boolean(gameStarted));
+	        objectStream.writeObject(new Boolean(waveStarted));
+	        objectStream.writeObject(new Integer(mapx));
+	        objectStream.writeObject(new Integer(mamapxpy));
 	        
 	        objectStream.close();
 	        fileStream.close();
@@ -432,7 +441,7 @@ public class GameController implements ActionListener, Serializable{
 		}
 	}
 	
-	public void loadGame() {
+	protected void loadGame() {
 		try {
 			FileInputStream fileStream = new FileInputStream(savedGame);
 			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
@@ -443,6 +452,9 @@ public class GameController implements ActionListener, Serializable{
 			cell_selector = (CellSelector) objectStream.readObject();
 			game_field = (Field) objectStream.readObject();
 			game_side_menu = (SideMenu) objectStream.readObject();
+			custom_map_field = (Field) objectStream.readObject();
+			custom_map_side_menu = (SideMenu) objectStream.readObject();
+			main_menu = (MainMenu) objectStream.readObject();
 			timer = (Timer) objectStream.readObject();
 			list_of_towers_on_map = (ArrayList<Tower>) objectStream.readObject();
 			list_of_critters_on_map = (ArrayList<Critter>) objectStream.readObject();
@@ -451,6 +463,11 @@ public class GameController implements ActionListener, Serializable{
 			list_of_buttons = (ArrayList<Button>) objectStream.readObject();
 			critter_factory = (CritterWaveFactory) objectStream.readObject();
 			waveNumber = (Integer) objectStream.readObject();
+			card_layout = (CardLayout) objectStream.readObject();
+			gameStarted = (Boolean) objectStream.readObject();
+			waveStarted = (Boolean) objectStream.readObject();
+			mapx = (Integer) objectStream.readObject();
+			mamapxpy = (Integer) objectStream.readObject();
 			
 			fileStream.close();
 			objectStream.close();

@@ -72,19 +72,20 @@ public class Application extends JFrame implements Serializable {
 		
 	}
 	
-	public static JPanel getCardContainer() {
-		return container;
-	}
-	
-	private void end() {
+	public void end() {
 		if (controller.getPlayer().isDead()) {
 			int reply = JOptionPane.showConfirmDialog(container, "Game Over: Would you like to Restart", "Tower Defense", JOptionPane.YES_NO_OPTION);
 			if (reply == JOptionPane.YES_OPTION) {
-				Application application = new Application();
+				controller = new GameController();
+				init();
 			} else {
 				JOptionPane.showMessageDialog(container, "GoodBye");
 				System.exit(0);
 			}
 		}
+	}
+	
+	public static JPanel getCardContainer() {
+		return container;
 	}
 }
