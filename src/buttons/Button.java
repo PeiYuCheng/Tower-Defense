@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 
 import towerModels.Tower;
 
-public abstract class Button extends JComponent  {
+public abstract class Button extends JComponent implements Serializable{
 
 	protected static final Color BUTTON_COLOR = Color.black;
 	protected int button_spacing;

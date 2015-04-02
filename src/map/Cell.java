@@ -127,7 +127,7 @@ public abstract class Cell implements CellInterface, Serializable{
 		return "{" + position.x + ", " + position.y + "}";
 	}
 	
-	private class MouseMaster extends MouseAdapter {
+	private class MouseMaster extends MouseAdapter implements Serializable{
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {

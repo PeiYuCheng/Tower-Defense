@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Player implements Serializable{
 	
 	private final int LIVES_AT_START = 10;
-	private final int MONEY_AT_START = 1000;
+	private final int MONEY_AT_START = 200;
 	
 	private int lives;
 	private int money;
@@ -45,6 +45,12 @@ public class Player implements Serializable{
 	 */
 	public void changeMoney(int change_in_money) {
 		setMoney(getMoney() + change_in_money);
+	}
+	
+	public boolean isDead() {
+		if (lives <= 0)
+			return true;
+		return false;
 	}
 	
 	

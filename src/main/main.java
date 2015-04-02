@@ -10,5 +10,6 @@ public class main {
 	 */
 	public static void main(String[] args) {
 		Application tower_defense = new Application();
+		tower_defense.end();
 	}
 }
