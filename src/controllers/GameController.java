@@ -25,6 +25,7 @@ import map.Map;
 import map.MapFactory;
 import presentation.Application;
 import presentation.Field;
+import presentation.MainMenu;
 import presentation.SideMenu;
 import towerModels.Tower;
 import buttons.Button;
@@ -33,6 +34,9 @@ import buttons.BuyRadialTowerButton;
 import buttons.BuyRegularTowerButton;
 import buttons.BuySplashTowerButton;
 import buttons.SellTowerButton;
+import buttons.StartCustomGameButton;
+import buttons.StartEasyGameButton;
+import buttons.StartHardGameButton;
 import buttons.StartWaveButton;
 import buttons.UpgradeButton;
 import critterModels.Critter;
@@ -406,8 +410,8 @@ public class GameController implements ActionListener, Serializable{
 	        objectStream.writeObject(player);
 	        objectStream.writeObject(map);
 	        objectStream.writeObject(button_selector);
-	        objectStream.writeObject(field);
-	        objectStream.writeObject(side_menu);
+	        objectStream.writeObject(game_field);
+	        objectStream.writeObject(game_side_menu);
 	        objectStream.writeObject(timer);
 	        objectStream.writeObject(list_of_towers_on_map);
 	        objectStream.writeObject(list_of_critters_on_map);
@@ -420,9 +424,9 @@ public class GameController implements ActionListener, Serializable{
 	        objectStream.close();
 	        fileStream.close();
 	        
-	        JOptionPane.showConfirmDialog(field, "Saved game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+	        JOptionPane.showConfirmDialog(game_field, "Saved game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
 		} catch(Exception e) {
-			JOptionPane.showConfirmDialog(field, e.toString() + "\nFailed to save game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to save game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
 		}
 	}
 	
@@ -435,8 +439,8 @@ public class GameController implements ActionListener, Serializable{
 			map = (Map) objectStream.readObject();
 			button_selector = (ButtonSelector) objectStream.readObject();
 			cell_selector = (CellSelector) objectStream.readObject();
-			field = (Field) objectStream.readObject();
-			side_menu = (SideMenu) objectStream.readObject();
+			game_field = (Field) objectStream.readObject();
+			game_side_menu = (SideMenu) objectStream.readObject();
 			timer = (Timer) objectStream.readObject();
 			list_of_towers_on_map = (ArrayList<Tower>) objectStream.readObject();
 			list_of_critters_on_map = (ArrayList<Critter>) objectStream.readObject();
@@ -449,9 +453,9 @@ public class GameController implements ActionListener, Serializable{
 			fileStream.close();
 			objectStream.close();
 			
-			JOptionPane.showConfirmDialog(field, "Loaded game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+			JOptionPane.showConfirmDialog(game_field, "Loaded game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
 		} catch(Exception e) {
-			JOptionPane.showConfirmDialog(field, e.toString() + "\nFailed to load game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to load game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
 		}
 	}
 	
