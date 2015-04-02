@@ -14,8 +14,6 @@ public abstract class Map implements Serializable{
 	protected Cell ExitCell;
 	protected ArrayList<Cell> path;
 
-
-	
 	public void setEntryCell(Cell aCell){
 		EntryCell = aCell;
 	}
@@ -45,7 +43,7 @@ public abstract class Map implements Serializable{
 	}
 	
 	public JComponent getComponent(int x, int y) {
-		return Grid[x][y].getComponent();
+		return Grid[y][x].getComponent();
 	}
 
 	public int getMapWidth() {

@@ -2,6 +2,7 @@ package controllers;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -25,6 +26,7 @@ import map.Map;
 import map.MapFactory;
 import presentation.Application;
 import presentation.Field;
+import presentation.MainMenu;
 import presentation.SideMenu;
 import towerModels.Tower;
 import buttons.Button;
@@ -33,6 +35,9 @@ import buttons.BuyRadialTowerButton;
 import buttons.BuyRegularTowerButton;
 import buttons.BuySplashTowerButton;
 import buttons.SellTowerButton;
+import buttons.StartCustomGameButton;
+import buttons.StartEasyGameButton;
+import buttons.StartHardGameButton;
 import buttons.StartWaveButton;
 import buttons.UpgradeButton;
 import critterModels.Critter;
@@ -61,15 +66,16 @@ public class GameController implements ActionListener, Serializable{
 	private int waveNumber = 1;
 	private CardLayout card_layout;
 	private boolean gameStarted;
-	private int mapx;
-	private int mamapxpy;
+	private Dimension map_size;
 	
 	public static final int CUSTOM_MAP = 0;
 	public static final int EASY_MAP = 1;
 	public static final int HARD_MAP = 2;
+	public static final int LOAD_MAP = 3;
 	
 	public static final String CARD_MAIN_MENU = "Main Menu";
 	public static final String CARD_MAIN_GAME = "Main Game";
+	public static final String CARD_CUSTOM_MAP_MAKER = "Custom Map Maker";
 
 
 	public GameController() {
@@ -77,16 +83,9 @@ public class GameController implements ActionListener, Serializable{
 		player = Player.getPlayerInstance();
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
+		card_layout = new CardLayout();
+		
 		//create Field with paint function defined in controller
-		setField(new Field() {
-			@Override
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				doFieldDrawing(g);
-				Toolkit.getDefaultToolkit().sync();
-			}
-		});
-
 		setMainMenu(new MainMenu() {
 			@Override
 			public void paintComponent(Graphics g) {
@@ -95,12 +94,39 @@ public class GameController implements ActionListener, Serializable{
 		        Toolkit.getDefaultToolkit().sync();
 			}
 		});
-
-		setSideMenu(new SideMenu() {
+		
+		setGameField(new Field() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				doMenuDrawing(g);
+				doGameFieldDrawing(g);
+				Toolkit.getDefaultToolkit().sync();
+			}
+		});
+
+		setGameSideMenu(new SideMenu() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				doGameSideMenuDrawing(g);
+				Toolkit.getDefaultToolkit().sync();
+			}
+		});
+		
+		setCustomMapField(new Field() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				doCustomMapFieldDrawing(g);
+				Toolkit.getDefaultToolkit().sync();
+			}
+		});
+
+		setCustomMapSideMenu(new SideMenu() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				doCustomMapSideMenuDrawing(g);
 				Toolkit.getDefaultToolkit().sync();
 			}
 		});
@@ -125,7 +151,14 @@ public class GameController implements ActionListener, Serializable{
 	
 	private void initiateGame(int mapChoice) {
 		gameStarted = true;
-		map = MapFactory.getUniqueInstance().createMap(mapChoice,15,15);
+		
+		if (mapChoice == LOAD_MAP) {
+			//TODO map = ***load map here***
+		}
+		else {
+			map = MapFactory.getUniqueInstance().createMap(mapChoice, map_size.width, map_size.height);
+		}
+		
 		list_of_critters_on_map = new ArrayList<>();
 		list_of_towers_on_map = new ArrayList<>();
 		list_of_buttons = new ArrayList<>();
@@ -134,39 +167,51 @@ public class GameController implements ActionListener, Serializable{
 		savedGame = new File("src/savedGames/game.txt");
 		
 		// populate field with cells
-		for (int i = 0; i < map.getMapHeight(); i++) {
-			for (int j = 0; j < map.getMapWidth(); j++) {
-				game_field.getLayeredPane().add(map.getComponent(i,j), new Integer(0));
+		
+		if (mapChoice == CUSTOM_MAP) {
+			for (int i = 0; i < map.getMapHeight(); i++) {
+				for (int j = 0; j < map.getMapWidth(); j++) {
+					custom_map_field.getLayeredPane().add(map.getComponent(i,j), new Integer(0));
+				}
+			}
+		}
+		else {
+			for (int i = 0; i < map.getMapHeight(); i++) {
+				for (int j = 0; j < map.getMapWidth(); j++) {
+					game_field.getLayeredPane().add(map.getComponent(i,j), new Integer(0));
+				}
 			}
 		}
 	}
 
-	protected void doFieldDrawing(Graphics g) {
-		drawGrid(g);
-	}
-
-	protected void doMenuDrawing(Graphics g) {
-		drawSideMenu(g);
-	}
-
-	protected void doMainMenuDrawing(Graphics g) {
-		drawMainMenu(g);
-	}
-
-	/**
-	 * Draws all the cells in the grid
-	 * @param g
-	 */
-	private void drawGrid(Graphics g) {
-
+	protected void doGameFieldDrawing(Graphics g) {
 		for (int i = 0; i < game_field.getLayeredPane().getComponents().length; i++) {
 			game_field.getLayeredPane().getComponent(i).paint(g);
 		}
 		
 		game_field.getLayeredPane().repaint();
 	}
+	
+	protected void doCustomMapFieldDrawing(Graphics g) {
+		for (int i = 0; i < custom_map_field.getLayeredPane().getComponents().length; i++) {
+			custom_map_field.getLayeredPane().getComponent(i).paint(g);
+		}
+		
+		custom_map_field.getLayeredPane().repaint();
+	}
 
-	private void drawSideMenu(Graphics g) {
+	protected void doGameSideMenuDrawing(Graphics g) {
+		drawGameSideMenu(g);
+	}
+	
+	protected void doCustomMapSideMenuDrawing(Graphics g) {
+	}
+
+	protected void doMainMenuDrawing(Graphics g) {
+		drawMainMenu(g);
+	}
+
+	private void drawGameSideMenu(Graphics g) {
 
 		g.setColor(Color.white);
 		g.drawString("Lives: " + player.getLives(), 10, 20);
@@ -406,8 +451,8 @@ public class GameController implements ActionListener, Serializable{
 	        objectStream.writeObject(player);
 	        objectStream.writeObject(map);
 	        objectStream.writeObject(button_selector);
-	        objectStream.writeObject(field);
-	        objectStream.writeObject(side_menu);
+	        objectStream.writeObject(game_field);
+	        objectStream.writeObject(game_side_menu);
 	        objectStream.writeObject(timer);
 	        objectStream.writeObject(list_of_towers_on_map);
 	        objectStream.writeObject(list_of_critters_on_map);
@@ -420,9 +465,9 @@ public class GameController implements ActionListener, Serializable{
 	        objectStream.close();
 	        fileStream.close();
 	        
-	        JOptionPane.showConfirmDialog(field, "Saved game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+	        JOptionPane.showConfirmDialog(game_field, "Saved game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
 		} catch(Exception e) {
-			JOptionPane.showConfirmDialog(field, e.toString() + "\nFailed to save game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to save game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
 		}
 	}
 	
@@ -435,8 +480,8 @@ public class GameController implements ActionListener, Serializable{
 			map = (Map) objectStream.readObject();
 			button_selector = (ButtonSelector) objectStream.readObject();
 			cell_selector = (CellSelector) objectStream.readObject();
-			field = (Field) objectStream.readObject();
-			side_menu = (SideMenu) objectStream.readObject();
+			game_field = (Field) objectStream.readObject();
+			game_side_menu = (SideMenu) objectStream.readObject();
 			timer = (Timer) objectStream.readObject();
 			list_of_towers_on_map = (ArrayList<Tower>) objectStream.readObject();
 			list_of_critters_on_map = (ArrayList<Critter>) objectStream.readObject();
@@ -449,20 +494,63 @@ public class GameController implements ActionListener, Serializable{
 			fileStream.close();
 			objectStream.close();
 			
-			JOptionPane.showConfirmDialog(field, "Loaded game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+			JOptionPane.showConfirmDialog(game_field, "Loaded game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
 		} catch(Exception e) {
-			JOptionPane.showConfirmDialog(field, e.toString() + "\nFailed to load game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to load game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
 		}
 	}
 	
 	private void startGame() {
 		if (!gameStarted) {
 			if (button_selector.isStartGame()) {
+				
+				map_size = new Dimension(0,0);
+				if (button_selector.getMapType() == CUSTOM_MAP) {
+					userInputMapSize();
+					card_layout.show(Application.getCardContainer(), CARD_CUSTOM_MAP_MAKER);
+				}
+				else {
+					card_layout.show(Application.getCardContainer(), CARD_MAIN_GAME);
+				}
+				
 				initiateGame(button_selector.getMapType());
 				button_selector.setStartGame(false);
-				card_layout.show(Application.getCardContainer(), CARD_MAIN_GAME);
 			}
 		}
+	}
+	
+	private void userInputMapSize() {
+		
+		String swidth = null;
+		String sheight = null;
+		
+		int iwidth;
+		int iheight;
+		
+		while (swidth == null) {
+			swidth = JOptionPane.showInputDialog("What is the map width (minimum 3, maximum 15)?");
+			try {
+				iwidth = Integer.parseInt(swidth);
+				map_size.width = Map.boundNumber(iwidth, 3, 15);
+			}
+			catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(main_menu, "Invalid width entered");
+				swidth = null;
+			}
+		}
+		
+		while (sheight == null) {
+			sheight = JOptionPane.showInputDialog("What is the map height (minimum 3, maximum 15)?");
+			try {
+				iheight = Integer.parseInt(sheight);
+				map_size.height = Map.boundNumber(iheight, 3, 15);
+			}
+			catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(main_menu, "Invalid height entered");
+				sheight = null;
+			}
+		}
+
 	}
 
 	@Override
@@ -497,19 +585,19 @@ public class GameController implements ActionListener, Serializable{
 	 * Getters and Setters
 	 */
 
-	public Field getField() {
+	public Field getGameField() {
 		return game_field;
 	}
 
-	public void setField(Field field) {
+	public void setGameField(Field field) {
 		this.game_field = field;
 	}
 
-	public SideMenu getSideMenu() {
+	public SideMenu getGameSideMenu() {
 		return game_side_menu;
 	}
 
-	public void setSideMenu(SideMenu side_menu) {
+	public void setGameSideMenu(SideMenu side_menu) {
 		this.game_side_menu = side_menu;
 	}
 
@@ -527,6 +615,30 @@ public class GameController implements ActionListener, Serializable{
 
 	public void setCardLayout(CardLayout card_layout) {
 		this.card_layout = card_layout;
+	}
+
+	public Field getCustomMapField() {
+		return custom_map_field;
+	}
+
+	public void setCustomMapField(Field custom_map_field) {
+		this.custom_map_field = custom_map_field;
+	}
+
+	public SideMenu getCustomMapSideMenu() {
+		return custom_map_side_menu;
+	}
+
+	public void setCustomMapSideMenu(SideMenu custom_map_side_menu) {
+		this.custom_map_side_menu = custom_map_side_menu;
+	}
+
+	public Dimension getMapSize() {
+		return map_size;
+	}
+
+	public void setMapSize(Dimension map_size) {
+		this.map_size = map_size;
 	}
 
 }

@@ -49,8 +49,15 @@ public class Application extends JFrame implements Serializable {
 		main_game = new JPanel();
 		main_game.setLayout(new BoxLayout(main_game, BoxLayout.X_AXIS));
 		container.add(main_game, GameController.CARD_MAIN_GAME);
-		main_game.add(controller.getField());
-		main_game.add(controller.getSideMenu());
+		main_game.add(controller.getGameField());
+		main_game.add(controller.getGameSideMenu());
+		
+		// create a container for all the frames in the main game JPanel
+		main_game = new JPanel();
+		main_game.setLayout(new BoxLayout(main_game, BoxLayout.X_AXIS));
+		container.add(main_game, GameController.CARD_CUSTOM_MAP_MAKER);
+		main_game.add(controller.getCustomMapField());
+		main_game.add(controller.getCustomMapSideMenu());
 		
 		// create a container for all the frames in the main menu JPanel
 		main_menu = new JPanel();

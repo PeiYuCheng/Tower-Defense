@@ -243,7 +243,6 @@ public abstract class Critter extends Observable {
 				if (pixel_position.x == nextPixelPositionX && pixel_position.y == nextPixelPositionY) {
 					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
 					pathToWalk.remove(firstItemInList);
-					System.out.println(cell_position.toString());
 				}
 			} else {
 				/*
@@ -295,7 +294,6 @@ public abstract class Critter extends Observable {
 				if (pixel_position.x == nextPixelPositionX && pixel_position.y == nextPixelPositionY) {
 					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
 					pathToWalk.remove(firstItemInList);
-					System.out.println(cell_position.toString());
 				}
 			}
 		}
