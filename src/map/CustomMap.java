@@ -17,6 +17,7 @@ public class CustomMap extends Map implements Serializable {
 	public Cell toggleCell(Cell cell) {
 		if (cell instanceof SceneryCell) {
 			Grid[cell.getX()][cell.getY()] = new PathCell(cell.getX(), cell.getY());
+			Grid[cell.getX()][cell.getY()].customMapModeOn();
 			return Grid[cell.getX()][cell.getY()];
 		}
 		else {

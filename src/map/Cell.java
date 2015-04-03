@@ -127,6 +127,14 @@ public abstract class Cell implements CellInterface, Serializable{
 		return "{" + position.x + ", " + position.y + "}";
 	}
 	
+	public void customMapModeOn() {
+		selectable = true;
+	}
+	
+	public void customMapModeOff() {
+		selectable = false;
+	}
+	
 	private class MouseMaster extends MouseAdapter implements Serializable{
 		
 		@Override

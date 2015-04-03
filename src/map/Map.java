@@ -79,6 +79,7 @@ public abstract class Map implements Serializable{
 		if(EntryCell == null || ExitCell == null){
 			valid = false;
 		} else {
+			sortPathCells();
 			FirstCell = EntryCell;
 			LastCell = ExitCell;
 			previousX = FirstCell.getX();
@@ -117,10 +118,10 @@ public abstract class Map implements Serializable{
 		
 		while(currentCell != null) {
 			
-			nextCell[0] = Grid[boundNumber(currentCell.position.x - 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid.length - 1)];
-			nextCell[1] = Grid[boundNumber(currentCell.position.x + 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid.length - 1)];
-			nextCell[2] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y - 1, 0, Grid.length - 1)];
-			nextCell[3] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y + 1, 0, Grid.length - 1)];
+			nextCell[0] = Grid[boundNumber(currentCell.position.x - 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid[0].length - 1)];
+			nextCell[1] = Grid[boundNumber(currentCell.position.x + 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid[0].length - 1)];
+			nextCell[2] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y - 1, 0, Grid[0].length - 1)];
+			nextCell[3] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y + 1, 0, Grid[0].length - 1)];
 			
 			for (int i = 0; i < nextCell.length; i++) {
 				if (nextCell[i] != currentCell && nextCell[i] != lastCell && nextCell[i] instanceof PathCell) {
@@ -137,6 +138,50 @@ public abstract class Map implements Serializable{
 		
 		this.path = path;
 		
+		
+	}
+	
+	public void findAndSetEntryAndExitCells() {
+				
+		EntryCell = null;
+		ExitCell = null;
+		ArrayList<Cell> list_of_boundary_cells = new ArrayList<>();
+		
+		// left edge cells
+		for (int i = 0; i < Grid[0].length; i++) {
+			list_of_boundary_cells.add(Grid[0][i]);
+		}
+		
+		// bottom edge cells
+		for (int i = 0; i < Grid.length; i++) {
+			list_of_boundary_cells.add(Grid[i][Grid[0].length - 1]);
+		}
+		
+		// right edge cells
+		for (int i = 0; i < Grid[0].length; i++) {
+			list_of_boundary_cells.add(Grid[Grid.length - 1][Grid[0].length - 1 - i]);
+		}
+		
+		// top edge cells
+		for (int i = 0; i < Grid.length; i++) {
+			list_of_boundary_cells.add(Grid[Grid.length - 1 - i][0]);
+		}
+		
+		list_of_boundary_cells.add(Grid[0][0]);
+		
+		for (int i = 1; i < list_of_boundary_cells.size() - 2; i++) {
+			if (list_of_boundary_cells.get(i) instanceof PathCell &&
+					list_of_boundary_cells.get(i-1) instanceof SceneryCell &&
+					list_of_boundary_cells.get(i+1) instanceof SceneryCell) {
+				if (EntryCell == null) {
+					EntryCell = list_of_boundary_cells.get(i);
+				}
+				else if (ExitCell == null) {
+					ExitCell = list_of_boundary_cells.get(i);
+					return;
+				}
+			}
+		}
 		
 	}
 	

@@ -311,12 +311,13 @@ public class GameController implements ActionListener, Serializable{
 		}
 
 		upgradeTower = towersCell.getTowerInCell();
-		upgradeCost = upgradeTower.getUpgradeCost();
 
 		if (upgradeTower == null) {
 			button_selector.setUpgradeTowerSelected(false);
 			return;
 		}
+		
+		upgradeCost = upgradeTower.getUpgradeCost();
 
 		// check player money
 		if (player.getMoney() < upgradeTower.getUpgradeCost()) {
@@ -559,10 +560,13 @@ public class GameController implements ActionListener, Serializable{
 	}
 	
 	private void validateAndSaveCustomMap() {
-		//TODO Set entry and exit cells
+		map.findAndSetEntryAndExitCells();
 		validCustomMap = map.validate();
 		if (button_selector.isValidateAndSave()) {
 			if (validCustomMap) {
+				for (Cell cell : map.getPath()) {
+					cell.customMapModeOff();
+				}
 				customMapMode = false;
 				//TODO Save map here
 				resetGame();
