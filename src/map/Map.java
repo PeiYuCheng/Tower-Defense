@@ -63,11 +63,11 @@ public abstract class Map implements Serializable{
 				if(Grid[i][j] == null){
 					valid = false;
 				} else {
-					Grid[i][j].printType();
-					System.out.print(" ");	
+//					Grid[i][j].printType();
+//					System.out.print(" ");	
 				}
 			}
-			System.out.print("\n");
+//			System.out.print("\n");
 		}
 		
 		//check if path is continuous and does not branch out

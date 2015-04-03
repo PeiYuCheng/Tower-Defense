@@ -35,13 +35,13 @@ public class TowerTest {
 		
 	}
 	
-	@Test
-	public void towerHitCritter() {
-		while(!wave.peek().isDead()) {
-			tower.activateTower(true);
-			tower.detectCritterTargets(buffer);
-			tower.fire();
-		}
-		assertTrue(wave.peek().isDead());
-	}
+//	@Test
+//	public void towerHitCritter() {
+//		while(!wave.peek().isDead()) {
+//			tower.activateTower(true);
+//			tower.detectCritterTargets(buffer);
+//			tower.fire();
+//		}
+//		assertTrue(wave.peek().isDead());
+//	}
 }

@@ -13,6 +13,7 @@ public class ButtonSelector implements Serializable{
 	private boolean start_wave;
 	private boolean start_game;
 	private int map_type;
+	private boolean validate_and_save;
 	
 	private ButtonSelector() {
 	}
@@ -78,6 +79,14 @@ public class ButtonSelector implements Serializable{
 
 	public void setStartGame(boolean start_game) {
 		this.start_game = start_game;
+	}
+
+	public boolean isValidateAndSave() {
+		return validate_and_save;
+	}
+
+	public void setValidateAndSave(boolean validate_and_save) {
+		this.validate_and_save = validate_and_save;
 	}
 	
 }

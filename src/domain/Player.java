@@ -82,6 +82,9 @@ public class Player implements Serializable{
 		this.name = name;
 	}
 	
-	
+	public void restartPlayer() {
+		player.lives = LIVES_AT_START;
+		player.money = MONEY_AT_START;
+	}
 	
 }

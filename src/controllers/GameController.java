@@ -21,25 +21,11 @@ import java.util.Queue;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
-import map.CellSelector;
-import map.Map;
-import map.MapFactory;
-import presentation.Application;
-import presentation.Field;
-import presentation.MainMenu;
-import presentation.SideMenu;
+import main.main;
+import map.*;
+import presentation.*;
 import towerModels.Tower;
-import buttons.Button;
-import buttons.ButtonSelector;
-import buttons.BuyRadialTowerButton;
-import buttons.BuyRegularTowerButton;
-import buttons.BuySplashTowerButton;
-import buttons.SellTowerButton;
-import buttons.StartCustomGameButton;
-import buttons.StartEasyGameButton;
-import buttons.StartHardGameButton;
-import buttons.StartWaveButton;
-import buttons.UpgradeButton;
+import buttons.*;
 import critterModels.Critter;
 import domain.CritterWaveFactory;
 import domain.Player;
@@ -63,11 +49,13 @@ public class GameController implements ActionListener, Serializable{
 	private long time_of_last_deploy;
 	private ArrayList<Button> list_of_buttons;
 	private CritterWaveFactory critter_factory;
-	private int waveNumber = 1;
+	private int waveNumber;
 	private CardLayout card_layout;
 	private boolean gameStarted;
 	private Dimension map_size;
 	private boolean waveStarted;
+	private boolean customMapMode;
+	private boolean validCustomMap;
 	
 	public static final int CUSTOM_MAP = 0;
 	public static final int EASY_MAP = 1;
@@ -140,6 +128,8 @@ public class GameController implements ActionListener, Serializable{
 		game_side_menu.add(new SellTowerButton(70, 200, 30, 30));
 		game_side_menu.add(new StartWaveButton(100, 20, 30, 30));
 		
+		custom_map_side_menu.add(new ValidateAndSaveButton(10, 80, 30, 30));
+		
 		// Set up the main menu buttons
 		main_menu.add(new StartEasyGameButton(200, 200, 150, 50));
 		main_menu.add(new StartHardGameButton(200, 300, 150, 50));
@@ -151,7 +141,6 @@ public class GameController implements ActionListener, Serializable{
 	}
 	
 	private void initiateGame(int mapChoice) {
-		gameStarted = true;
 		
 		if (mapChoice == LOAD_MAP) {
 			//TODO map = ***load map here***
@@ -160,15 +149,10 @@ public class GameController implements ActionListener, Serializable{
 			map = MapFactory.getUniqueInstance().createMap(mapChoice, map_size.width, map_size.height);
 		}
 		
-		list_of_critters_on_map = new ArrayList<>();
-		list_of_towers_on_map = new ArrayList<>();
-		list_of_buttons = new ArrayList<>();
-		critter_factory = CritterWaveFactory.getInstance();
-		critter_buffer = new LinkedList<>();
-		
 		// populate field with cells
-		
 		if (mapChoice == CUSTOM_MAP) {
+			
+			customMapMode = true;
 			for (int i = 0; i < map.getMapHeight(); i++) {
 				for (int j = 0; j < map.getMapWidth(); j++) {
 					custom_map_field.getLayeredPane().add(map.getComponent(i,j), new Integer(0));
@@ -176,6 +160,16 @@ public class GameController implements ActionListener, Serializable{
 			}
 		}
 		else {
+			
+			gameStarted = true;
+			
+			list_of_critters_on_map = new ArrayList<>();
+			list_of_towers_on_map = new ArrayList<>();
+			list_of_buttons = new ArrayList<>();
+			critter_factory = CritterWaveFactory.getInstance();
+			critter_buffer = new LinkedList<>();
+			waveNumber = 1;
+			
 			for (int i = 0; i < map.getMapHeight(); i++) {
 				for (int j = 0; j < map.getMapWidth(); j++) {
 					game_field.getLayeredPane().add(map.getComponent(i,j), new Integer(0));
@@ -201,18 +195,6 @@ public class GameController implements ActionListener, Serializable{
 	}
 
 	protected void doGameSideMenuDrawing(Graphics g) {
-		drawGameSideMenu(g);
-	}
-	
-	protected void doCustomMapSideMenuDrawing(Graphics g) {
-	}
-
-	protected void doMainMenuDrawing(Graphics g) {
-		drawMainMenu(g);
-	}
-
-	private void drawGameSideMenu(Graphics g) {
-
 		g.setColor(Color.white);
 		g.drawString("Lives: " + player.getLives(), 10, 20);
 		g.drawString("Money: " + player.getMoney(), 10, 40);
@@ -225,15 +207,20 @@ public class GameController implements ActionListener, Serializable{
 
 		printTowerStats(g, new Point(10,400));
 	}
+	
+	protected void doCustomMapSideMenuDrawing(Graphics g) {
+		g.setColor(Color.white);
+		g.drawString("Valid Map: " + validCustomMap, 10, 20);
+		for (int i = 0; i < custom_map_side_menu.getComponents().length; i++) {
+			custom_map_side_menu.getComponent(i).paint(g);
+		}
+	}
 
-	private void drawMainMenu(Graphics g) {
-
+	protected void doMainMenuDrawing(Graphics g) {
 		for (int i = 0; i < main_menu.getComponents().length; i++) {
 			main_menu.getComponent(i).paint(g);
 		}
-		
 	}
-
 
 	private void fireTowers() {
 
@@ -316,6 +303,7 @@ public class GameController implements ActionListener, Serializable{
 
 		map.Cell towersCell = cell_selector.getSelectedCell();
 		Tower upgradeTower;
+		int upgradeCost;
 
 		if ((towersCell == null)) {
 			button_selector.setUpgradeTowerSelected(false);
@@ -323,6 +311,7 @@ public class GameController implements ActionListener, Serializable{
 		}
 
 		upgradeTower = towersCell.getTowerInCell();
+		upgradeCost = upgradeTower.getUpgradeCost();
 
 		if (upgradeTower == null) {
 			button_selector.setUpgradeTowerSelected(false);
@@ -332,16 +321,16 @@ public class GameController implements ActionListener, Serializable{
 		// check player money
 		if (player.getMoney() < upgradeTower.getUpgradeCost()) {
 			button_selector.setUpgradeTowerSelected(false);
-			return;
 		}
-
-		if (button_selector.isUpgradeTowerSelected()) {
-
-			if (upgradeTower.upgradeTower()) {
-				player.changeMoney(-upgradeTower.getUpgradeCost());
+		else {
+			if (button_selector.isUpgradeTowerSelected()) {
+	
+				if (upgradeTower.upgradeTower()) {
+					player.changeMoney(-upgradeCost);
+				}
+				button_selector.setUpgradeTowerSelected(false);
+	
 			}
-			button_selector.setUpgradeTowerSelected(false);
-
 		}
 
 	}
@@ -568,13 +557,68 @@ public class GameController implements ActionListener, Serializable{
 		}
 
 	}
+	
+	private void validateAndSaveCustomMap() {
+		//TODO Set entry and exit cells
+		validCustomMap = map.validate();
+		if (button_selector.isValidateAndSave()) {
+			if (validCustomMap) {
+				customMapMode = false;
+				//TODO Save map here
+				resetGame();
+			}
+		}
+	}
+	
+	private void toggleCellOnCustomMap() {
+		
+		Cell current_cell;
+		Cell new_cell;
+		
+		if (cell_selector.getSelectedCell() != null) {
+			current_cell = cell_selector.getSelectedCell();
+			new_cell = ((CustomMap) map).toggleCell(cell_selector.getSelectedCell());
+			cell_selector.deselectSelectedCell();
+			custom_map_field.getLayeredPane().remove(current_cell.getComponent());
+			custom_map_field.getLayeredPane().add(new_cell.getComponent(), new Integer(0));
+			
+		}
+	}
+	
+	private void endGame() {
+		if (getPlayer().isDead()) {
+			int reply = JOptionPane.showConfirmDialog(game_field, "Game Over: Would you like to Restart", "Tower Defense", JOptionPane.YES_NO_OPTION);
+			if (reply == JOptionPane.YES_OPTION) {
+				resetGame();
+			} else {
+				JOptionPane.showMessageDialog(game_field, "GoodBye");
+				System.exit(0);
+			}
+		}
+	}
+	
+	private void clearFields() {
+		game_field.getLayeredPane().removeAll();
+		custom_map_field.getLayeredPane().removeAll();
+	}
+	
+	private void resetGame() {
+		card_layout.show(Application.getCardContainer(), CARD_MAIN_MENU);
+		player.restartPlayer();
+		clearFields();
+		gameStarted = false;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
 		startGame();
 		
-		if (gameStarted) {
+		if (customMapMode) {
+			toggleCellOnCustomMap();
+			validateAndSaveCustomMap();
+		}
+		else if (gameStarted) {
 			// Tower logic
 			buyTower();
 			sellTower();
@@ -587,11 +631,15 @@ public class GameController implements ActionListener, Serializable{
 			moveCritters();
 			startWave();
 			killCritter();
+			
+			endGame();
 		}
 		
 			// Repainting
 			game_field.repaint();
 			game_side_menu.repaint();
+			custom_map_field.repaint();
+			custom_map_side_menu.repaint();
 			main_menu.repaint();
 
 	}
