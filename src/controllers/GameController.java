@@ -22,6 +22,7 @@ import java.util.Queue;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 
 import map.Cell;
@@ -547,7 +548,14 @@ public class GameController implements ActionListener, Serializable{
 				
 				map_size = new Dimension(0,0);
 				if (button_selector.getMapType() == CUSTOM_MAP) {
-					userInputMapSize();
+					
+					boolean userInputSuccessful = userInputMapSize();
+					
+					if (!userInputSuccessful) {
+						button_selector.setStartGame(false);
+						return;
+					}
+
 					card_layout.show(Application.getCardContainer(), CARD_CUSTOM_MAP_MAKER);
 				}
 				else {
@@ -560,53 +568,41 @@ public class GameController implements ActionListener, Serializable{
 		}
 	}
 	
-	private void userInputMapSize() {
+	private boolean userInputMapSize() {
 		
-		String swidth = null;
-		String sheight = null;
+		JTextField swidth = new JTextField();
+		JTextField sheight = new JTextField();
 		
 		int iwidth;
 		int iheight;
 		
-		while (swidth == null) {
-			swidth = JOptionPane.showInputDialog("What is the map width (minimum 3, maximum 15)?");
-			if (swidth != null) {
+		Object[] message = {
+		    "Map width:", swidth,
+		    "Map height:", sheight
+		};
+
+		int option;
+		
+		while(true) {
+			option = JOptionPane.showConfirmDialog(null, message, "Enter Map Size", JOptionPane.OK_CANCEL_OPTION);
+			
+			if (option == JOptionPane.OK_OPTION) {
 				try {
-					iwidth = Integer.parseInt(swidth);
+					iwidth = Integer.parseInt(swidth.getText());
+					iheight = Integer.parseInt(sheight.getText());
 					map_size.width = Map.boundNumber(iwidth, 3, 15);
+					map_size.height = Map.boundNumber(iheight, 3, 15);
+					return true;
 				}
 				catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(main_menu, "Invalid width entered");
-					swidth = null;
+					JOptionPane.showMessageDialog(main_menu, "Invalid value entered.");
 				}
 			}
 			else {
-				customMapMode = false;
-				button_selector.setStartGame(false);
-				resetGame();
-				return;
+			    return false;
 			}
 		}
 		
-		while (sheight == null) {
-			sheight = JOptionPane.showInputDialog("What is the map height (minimum 3, maximum 15)?");
-			if (sheight != null) {
-				try {
-					iheight = Integer.parseInt(sheight);
-					map_size.height = Map.boundNumber(iheight, 3, 15);
-				}
-				catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(main_menu, "Invalid height entered");
-					sheight = null;
-				}
-			}
-			else {
-				customMapMode = false;
-				button_selector.setStartGame(false);
-				resetGame();
-				return;
-			}
-		}
 	}
 	
 	private void validateAndSaveCustomMap() {
@@ -663,6 +659,7 @@ public class GameController implements ActionListener, Serializable{
 			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
 			
 			map = (Map) objectStream.readObject();
+			map.refreshCellSelectors();
 			
 			fileStream.close();
 			objectStream.close();

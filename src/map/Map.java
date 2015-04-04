@@ -197,4 +197,12 @@ public abstract class Map implements Serializable{
 		}
 	}
 	
+	public void refreshCellSelectors() {
+		for (int i = 0; i < Grid.length; i++) {
+			for (int j = 0; j < Grid[0].length; j++) {
+				Grid[i][j].updateCellSelector();
+			}
+		}
+	}
+	
 }
