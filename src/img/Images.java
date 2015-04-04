@@ -8,19 +8,19 @@ import javax.imageio.ImageIO;
 
 public class Images {
 
-	private BufferedImage regularCritterImage = null;
+	public BufferedImage regularCritterImage;
+	public BufferedImage menuBackground;
 	
 	public Images() {
-		// TODO Auto-generated constructor stub
+		loadImages();
 	}
 	
 	public void loadImages() {
-		
 		try {
-			regularCritterImage = ImageIO.read(new File("menu background.jpg"));
+			regularCritterImage = ImageIO.read(new File("src/img/regularCritter.png"));
+			menuBackground = ImageIO.read(new File("src/img/menuBackground.jpg"));
 		} catch (IOException e) {
+			System.out.println("NO");
 		}
-		
 	}
-
 }

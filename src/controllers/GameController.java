@@ -1,5 +1,7 @@
 package controllers;
 
+import img.Images;
+
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,17 +19,34 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
-import main.main;
-import map.*;
-import presentation.*;
+import map.Cell;
+import map.CellSelector;
+import map.CustomMap;
+import map.Map;
+import map.MapFactory;
+import presentation.Application;
+import presentation.Field;
+import presentation.MainMenu;
+import presentation.SideMenu;
 import towerModels.Tower;
-import buttons.*;
+import buttons.Button;
+import buttons.ButtonSelector;
+import buttons.BuyRadialTowerButton;
+import buttons.BuyRegularTowerButton;
+import buttons.BuySplashTowerButton;
+import buttons.SellTowerButton;
+import buttons.StartCustomGameButton;
+import buttons.StartEasyGameButton;
+import buttons.StartHardGameButton;
+import buttons.StartLoadedGameButton;
+import buttons.StartWaveButton;
+import buttons.UpgradeButton;
+import buttons.ValidateAndSaveButton;
 import critterModels.Critter;
 import domain.CritterWaveFactory;
 import domain.Player;
@@ -49,6 +68,7 @@ public class GameController implements ActionListener, Serializable{
 	private ArrayList<Tower> list_of_towers_on_map;
 	private ArrayList<Critter> list_of_critters_on_map;
 	private Queue<Critter> critter_buffer;
+	private Images img;
 	private long time_of_last_deploy;
 	private ArrayList<Button> list_of_buttons;
 	private CritterWaveFactory critter_factory;
@@ -76,9 +96,10 @@ public class GameController implements ActionListener, Serializable{
 		player = Player.getPlayerInstance();
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
+		savedMapsDropdown = new JComboBox<File>();
+		img = new Images();
 		card_layout = new CardLayout();
 		savedGame = new File("src/savedGames/game.txt");
-		savedMapsDropdown = new JComboBox<File>();
 		dropdownFull = false;
 		//create Field with paint function defined in controller
 		setMainMenu(new MainMenu() {
@@ -225,6 +246,7 @@ public class GameController implements ActionListener, Serializable{
 	}
 
 	protected void doMainMenuDrawing(Graphics g) {
+		g.drawImage(img.menuBackground, 0, 0, null);
 		for (int i = 0; i < main_menu.getComponents().length; i++) {
 			main_menu.getComponent(i).paint(g);
 		}
