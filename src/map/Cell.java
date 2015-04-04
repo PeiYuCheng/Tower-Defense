@@ -135,6 +135,10 @@ public abstract class Cell implements CellInterface, Serializable{
 		selectable = false;
 	}
 	
+	public void updateCellSelector() {
+		cell_selector = CellSelector.getInstance();
+	}
+	
 	private class MouseMaster extends MouseAdapter implements Serializable{
 		
 		@Override
