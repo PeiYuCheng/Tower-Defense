@@ -31,11 +31,7 @@ import map.*;
 import presentation.*;
 import towerModels.Tower;
 import buttons.*;
-import critterModels.BossCritter;
-import critterModels.Critter;
-import critterModels.LargeCritter;
-import critterModels.MediumCritter;
-import critterModels.RegularCritter;
+import critterModels.*;
 import domain.CritterWaveFactory;
 import domain.Player;
 
@@ -135,12 +131,20 @@ public class GameController implements ActionListener, Serializable{
 		});
 		
 		// Set up the main menu buttons
-		main_menu.add(savedMapsDropdown = new JComboBox<File>());
-		savedMapsDropdown.setLocation(new Point(400, 200));
 		main_menu.add(new StartEasyGameButton(200, 200, 150, 50));
 		main_menu.add(new StartHardGameButton(200, 300, 150, 50));
 		main_menu.add(new StartCustomGameButton(200, 400, 150, 50));
 		main_menu.add(new StartLoadedGameButton(200, 500, 150, 50));
+		
+		savedMapsDropdown = new JComboBox<File>() {
+			@Override
+			public void paint(Graphics g) {
+				savedMapsDropdown.setLocation(new Point(400, 200));
+				super.paint(g);
+			}
+		};
+		
+		main_menu.add(savedMapsDropdown);
 		
 		// Set up the side menu buttons
 		game_side_menu.add(new BuyRegularTowerButton(10, 100, 30, 30));

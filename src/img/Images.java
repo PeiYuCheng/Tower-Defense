@@ -8,11 +8,18 @@ import javax.imageio.ImageIO;
 
 public class Images {
 
+	private static Images images;
 	public BufferedImage regularCritterImage;
 	public BufferedImage menuBackground;
 	
-	public Images() {
-		loadImages();
+	private Images() {}
+	
+	public static Images getUniqueInstance() {
+		if (images == null) {
+			images = new Images();
+			images.loadImages();
+		}
+		return images;
 	}
 	
 	public void loadImages() {
