@@ -7,6 +7,10 @@ import javax.swing.JComponent;
 
 public abstract class Map implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected int Width;
 	protected int Height;
 	protected Cell[][] Grid; // 2 dimensional array

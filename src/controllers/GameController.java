@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,6 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -25,30 +27,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
-import map.Cell;
-import map.CellSelector;
-import map.CustomMap;
-import map.Map;
-import map.MapFactory;
-import presentation.Application;
-import presentation.Field;
-import presentation.MainMenu;
-import presentation.SideMenu;
+import map.*;
+import presentation.*;
 import towerModels.Tower;
-import buttons.Button;
-import buttons.ButtonSelector;
-import buttons.BuyRadialTowerButton;
-import buttons.BuyRegularTowerButton;
-import buttons.BuySplashTowerButton;
-import buttons.SellTowerButton;
-import buttons.StartCustomGameButton;
-import buttons.StartEasyGameButton;
-import buttons.StartHardGameButton;
-import buttons.StartLoadedGameButton;
-import buttons.StartWaveButton;
-import buttons.UpgradeButton;
-import buttons.ValidateAndSaveButton;
+import buttons.*;
+import critterModels.BossCritter;
 import critterModels.Critter;
+import critterModels.LargeCritter;
+import critterModels.MediumCritter;
+import critterModels.RegularCritter;
 import domain.CritterWaveFactory;
 import domain.Player;
 
@@ -97,7 +84,6 @@ public class GameController implements ActionListener, Serializable{
 		player = Player.getPlayerInstance();
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
-		savedMapsDropdown = new JComboBox<File>();
 		img = new Images();
 		card_layout = new CardLayout();
 		savedGame = new File("src/savedGames/game.txt");
@@ -148,22 +134,23 @@ public class GameController implements ActionListener, Serializable{
 			}
 		});
 		
-		// Set up the side menu buttons
-		game_side_menu.add(new BuyRegularTowerButton(10, 80, 30, 30));
-		game_side_menu.add(new BuySplashTowerButton(70, 80, 30, 30));
-		game_side_menu.add(new BuyRadialTowerButton(130, 80, 30, 30));
-		game_side_menu.add(new UpgradeButton(10, 200, 30, 30));
-		game_side_menu.add(new SellTowerButton(70, 200, 30, 30));
-		game_side_menu.add(new StartWaveButton(100, 20, 30, 30));
-		
-		custom_map_side_menu.add(new ValidateAndSaveButton(10, 80, 30, 30));
-		
 		// Set up the main menu buttons
+		main_menu.add(savedMapsDropdown = new JComboBox<File>());
+		savedMapsDropdown.setLocation(new Point(400, 200));
 		main_menu.add(new StartEasyGameButton(200, 200, 150, 50));
 		main_menu.add(new StartHardGameButton(200, 300, 150, 50));
 		main_menu.add(new StartCustomGameButton(200, 400, 150, 50));
 		main_menu.add(new StartLoadedGameButton(200, 500, 150, 50));
-		main_menu.add(savedMapsDropdown);
+		
+		// Set up the side menu buttons
+		game_side_menu.add(new BuyRegularTowerButton(10, 100, 30, 30));
+		game_side_menu.add(new BuySplashTowerButton(70, 100, 30, 30));
+		game_side_menu.add(new BuyRadialTowerButton(130, 100, 30, 30));
+		game_side_menu.add(new UpgradeButton(10, 200, 30, 30));
+		game_side_menu.add(new SellTowerButton(70, 200, 30, 30));
+		game_side_menu.add(new StartWaveButton(130, 20, 30, 30));
+		
+		custom_map_side_menu.add(new ValidateAndSaveButton(10, 80, 30, 30));
 		
 		timer = new Timer(Application.TIMEOUT,this);
 		timer.start();
@@ -228,7 +215,11 @@ public class GameController implements ActionListener, Serializable{
 		g.setColor(Color.white);
 		g.drawString("Lives: " + player.getLives(), 10, 20);
 		g.drawString("Money: " + player.getMoney(), 10, 40);
-		g.drawString("Towers: ", 10, 70);
+		g.drawString("Towers: ", 10, 90);
+		if (waveStarted)
+			g.drawString("Wave: " + (waveNumber-1) + "/50", 10, 60);
+		else if (!waveStarted && waveNumber != 1)
+			g.drawString("Wave " + (waveNumber-1) + " Complete", 10, 60);
 		
 		for (int i = 0; i < game_side_menu.getComponents().length; i++) {
 			game_side_menu.getComponent(i).paint(g);
@@ -422,6 +413,8 @@ public class GameController implements ActionListener, Serializable{
 					break;
 				}
 			}
+		} else {
+			waveStarted = false;
 		}
 	}
 	
