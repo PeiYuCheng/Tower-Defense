@@ -17,7 +17,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Vector;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -33,6 +35,7 @@ import domain.Player;
 public class GameController implements ActionListener, Serializable{
 
 	private File savedGame;
+	private JComboBox<File> savedMapsDropdown;
 	private Player player;
 	private Map map;
 	private ButtonSelector button_selector;
@@ -56,6 +59,7 @@ public class GameController implements ActionListener, Serializable{
 	private boolean waveStarted;
 	private boolean customMapMode;
 	private boolean validCustomMap;
+	private boolean dropdownFull;
 	
 	public static final int CUSTOM_MAP = 0;
 	public static final int EASY_MAP = 1;
@@ -74,6 +78,8 @@ public class GameController implements ActionListener, Serializable{
 		cell_selector = CellSelector.getInstance();
 		card_layout = new CardLayout();
 		savedGame = new File("src/savedGames/game.txt");
+		savedMapsDropdown = new JComboBox<File>();
+		dropdownFull = false;
 		//create Field with paint function defined in controller
 		setMainMenu(new MainMenu() {
 			@Override
@@ -134,6 +140,8 @@ public class GameController implements ActionListener, Serializable{
 		main_menu.add(new StartEasyGameButton(200, 200, 150, 50));
 		main_menu.add(new StartHardGameButton(200, 300, 150, 50));
 		main_menu.add(new StartCustomGameButton(200, 400, 150, 50));
+		main_menu.add(new StartLoadedGameButton(200, 500, 150, 50));
+		main_menu.add(savedMapsDropdown);
 		
 		timer = new Timer(Application.TIMEOUT,this);
 		timer.start();
@@ -141,9 +149,9 @@ public class GameController implements ActionListener, Serializable{
 	}
 	
 	private void initiateGame(int mapChoice) {
-		
+				
 		if (mapChoice == LOAD_MAP) {
-			//TODO map = ***load map here***
+			loadMap((File) savedMapsDropdown.getSelectedItem());
 		}
 		else {
 			map = MapFactory.getUniqueInstance().createMap(mapChoice, map_size.width, map_size.height);
@@ -508,6 +516,11 @@ public class GameController implements ActionListener, Serializable{
 	
 	private void startGame() {
 		if (!gameStarted) {
+			
+			if (!dropdownFull) {
+				fillSavedMapDropdown();
+			}
+			
 			if (button_selector.isStartGame()) {
 				
 				map_size = new Dimension(0,0);
@@ -535,28 +548,43 @@ public class GameController implements ActionListener, Serializable{
 		
 		while (swidth == null) {
 			swidth = JOptionPane.showInputDialog("What is the map width (minimum 3, maximum 15)?");
-			try {
-				iwidth = Integer.parseInt(swidth);
-				map_size.width = Map.boundNumber(iwidth, 3, 15);
+			if (swidth != null) {
+				try {
+					iwidth = Integer.parseInt(swidth);
+					map_size.width = Map.boundNumber(iwidth, 3, 15);
+				}
+				catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(main_menu, "Invalid width entered");
+					swidth = null;
+				}
 			}
-			catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(main_menu, "Invalid width entered");
-				swidth = null;
+			else {
+				customMapMode = false;
+				button_selector.setStartGame(false);
+				resetGame();
+				return;
 			}
 		}
 		
 		while (sheight == null) {
 			sheight = JOptionPane.showInputDialog("What is the map height (minimum 3, maximum 15)?");
-			try {
-				iheight = Integer.parseInt(sheight);
-				map_size.height = Map.boundNumber(iheight, 3, 15);
+			if (sheight != null) {
+				try {
+					iheight = Integer.parseInt(sheight);
+					map_size.height = Map.boundNumber(iheight, 3, 15);
+				}
+				catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(main_menu, "Invalid height entered");
+					sheight = null;
+				}
 			}
-			catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(main_menu, "Invalid height entered");
-				sheight = null;
+			else {
+				customMapMode = false;
+				button_selector.setStartGame(false);
+				resetGame();
+				return;
 			}
 		}
-
 	}
 	
 	private void validateAndSaveCustomMap() {
@@ -568,7 +596,9 @@ public class GameController implements ActionListener, Serializable{
 					cell.customMapModeOff();
 				}
 				customMapMode = false;
-				//TODO Save map here
+				String mapName = JOptionPane.showInputDialog("Enter map name");
+				saveMap(mapName);
+				dropdownFull = false;
 				resetGame();
 			}
 		}
@@ -586,6 +616,45 @@ public class GameController implements ActionListener, Serializable{
 			custom_map_field.getLayeredPane().remove(current_cell.getComponent());
 			custom_map_field.getLayeredPane().add(new_cell.getComponent(), new Integer(0));
 			
+		}
+	}
+	
+	private void saveMap(String mapName) {
+		try {
+			FileOutputStream fileStream = new FileOutputStream("src/savedMaps/" + mapName + ".txt");
+			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
+	        
+			objectStream.writeObject(map);
+			
+	        objectStream.close();
+	        fileStream.close();
+	        
+	        JOptionPane.showConfirmDialog(game_field, "Saved map Successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+		} catch(Exception e) {
+			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to save map", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+		}
+	}
+	
+	private void loadMap(File mapName) {
+		try {
+			FileInputStream fileStream = new FileInputStream(mapName);
+			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+			
+			map = (Map) objectStream.readObject();
+			
+			fileStream.close();
+			objectStream.close();
+			
+		} catch(Exception e) {
+			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to load map", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+		}
+	}
+	
+	private void fillSavedMapDropdown() {
+		File mapDirectory = new File("src/savedMaps/");
+		for (File file : mapDirectory.listFiles()) {
+			savedMapsDropdown.addItem(file);
+			dropdownFull = true;
 		}
 	}
 	
