@@ -28,13 +28,13 @@ public class StartEasyGameButton extends ClickButton implements Serializable{
 		
 		int fontsize = 24;
 		
-		selectColor(g, BUTTON_COLOR);
-		g.fillRect(position.x, position.y, size.width, size.height);
-		g.setColor(Color.white);
-		g.drawRect(position.x, position.y, size.width, size.height);
+//		selectColor(g, BUTTON_COLOR);
+//		g.fillRect(0, 0, size.width-1, size.height-1);
+//		g.setColor(Color.white);
+//		g.drawRect(0, 0, size.width-1, size.height-1);
 		
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN, fontsize));
-		g.drawString("Easy Game", position.x + 16, position.y + size.height/2 + 8);
+		g.drawString("much easy", 16, (size.height-1)/2 + 8);
 
 	}
 	

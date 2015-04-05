@@ -1,19 +1,23 @@
-package buttons;
+package controllers;
 
 import java.io.Serializable;
 
-import map.CellSelector;
+import buttons.CustomButton;
 
 public class ButtonSelector implements Serializable{
 
 	private static ButtonSelector cell_button;
-	private Button selectedButton;
+	private CustomButton selectedButton;
 	private boolean sellTowerSelected;
 	private boolean upgradeTowerSelected;
 	private boolean start_wave;
 	private boolean start_game;
 	private int map_type;
 	private boolean validate_and_save;
+	private boolean toggleAttackMode;
+	private boolean showNextWaveInfo;
+	private boolean restartGame;
+	private boolean saveGame;
 	
 	private ButtonSelector() {
 	}
@@ -33,11 +37,11 @@ public class ButtonSelector implements Serializable{
 		CellSelector.getInstance().deselectSelectedCell();
 	}
 
-	public void setSelectedButton(Button selectedButton) {
+	public void setSelectedButton(CustomButton selectedButton) {
 		this.selectedButton = selectedButton;
 	}
 	
-	public Button getSelectedButton() {
+	public CustomButton getSelectedButton() {
 		return selectedButton;
 	}
 	
@@ -87,6 +91,38 @@ public class ButtonSelector implements Serializable{
 
 	public void setValidateAndSave(boolean validate_and_save) {
 		this.validate_and_save = validate_and_save;
+	}
+
+	public boolean isToggleAttackMode() {
+		return toggleAttackMode;
+	}
+
+	public void setToggleAttackMode(boolean toggleAttackMode) {
+		this.toggleAttackMode = toggleAttackMode;
+	}
+
+	public boolean isShowNextWaveInfo() {
+		return showNextWaveInfo;
+	}
+
+	public void setShowNextWaveInfo(boolean showNextWaveInfo) {
+		this.showNextWaveInfo = showNextWaveInfo;
+	}
+
+	public boolean isRestartGame() {
+		return restartGame;
+	}
+
+	public void setRestartGame(boolean restartGame) {
+		this.restartGame = restartGame;
+	}
+
+	public boolean isSaveGame() {
+		return saveGame;
+	}
+
+	public void setSaveGame(boolean saveGame) {
+		this.saveGame = saveGame;
 	}
 	
 }

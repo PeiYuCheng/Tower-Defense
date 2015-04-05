@@ -2,9 +2,10 @@ package buttons;
 
 import java.io.Serializable;
 
+import controllers.ButtonSelector;
 import domain.TowerFactory;
 
-public class ToggleButton extends Button implements Serializable {
+public class ToggleButton extends CustomButton implements Serializable {
 
 	private ButtonSelector button_selector;
 	protected TowerFactory tower_factory;

@@ -1,5 +1,7 @@
 package buttons;
 
+import img.Images;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,13 +10,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
+import controllers.ButtonSelector;
 import towerModels.Tower;
 
-public abstract class Button extends JComponent implements Serializable {
+public abstract class CustomButton extends JComponent implements Serializable {
 
-	protected static final Color BUTTON_COLOR = Color.black;
+	protected static final Color REGULAR_BUTTON_COLOR = new Color(0,0,0,0);
+	protected static final Color HOVERED_BUTTON_COLOR = new Color(0,0,0,20);
+	protected static final Color SELECTED_BUTTON_COLOR = new Color(254,140,255,255);
 	protected int button_spacing;
 	protected Point position;
 	protected Dimension size;
@@ -22,16 +30,18 @@ public abstract class Button extends JComponent implements Serializable {
 	protected boolean hovered;
 	private MouseMaster mouse_master;
 	protected ButtonSelector button_selector;
+	protected Images images;
 
-	public Button(int posX, int posY, int width, int height) {
+	public CustomButton(int posX, int posY, int width, int height) {
 		super();
 		position = new Point(posX, posY);
 		size = new Dimension(width, height);
 		setLocation(position);
 		setPreferredSize(size);
-		// setBorder(BorderFactory.createTitledBorder("Node"));
+		setOpaque(false);
 
 		button_selector = ButtonSelector.getInstance();
+		images = Images.getUniqueInstance();
 		mouse_master = new MouseMaster();
 		addMouseListener(mouse_master);
 
@@ -40,24 +50,42 @@ public abstract class Button extends JComponent implements Serializable {
 	@Override
 	protected void paintComponent(Graphics g) {
 		setLocation(position);
+		drawButtonBackground(g);
 		drawButton(g);
 		super.paintComponent(g);
 	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		// TODO Auto-generated method stub
+		return size;
+	}
 
+	public void drawButtonBackground(Graphics g) {
+
+		selectColor(g, REGULAR_BUTTON_COLOR);
+		g.fillRect(0, 0, size.width-1, size.height-1);
+		g.setColor(Color.white);
+		g.drawRect(0, 0, size.width-1, size.height-1);
+
+	}
+	
 	public void drawButton(Graphics g) {
-
-		selectColor(g, BUTTON_COLOR);
-		g.fillRect(position.x, position.y, size.width, size.height);
-		g.setColor(Color.black);
-		g.drawRect(position.x, position.y, size.width, size.height);
-
+		if (selected) {
+			g.setColor(new Color(254,140,255,100));
+			g.fillRect(0, 0, size.width, size.height);
+		}
+		else if (hovered) {
+			g.setColor(new Color(0,0,0,50));
+			g.fillRect(0, 0, size.width, size.height);
+		}
 	}
 
 	protected void selectColor(Graphics g, Color button_color) {
 		if (selected) {
-			g.setColor(Color.magenta);
+			g.setColor(SELECTED_BUTTON_COLOR);
 		} else if (hovered) {
-			g.setColor(Color.gray);
+			g.setColor(HOVERED_BUTTON_COLOR);
 		} else {
 			g.setColor(button_color);
 		}

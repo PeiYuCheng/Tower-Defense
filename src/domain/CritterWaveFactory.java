@@ -29,8 +29,13 @@ public class CritterWaveFactory implements Serializable{
 	
 	private static final int FINAL_WAVE = 50;
 	private Queue<Critter> group;
+	private int waveNumber;
+	private int amountOfSmallCritters;
+	private int amountOfMediumCritters;
+	private int amountOfLargeCritters;
 
 	private CritterWaveFactory() {
+		waveNumber = 0;
 	}
 	
 	public static CritterWaveFactory getInstance() {
@@ -49,7 +54,7 @@ public class CritterWaveFactory implements Serializable{
 	 * 
 	 * @param waveNumber This parameter will change whenever the Player finishes a wave
 	 */
-	public Queue<Critter> createWave(int waveNumber, Map map) {
+	public Queue<Critter> createWave(Map map) {
 		group = new LinkedList<Critter>();
 		// TODO: add real start position for boss and regular
 		Critter regularCritter;
@@ -57,69 +62,23 @@ public class CritterWaveFactory implements Serializable{
 		Critter largeCritter;
 		Critter bossCritter;
 
-		switch (waveNumber) {
-		case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:
-			for (int i = 0; i < waveNumber * 2; i++) {
-				regularCritter = new RegularCritter(0, 0);
-				group.add(regularCritter);
-			}
-			break;
-		case 11:case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:case 20:
-			for (int i = 0; i < waveNumber * 2; i++) {
-				regularCritter = new RegularCritter(0, 0);
-				group.add(regularCritter);
-			}
-			for (int i = 0; i < waveNumber - 10; i++) {
-				mediumCritter = new MediumCritter(0, 0);
-				group.add(mediumCritter);
-			}
-			break;
-		case 21:case 22:case 23:case 24:case 25:case 26:case 27:case 28:case 29:case 30:
-			for (int i = 0; i < waveNumber * 2; i++) {
-				regularCritter = new RegularCritter(0, 0);
-				group.add(regularCritter);
-			}
-			for (int i = 0; i < waveNumber - 15; i++) {
-				mediumCritter = new MediumCritter(0, 0);
-				group.add(mediumCritter);
-			}
-			for (int i = 0; i < waveNumber - 20; i++) {
-				largeCritter = new LargeCritter(0,0);
-				group.add(largeCritter);
-			}
-			break;
-		case 31:case 32:case 33:case 34:case 35:case 36:case 37:case 38:case 39:case 40:
-			for (int i = 0; i < waveNumber * 2; i++) {
-				regularCritter = new RegularCritter(0, 0);
-				group.add(regularCritter);
-			}
-			for (int i = 0; i < waveNumber - 15; i++) {
-				mediumCritter = new MediumCritter(0, 0);
-				group.add(mediumCritter);
-			}
-			for (int i = 0; i < waveNumber - 25; i++) {
-				largeCritter = new LargeCritter(0,0);
-				group.add(largeCritter);
-			}
-			break;
-		case 41:case 42:case 43:case 44:case 45:case 46:case 47:case 48:case 49:
-			for (int i = 0; i < waveNumber; i++) {
-				regularCritter = new RegularCritter(0, 0);
-				group.add(regularCritter);
-			}
-			for (int i = 0; i < waveNumber - 35; i++) {
-				mediumCritter = new MediumCritter(0, 0);
-				group.add(mediumCritter);
-			}
-			for (int i = 0; i < waveNumber - 20; i++) {
-				largeCritter = new LargeCritter(0,0);
-				group.add(largeCritter);
-			}
-			break;
-		case 50:
+		if (waveNumber == FINAL_WAVE) {
 			bossCritter = new BossCritter(0, 0);
 			group.add(bossCritter);
-			break;
+		}
+		else {
+			for (int i = 0; i < amountOfSmallCritters; i++) {
+				regularCritter = new RegularCritter(0, 0);
+				group.add(regularCritter);
+			}
+			for (int i = 0; i < amountOfMediumCritters; i++) {
+				mediumCritter = new MediumCritter(0, 0);
+				group.add(mediumCritter);
+			}
+			for (int i = 0; i < amountOfLargeCritters; i++) {
+				largeCritter = new LargeCritter(0,0);
+				group.add(largeCritter);
+			}
 		}
 		
 		for (Critter critter : group) {
@@ -128,6 +87,69 @@ public class CritterWaveFactory implements Serializable{
 		
 		return group;
 	}
+	
+	public void restartWaves() {
+		waveNumber = 0;
+		amountOfSmallCritters = 0;
+		amountOfMediumCritters = 0;
+		amountOfLargeCritters = 0;
+	}
+	
+	public int countAmountOfSmallCritters(int waveNumber) {
+		if (waveNumber <= 40) {
+			return waveNumber*2;
+		}
+		else if (waveNumber < 50) {
+			return waveNumber;
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	public int countAmountOfMediumCritters(int waveNumber) {
+		if (waveNumber > 10) {
+			if (waveNumber <= 20) {
+				return waveNumber - 10;
+			}
+			else if (waveNumber <= 40) {
+				return waveNumber - 15;
+			}
+			else if (waveNumber < 50) {
+				return waveNumber - 25;
+			}
+			else {
+				return 0;
+			}
+		}
+		return 0;
+	}
+	
+	public int countAmountOfLargeCritters(int waveNumber) {
+		if (waveNumber > 20) {
+			if (waveNumber <= 30) {
+				return waveNumber - 20;
+			}
+			else if (waveNumber <= 40) {
+				return waveNumber - 15;
+			}
+			else if (waveNumber < 50) {
+				return waveNumber - 10;
+			}
+			else {
+				return 0;
+			}
+		}
+		return 0;
+	}
+	
+	public void setupNextWave() {
+		waveNumber++;
+		amountOfSmallCritters = countAmountOfSmallCritters(waveNumber);
+		amountOfMediumCritters = countAmountOfMediumCritters(waveNumber);
+		amountOfLargeCritters = countAmountOfLargeCritters(waveNumber);
+	}
+	
 	/**
 	 * This method empties the CritterWaveFactory. Its a helper method for the next
 	 * one which is <b>dispatchAllCritter()</b>.
@@ -178,5 +200,37 @@ public class CritterWaveFactory implements Serializable{
 
 	public void setGroup(Queue<Critter> group) {
 		this.group = group;
+	}
+
+	public int getWaveNumber() {
+		return waveNumber;
+	}
+
+	public void setWaveNumber(int waveNumber) {
+		this.waveNumber = waveNumber;
+	}
+
+	public int getAmountOfSmallCritters() {
+		return amountOfSmallCritters;
+	}
+
+	public void setAmountOfSmallCritters(int amountOfSmallCritters) {
+		this.amountOfSmallCritters = amountOfSmallCritters;
+	}
+
+	public int getAmountOfMediumCritters() {
+		return amountOfMediumCritters;
+	}
+
+	public void setAmountOfMediumCritters(int amountOfMediumCritters) {
+		this.amountOfMediumCritters = amountOfMediumCritters;
+	}
+
+	public int getAmountOfLargeCritters() {
+		return amountOfLargeCritters;
+	}
+
+	public void setAmountOfLargeCritters(int amountOfLargeCritters) {
+		this.amountOfLargeCritters = amountOfLargeCritters;
 	}
 }

@@ -1,12 +1,16 @@
 package towerModels;
+import img.Images;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 
 import javax.swing.JComponent;
 
+import controllers.CellSelector;
 import map.Cell;
 import critterModels.Critter;
 
@@ -18,8 +22,10 @@ import critterModels.Critter;
 public abstract class Tower extends Observable implements Serializable{
 
 	private final int MAX_UPGRADE_LEVEL = 3;
-	public enum AI_TYPE {FOLLOW, BACK_FIRST, FRONT_FIRST, RADIAL};
+	public enum AI_TYPE {FOLLOW, BACK, FRONT, STRONGEST, WEAKEST, RADIAL};
 	private JComponent tower_component;
+	protected Images images;
+	private boolean towerSelected;
 	
 	/**
 	 * The cost of a tower.
@@ -126,12 +132,13 @@ public abstract class Tower extends Observable implements Serializable{
 		this.active = false;
 		this.time_of_last_fire = 0;
 		this.tower_color = color;
+		images = Images.getUniqueInstance();
 		
 		tower_component = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
-				tower_component.setBounds(cell.getPixelPosition().x, cell.getPixelPosition().y, 
-						cell.getCellSize().width, cell.getCellSize().height);
+				tower_component.setLocation(cell.getPixelPosition());
+				tower_component.setPreferredSize(cell.getCellSize());
 				drawTower(g);
 				super.paintComponent(g);
 			}
@@ -302,6 +309,25 @@ public abstract class Tower extends Observable implements Serializable{
 		notifyObservers();
 	}
 	
+	public void toggleTowerAI() {
+		
+		if (attack_mode.equals(AI_TYPE.RADIAL)) {
+			return;
+		}
+		ArrayList<AI_TYPE> allTypes = new ArrayList<AI_TYPE>(Arrays.asList(AI_TYPE.values()));
+		allTypes.remove(AI_TYPE.RADIAL);
+		
+		for (int i = 0; i < allTypes.size() - 1; i++) {
+			if (attack_mode.equals(allTypes.get(i))) {
+				attack_mode = allTypes.get(i+1);
+				return;
+			}
+		}
+		attack_mode = allTypes.get(0);
+
+
+	}
+	
 	/**
 	 * Chooses a target critter based on the attack mode of the tower.
 	 * @param target_critters A list of the critters in the range of the tower.
@@ -312,6 +338,8 @@ public abstract class Tower extends Observable implements Serializable{
 			current_target_critter = null;
 			return;
 		}
+		
+		Critter target_critter;
 		
 		switch (attack_mode) {
 		
@@ -328,17 +356,39 @@ public abstract class Tower extends Observable implements Serializable{
 			break;
 			
 		// Always changes the target to the first critter in the list
-		case BACK_FIRST:
-			current_target_critter = target_critters.get(0);
+		case BACK:
+			current_target_critter = target_critters.get(target_critters.size() - 1);
 			break;
 			
 		// Always changes the target to the last critter in the list
-		case FRONT_FIRST:
-			current_target_critter = target_critters.get(target_critters.size() - 1);
+		case FRONT:
+			current_target_critter = target_critters.get(0);
 			break;
+			
 		case RADIAL:
 			current_target_critter = null;
 			break;
+			
+		case STRONGEST:
+			target_critter = target_critters.get(0);
+			for (Critter critter : target_critters) {
+				if (critter.getDamagingPower() > target_critter.getDamagingPower()) {
+					target_critter = critter;
+				}
+			}
+			current_target_critter = target_critter;
+			break;
+			
+		case WEAKEST:
+			target_critter = target_critters.get(0);
+			for (Critter critter : target_critters) {
+				if (critter.getDamagingPower() < target_critter.getDamagingPower()) {
+					target_critter = critter;
+				}
+			}
+			current_target_critter = target_critter;
+			break;
+			
 		default:
 			break;
 		}
@@ -355,7 +405,6 @@ public abstract class Tower extends Observable implements Serializable{
 
 		detectCritterTargets(all_critters_on_map);
 		amount_of_damage = actualPower();
-		// TODO invoke the damage method of the critter
 		if (canFire() && this.getCurrentTargetCritter() != null) {
 			current_target_critter.damageCritter(amount_of_damage, pyro_damage, slow_damage);
 			time_of_last_fire = System.currentTimeMillis();
@@ -589,17 +638,22 @@ public abstract class Tower extends Observable implements Serializable{
 		return tower_color;
 	}
 
-	private void drawTower(Graphics g) {
+	public void drawTower(Graphics g) {
 		
-		g.setColor(this.getTowerColor());
-		g.fillOval(0, 0, cell.getCellSize().width, cell.getCellSize().height);
+//		g.setColor(this.getTowerColor());
+//		g.fillOval(0, 0, cell.getCellSize().width, cell.getCellSize().height);
+//		
+//		g.setColor(Color.red);
+//		if (upgrade_level >= 2) {
+//			g.drawOval(cell.getCellSize().width/8, cell.getCellSize().height/8, cell.getCellSize().width*3/4, cell.getCellSize().height*3/4);
+//		}
+//		if (upgrade_level >= 3) {
+//			g.drawOval(cell.getCellSize().width/4, cell.getCellSize().height/4, cell.getCellSize().width/2, cell.getCellSize().height/2);
+//		}
 		
-		g.setColor(Color.red);
-		if (upgrade_level >= 2) {
-			g.drawOval(cell.getCellSize().width/8, cell.getCellSize().height/8, cell.getCellSize().width*3/4, cell.getCellSize().height*3/4);
-		}
-		if (upgrade_level >= 3) {
-			g.drawOval(cell.getCellSize().width/4, cell.getCellSize().height/4, cell.getCellSize().width/2, cell.getCellSize().height/2);
+		if (towerSelected) {
+			g.setColor(new Color(254,140,255,100));
+			g.fillRect(1, 1, cell.getCellSize().width, cell.getCellSize().height);
 		}
 
 	}
@@ -618,6 +672,14 @@ public abstract class Tower extends Observable implements Serializable{
 	
 	public int actualRateOfFire() {
 		return rate_of_fire*upgrade_level;
+	}
+
+	public boolean isTowerSelected() {
+		return towerSelected;
+	}
+
+	public void setTowerSelected(boolean towerSelected) {
+		this.towerSelected = towerSelected;
 	}
 	
 }

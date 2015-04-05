@@ -27,7 +27,7 @@ public class TowerTest {
 	public void setUp() throws Exception {
 		tower = TowerFactory.getInstance().getNewRegularTower();
 		map = MapFactory.getUniqueInstance().createMap(1, 0, 0);
-		wave = (ArrayList<Critter>) CritterWaveFactory.getInstance().createWave(2, map);
+		wave = (ArrayList<Critter>) CritterWaveFactory.getInstance().createWave(map);
 	}
 
 	@After

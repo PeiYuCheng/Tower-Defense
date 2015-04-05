@@ -23,11 +23,15 @@ public class StartWaveButton extends ClickButton implements Serializable {
 	
 	@Override
 	public void drawButton(Graphics g) {
-		selectColor(g, BUTTON_COLOR);
-		g.fillRect(position.x, position.y, size.width, size.height);
-		g.setColor(Color.white);
-		g.drawRect(position.x, position.y, size.width, size.height);
-		g.drawString("Start Wave", position.x, position.y + 45);
+		
+		g.drawImage(images.newWaveIcon.getScaledInstance(size.width, size.height, 0), 0, 0, null);
+		super.drawButton(g);
+		
+//		selectColor(g, REGULAR_BUTTON_COLOR);
+//		g.fillRect(position.x, position.y, size.width, size.height);
+//		g.setColor(Color.white);
+//		g.drawRect(position.x, position.y, size.width, size.height);
+//		g.drawString("Start Wave", position.x, position.y + 45);
 	}
 	
 	@Override
@@ -36,31 +40,16 @@ public class StartWaveButton extends ClickButton implements Serializable {
 		setSelected(false);
 	}
 	
-	public void displayWaveInfo(Graphics g, int waveNumber, Map map) {
-
-		Queue<Critter> wave = CritterWaveFactory.getInstance().createWave(waveNumber, map);
-		Iterator<Critter> it = wave.iterator();
-		Critter reg = new RegularCritter(0,0);
-		Critter med = new MediumCritter(0,0);
-		Critter lrg = new LargeCritter(0, 0);
-		Critter boss = new BossCritter(0, 0);
-		int count = 0;
-		//TODO: If waveButton is hovered over show next Wave stats
-		if (hovered) {
-			g.drawString("Wave Info", 10, 220);
-			if (it.next().getClass().equals(reg))
-				g.drawString("Regular Critter: " + count++, 10, 230);
-			if (it.next().getClass().equals(med)) {
-				count = 0;
-				g.drawString("Medium Critter: " + count++, 10, 240);
-			}
-			if (it.next().getClass().equals(lrg)) {
-				count = 0;
-				g.drawString("Large Critter: " + count++, 10, 250);
-			}
-			if (it.next().getClass().equals(boss))
-				count = 0;
-			g.drawString("Boss Critter: " + count++, 10, 260);
-		}
+	@Override
+	protected void OnEnter() {
+		button_selector.setShowNextWaveInfo(true);
+		super.OnEnter();
 	}
+	
+	@Override
+	protected void OnExit() {
+		button_selector.setShowNextWaveInfo(false);
+		super.OnExit();
+	}
+	
 }

@@ -1,5 +1,6 @@
 package towerModels;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -12,8 +13,8 @@ import critterModels.Critter;
  */
 public class RadialTower extends Tower implements Serializable {
 
-	public static final int COST = 70;
-	private static final int REFUND_VALUE = 40;
+	public static final int COST = 7;
+	private static final int REFUND_VALUE = 4;
 	private static final int RANGE = 4;
 	private static final int POWER = 4;
 	private static final int RATE_OF_FIRE = 1;
@@ -107,6 +108,20 @@ public class RadialTower extends Tower implements Serializable {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public void drawTower(Graphics g) {
+		if (getUpgradeLevel() == 1) {
+			g.drawImage(images.radialTowerLevelOne.getScaledInstance(40, 40, 0), 1, 1, null);
+		}
+		else if (getUpgradeLevel() == 2) {
+			g.drawImage(images.radialTowerLevelTwo.getScaledInstance(40, 40, 0), 1, 1, null);
+		}
+		else {
+			g.drawImage(images.radialTowerLevelThree.getScaledInstance(40, 40, 0), 1, 1, null);
+		}
+		super.drawTower(g);
 	}
 
 }
