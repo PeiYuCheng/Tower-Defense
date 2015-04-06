@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class EasyMap extends Map implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public EasyMap(int w, int h){
 		Width = w;
 		Height = h;

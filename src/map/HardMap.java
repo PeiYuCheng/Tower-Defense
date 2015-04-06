@@ -5,6 +5,11 @@ import java.util.ArrayList;
 
 public class HardMap extends Map implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public HardMap(int w, int h) {
 		Width = w;
 		Height = h;

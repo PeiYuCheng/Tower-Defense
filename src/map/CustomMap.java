@@ -7,6 +7,11 @@ import controllers.CellSelector;
 
 public class CustomMap extends Map implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public CustomMap(int w, int h) {
 		Width = w;
 		Height = h;

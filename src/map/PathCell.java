@@ -9,6 +9,10 @@ import java.io.Serializable;
 
 public class PathCell extends Cell implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final Color PATH_CELL_COLOR = Color.orange;
 	private static final boolean SELECTABLE = false;
 	

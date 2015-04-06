@@ -181,6 +181,10 @@ public abstract class Critter extends Observable {
 		return false;
 	}
 	
+	/**
+	 * Sets the movement boolean fields for direction
+	 * @param direction
+	 */
 	public void setMovement(DIRECTION direction) {
 		this.direction = direction;
 	}
