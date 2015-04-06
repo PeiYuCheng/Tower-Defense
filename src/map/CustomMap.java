@@ -64,7 +64,7 @@ public class CustomMap extends Map implements Serializable {
 			}
 		}
 
-		sortPathCells();
+		validateAndSortPathCells();
 	}
 
 }

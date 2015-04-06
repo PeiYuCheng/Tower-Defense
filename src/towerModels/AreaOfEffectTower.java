@@ -18,13 +18,12 @@ public class AreaOfEffectTower extends Tower implements Serializable {
 	private static final int RANGE = 3;
 	private static final int POWER = 3;
 	private static final int RATE_OF_FIRE = 1;
-	public static final Color TOWER_COLOR = Color.orange;
 	
 	private final int AREA_OF_EFFECT = 2;
 	private ArrayList<Critter> area_of_effect_targets;
 	
 	public AreaOfEffectTower() {
-		super(COST, REFUND_VALUE, RANGE, POWER, RATE_OF_FIRE, AI_TYPE.FOLLOW, TOWER_COLOR);
+		super(COST, REFUND_VALUE, RANGE, POWER, RATE_OF_FIRE, AI_TYPE.FOLLOW);
 		area_of_effect_targets = new ArrayList<>();
 	}
 	

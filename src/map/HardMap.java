@@ -121,7 +121,7 @@ public class HardMap extends Map implements Serializable {
 		// set this ExitCell chosen by user to ExitCell
 		this.setExitCell(aCell);
 
-		sortPathCells();
+		validateAndSortPathCells();
 	}
 
 }

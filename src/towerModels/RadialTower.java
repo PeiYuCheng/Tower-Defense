@@ -18,14 +18,13 @@ public class RadialTower extends Tower implements Serializable {
 	private static final int RANGE = 4;
 	private static final int POWER = 4;
 	private static final int RATE_OF_FIRE = 1;
-	public static final Color TOWER_COLOR = Color.cyan;
 	
 	private ArrayList<Critter> radial_targets;
 	private ArrayList<Integer> x_coordinate_target_points;
 	private ArrayList<Integer> y_coordinate_target_points;
 	
 	public RadialTower() {
-		super(COST, REFUND_VALUE, RANGE, POWER, RATE_OF_FIRE, AI_TYPE.RADIAL, TOWER_COLOR);
+		super(COST, REFUND_VALUE, RANGE, POWER, RATE_OF_FIRE, AI_TYPE.RADIAL);
 
 		radial_targets = new ArrayList<>();
 		x_coordinate_target_points = new ArrayList<>();

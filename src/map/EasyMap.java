@@ -206,6 +206,6 @@ public class EasyMap extends Map implements Serializable{
 				// set this ExitCell chosen by user to ExitCell
 				this.setExitCell(aCell);
 				
-				sortPathCells();
+				validateAndSortPathCells();
 	}
 }

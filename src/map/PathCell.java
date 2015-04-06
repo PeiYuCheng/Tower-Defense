@@ -5,19 +5,18 @@ import img.Images;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
+import java.util.Random;
 
 
 public class PathCell extends Cell implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private static final Color PATH_CELL_COLOR = Color.orange;
 	private static final boolean SELECTABLE = false;
 	
 	public PathCell(int posX, int posY, int mapWidth, int mapHeight){
-		super(posX, posY, PATH_CELL_COLOR, SELECTABLE, mapWidth, mapHeight);
+		super(posX, posY, SELECTABLE, mapWidth, mapHeight);
+		Random r = new Random();
+		setCellColor(new Color(200 + r.nextInt(20), 160 + r.nextInt(20) ,50 + r.nextInt(20)));
 	}
 	
 	@Override

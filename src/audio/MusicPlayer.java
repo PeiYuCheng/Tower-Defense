@@ -18,7 +18,7 @@ public class MusicPlayer {
         ContinuousAudioDataStream loop = null;  
 
         try {  
-            BGM = new AudioStream(new FileInputStream("Corncob.mp3"));  
+            BGM = new AudioStream(new FileInputStream("Corncob.wav"));  
             MD = BGM.getData();  
             loop = new ContinuousAudioDataStream(MD);  
         } catch(IOException error)  {  
