@@ -54,7 +54,7 @@ public abstract class Critter extends Observable {
 	protected List<Cell> pathToWalk;
 	private JComponent critter_component;
 	private JComponent healthbar_component;
-	private boolean deployed, up, down, left, right;
+	private boolean deployed;
 	protected DIRECTION direction;
 	public static final long DEPLOY_TIME = 1000;
 	public static final int HEALTH_BAR_WIDTH = 20;
@@ -268,17 +268,27 @@ public abstract class Critter extends Observable {
 				}
 			} else {
 				/*
-				 * This is a copy of the top part but it prevents the
-				 * NoSuchElementException from occurring. It continues the iteration
-				 * until the exit cell is reached
+				 * This ensures that the critter keeps moving into the exit cell
+				 * and gets deleted once it reaches it.
 				 */
-				
-				setMovement(DIRECTION.RIGHT);
-				pixel_position.x += movingSpeed;
+				if (direction == DIRECTION.RIGHT) {
+					pixel_position.x += movingSpeed;
+				}	
+				else if (direction == DIRECTION.LEFT) {
+					pixel_position.x -= movingSpeed;
+				}
+				else if (direction == DIRECTION.UP) {
+					pixel_position.y -= movingSpeed;
+				}
+				else {
+					pixel_position.y += movingSpeed;
+				}
 
 				// Critter reaches the exit cell
-				if (pixel_position.x >= nextPixelPositionX && pixel_position.y >= nextPixelPositionY) {
-					cell_position.setLocation(nextCellPositionX, nextCellPositionY);
+				if (pixel_position.x >= nextPixelPositionX && pixel_position.y >= nextPixelPositionY && (direction == DIRECTION.RIGHT || direction == DIRECTION.DOWN)) {
+					pathToWalk.remove(firstItemInList);
+				}
+				else if (pixel_position.x <= nextPixelPositionX && pixel_position.y <= nextPixelPositionY && (direction == DIRECTION.UP || direction == DIRECTION.LEFT)) {
 					pathToWalk.remove(firstItemInList);
 				}
 			}
@@ -401,38 +411,6 @@ public abstract class Critter extends Observable {
 	public void setMapKnownToCritters (Map map) {
 		mapKnownToCritters = map;
 		pathToWalk.addAll(map.getPath());
-	}
-
-	public boolean isUp() {
-		return up;
-	}
-
-	public void setUp(boolean up) {
-		this.up = up;
-	}
-
-	public boolean isDown() {
-		return down;
-	}
-
-	public void setDown(boolean down) {
-		this.down = down;
-	}
-
-	public boolean isLeft() {
-		return left;
-	}
-
-	public void setLeft(boolean left) {
-		this.left = left;
-	}
-
-	public boolean isRight() {
-		return right;
-	}
-
-	public void setRight(boolean right) {
-		this.right = right;
 	}
 
 	public Point getTruePixelPosition() {
