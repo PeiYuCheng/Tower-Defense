@@ -132,7 +132,7 @@ public abstract class Map implements Serializable{
 			nextCell[3] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y + 1, 0, Grid[0].length - 1)];
 			
 			for (int i = 0; i < nextCell.length; i++) {
-				if (nextCell[i] instanceof PathCell) {
+				if ((nextCell[i] instanceof PathCell) && (currentCell != nextCell[i])) {
 					pathCellCount++;
 				}
 			}
