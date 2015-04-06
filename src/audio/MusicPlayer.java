@@ -60,19 +60,19 @@ public class MusicPlayer {
 		currentFile = soundFile;
 		
 		 try {
-	         // Open an audio input stream.
 				AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-	         // Get a sound clip resource.
 				BGM_clip = AudioSystem.getClip();
-	         // Open audio clip and load samples from the audio input stream.
 				BGM_clip.open(audioIn);
 				BGM_clip.start();
 				BGM_clip.loop(Clip.LOOP_CONTINUOUSLY);
-	      } catch (UnsupportedAudioFileException e) {
+	     }
+		 catch (IOException e) {
+		         e.printStackTrace();
+	     }
+		 catch (UnsupportedAudioFileException e) {
 	         e.printStackTrace();
-	      } catch (IOException e) {
-	         e.printStackTrace();
-	      } catch (LineUnavailableException e) {
+	     }
+		 catch (LineUnavailableException e) {
 	         e.printStackTrace();
 	      }
 		

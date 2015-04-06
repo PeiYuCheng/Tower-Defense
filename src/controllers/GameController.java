@@ -725,6 +725,7 @@ public class GameController implements ActionListener, Serializable{
 		player.restartPlayer();
 		button_selector.deselectSelected();
 		critter_factory.restartWaves();
+		main_menu.revalidate();
 		clearFields();
 		customMapMode = false;
 		gameStarted = false;
