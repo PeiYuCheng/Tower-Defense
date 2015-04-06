@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
@@ -471,9 +472,10 @@ public class GameController implements ActionListener, Serializable{
 	private void deployCritters() {
 
 		Critter current_critter = null;
+		Random r = new Random();
 
 		if (!critter_buffer.isEmpty()) {
-			if (System.currentTimeMillis() - time_of_last_deploy > Critter.DEPLOY_TIME) {
+			if (System.currentTimeMillis() - time_of_last_deploy > Critter.DEPLOY_TIME - r.nextInt(800)) {
 				current_critter = critter_buffer.poll();
 				list_of_critters_on_map.add(current_critter);
 				game_field.getLayeredPane().add(current_critter.getCritterComponent(), new Integer(1));
