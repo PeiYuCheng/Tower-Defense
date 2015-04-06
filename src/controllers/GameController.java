@@ -584,6 +584,12 @@ public class GameController implements ActionListener, Serializable{
 					card_layout.show(Application.getCardContainer(), CARD_CUSTOM_MAP_MAKER);
 					MusicPlayer.playMapMakingBGM();
 				}
+				else if (button_selector.getMapType() == LOAD_MAP) {
+					if (savedMapsDropdown.getSelectedItem() == null) {
+						button_selector.setStartGame(false);
+						return;
+					}
+				}
 				else {
 					card_layout.show(Application.getCardContainer(), CARD_MAIN_GAME);
 					MusicPlayer.playInBetweenWavesBGM();
@@ -700,6 +706,7 @@ public class GameController implements ActionListener, Serializable{
 	}
 	
 	private void fillSavedMapDropdown() {
+		savedMapsDropdown.removeAllItems();
 		File mapDirectory = new File("src/savedMaps/");
 		for (File file : mapDirectory.listFiles()) {
 			savedMapsDropdown.addItem(file);
