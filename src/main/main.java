@@ -18,8 +18,4 @@ public class main {
 		tower_defense = new Application();
 	}
 	
-	public static void restartGame() {
-		tower_defense = new Application();
-	}
-	
 }
