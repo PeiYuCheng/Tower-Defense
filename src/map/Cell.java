@@ -24,7 +24,6 @@ public abstract class Cell implements CellInterface, Serializable{
 	protected static final int CELL_HEIGHT = 40;
 	protected static final int CELL_WIDTH = 40;
 	protected static final int CELL_SPACING = 40;
-	private static final Color SELECTED_COLOR = new Color(125,244,129);
 	protected Point position;
 	protected Point pixel_position;
 	private Color cell_color;
