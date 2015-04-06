@@ -36,18 +36,18 @@ public abstract class Cell implements CellInterface, Serializable{
 	private CellSelector cell_selector;
 	private Tower tower_in_cell;
 	
-	public Cell (int x, int y, Color color, boolean selectable, int mapWidth, int mapHeight) {
+	public Cell (int x, int y, boolean selectable, int mapWidth, int mapHeight) {
 		
 		cell_selector = CellSelector.getInstance();
 		
 		position = new Point(x,y);
 		pixel_position = new Point((((Map.MAX_WIDTH-mapWidth)*CELL_SPACING)/2) + x*CELL_SPACING,(((Map.MAX_HEIGHT-mapHeight)*CELL_SPACING)/2) + y*CELL_SPACING);
-		cell_color = color;
 		this.selectable = selectable;
 		component = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				setBounds(pixel_position.x, pixel_position.y, CELL_WIDTH, CELL_HEIGHT);
+				drawCellBackground(g);
 				drawCell(g);
 				super.paintComponent(g);
 			}
@@ -64,22 +64,19 @@ public abstract class Cell implements CellInterface, Serializable{
 	public int getX() { return position.x; }
 	public int getY() { return position.y; }
 	
-	protected void drawCell(Graphics g) {
-		chooseColor(g);
+	protected void drawCellBackground(Graphics g) {
+		g.setColor(cell_color);
 		g.fillRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
-		g.setColor(Color.black);
-		g.drawRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
 	}
 	
-	public void chooseColor(Graphics g) {
+	protected void drawCell(Graphics g) {
 		if (selected) {
-			g.setColor(Color.magenta);
+			g.setColor(new Color(254,140,255,100));
+			g.fillRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
 		}
 		else if (hovered) {
-			g.setColor(SELECTED_COLOR);
-		}
-		else{
-			g.setColor(cell_color);
+			g.setColor(new Color(0,0,0,50));
+			g.fillRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
 		}
 	}
 	
@@ -87,6 +84,10 @@ public abstract class Cell implements CellInterface, Serializable{
 		return component;
 	}
 
+	public void setCellColor(Color color) {
+		cell_color = color;
+	}
+	
 	public boolean isSelected() {
 		return selected;
 	}

@@ -19,7 +19,7 @@ import critterModels.Critter;
  * @author Jeffrey Kirman (260493368)
  *
  */
-public abstract class Tower extends Observable implements Serializable{
+public abstract class Tower extends Observable implements ITower, Serializable{
 
 	private final int MAX_UPGRADE_LEVEL = 3;
 	public enum AI_TYPE {FOLLOW, BACK, FRONT, STRONGEST, WEAKEST, RADIAL};
@@ -116,9 +116,7 @@ public abstract class Tower extends Observable implements Serializable{
 	 */
 	private int y_position;
 	
-	private Color tower_color;
-	
-	public Tower(int cost, int refund_value, int range, int power, int rate_of_fire, AI_TYPE attack_mode, Color color) {
+	public Tower(int cost, int refund_value, int range, int power, int rate_of_fire, AI_TYPE attack_mode) {
 		
 		this.cost = cost;
 		this.refund_value = refund_value;
@@ -131,7 +129,6 @@ public abstract class Tower extends Observable implements Serializable{
 		this.attack_mode = attack_mode;
 		this.active = false;
 		this.time_of_last_fire = 0;
-		this.tower_color = color;
 		images = Images.getUniqueInstance();
 		
 		tower_component = new JComponent() {
@@ -188,16 +185,6 @@ public abstract class Tower extends Observable implements Serializable{
 	 */
 	public int getRateOfFire() {
 		return rate_of_fire;
-	}
-	
-	/**
-	 * Setter for the rate of fire of the tower.
-	 * @param rate_of_fire The rate of fire of the tower.
-	 */
-	public void setRateOfFire(int rate_of_fire) {
-		this.rate_of_fire = rate_of_fire;
-		setChanged();
-		notifyObservers();
 	}
 
 	/**
@@ -297,7 +284,7 @@ public abstract class Tower extends Observable implements Serializable{
 	 * Changes the attack mode of the tower. (Trying to change the attack mode of a radial tower will do nothing.)
 	 * @param towerAI The AI_TYPE of the new attack mode of the tower
 	 */
-	public void changeTowerAI(AI_TYPE towerAI) {
+	private void changeTowerAI(AI_TYPE towerAI) {
 		
 		if (this.attack_mode == AI_TYPE.RADIAL) {
 			return;
@@ -319,11 +306,11 @@ public abstract class Tower extends Observable implements Serializable{
 		
 		for (int i = 0; i < allTypes.size() - 1; i++) {
 			if (attack_mode.equals(allTypes.get(i))) {
-				attack_mode = allTypes.get(i+1);
+				changeTowerAI(allTypes.get(i+1));
 				return;
 			}
 		}
-		attack_mode = allTypes.get(0);
+		changeTowerAI(allTypes.get(0));
 
 
 	}
@@ -339,59 +326,49 @@ public abstract class Tower extends Observable implements Serializable{
 			return;
 		}
 		
-		Critter target_critter;
+		ITowerTargetingStrategy targeter;
 		
 		switch (attack_mode) {
 		
 		// Only changes target when the current critter is out of range of the tower
 		case FOLLOW:
-			if (!(current_target_critter == null)) {
-				if (!target_critters.contains(current_target_critter)) {
-					current_target_critter = target_critters.get(0);
-				}
-			}
-			else {
-				current_target_critter = target_critters.get(0);
-			}
+			targeter = new TowerTargetingFollow(current_target_critter, target_critters);
 			break;
 			
-		// Always changes the target to the first critter in the list
+		// Always changes the target to the back critter
 		case BACK:
-			current_target_critter = target_critters.get(target_critters.size() - 1);
+			targeter = new TowerTargetingBack(target_critters);
 			break;
 			
-		// Always changes the target to the last critter in the list
+		// Always changes the target to the front critter
 		case FRONT:
-			current_target_critter = target_critters.get(0);
+			targeter = new TowerTargetingFront(target_critters);
 			break;
 			
 		case RADIAL:
-			current_target_critter = null;
+			targeter = null;
 			break;
 			
 		case STRONGEST:
-			target_critter = target_critters.get(0);
-			for (Critter critter : target_critters) {
-				if (critter.getDamagingPower() > target_critter.getDamagingPower()) {
-					target_critter = critter;
-				}
-			}
-			current_target_critter = target_critter;
+			targeter = new TowerTargetingStrongest(target_critters);
 			break;
 			
 		case WEAKEST:
-			target_critter = target_critters.get(0);
-			for (Critter critter : target_critters) {
-				if (critter.getDamagingPower() < target_critter.getDamagingPower()) {
-					target_critter = critter;
-				}
-			}
-			current_target_critter = target_critter;
+			targeter = new TowerTargetingWeakest(target_critters);
 			break;
 			
 		default:
+			targeter = null;
 			break;
 		}
+		
+		if (targeter != null) {
+			current_target_critter = targeter.chooseTargetCritter();
+		}
+		else {
+			current_target_critter = null;
+		}
+		
 		
 	}
 	
@@ -440,15 +417,6 @@ public abstract class Tower extends Observable implements Serializable{
 	}
 
 	/**
-	 * Setter for the refund value of the tower.
-	 * @param refund_value The refund value for the tower.
-	 */
-	public void setRefundValue(int refund_value) {
-		this.refund_value = refund_value;
-		notifyObservers();
-	}
-
-	/**
 	 * Getter for the range of the tower.
 	 * @return The range of the tower.
 	 */
@@ -457,31 +425,11 @@ public abstract class Tower extends Observable implements Serializable{
 	}
 
 	/**
-	 * Setter for the range of the tower.
-	 * @param range The range of the tower.
-	 */
-	public void setRange(int range) {
-		this.range = range;
-		setChanged();
-		notifyObservers();
-	}
-
-	/**
 	 * Getter for the power of each shot of the tower.
 	 * @return The power of each shot of the tower.
 	 */
 	public int getPower() {
 		return power;
-	}
-
-	/**
-	 * Setter for the power of each shot of the tower.
-	 * @param power The power of each shot of the tower.
-	 */
-	public void setPower(int power) {
-		this.power = power;
-		setChanged();
-		notifyObservers();
 	}
 
 	/**
@@ -504,7 +452,7 @@ public abstract class Tower extends Observable implements Serializable{
 	 * Setter for the current target critter that the tower is focusing on.
 	 * @param current_target_critter The current target critter that the tower is focusing on.
 	 */
-	public void setCurrentTargetCritter(Critter current_target_critter) {
+	protected void setCurrentTargetCritter(Critter current_target_critter) {
 		this.current_target_critter = current_target_critter;
 	}
 
@@ -553,28 +501,11 @@ public abstract class Tower extends Observable implements Serializable{
 	}
 
 	/**
-	 * Setter for the current attack mode of the tower.
-	 * @param attack_mode The AI_TYPE enumeration of the current attack mode.
-	 */
-	public void setAttackMode(AI_TYPE attack_mode) {
-		this.attack_mode = attack_mode;
-		notifyObservers();
-	}
-
-	/**
 	 * Getter for the x coordinate of the tower.
 	 * @return The x coordinate of the tower.
 	 */
 	public int getXPosition() {
 		return x_position;
-	}
-
-	/**
-	 * Setter for the x coordinate of the tower.
-	 * @param x_position The x coordinate of the tower.
-	 */
-	public void setXPosition(int x_position) {
-		this.x_position = x_position;
 	}
 
 	/**
@@ -586,18 +517,10 @@ public abstract class Tower extends Observable implements Serializable{
 	}
 
 	/**
-	 * Setter for the y coordinate of the tower.
-	 * @param y_position The y coordinate of the tower.
-	 */
-	public void setYPosition(int y_position) {
-		this.y_position = y_position;
-	}
-
-	/**
 	 * Getter for the time the tower last fired in milliseconds.
 	 * @return The time the tower last fired in milliseconds.
 	 */
-	public long getTimeOfLastFire() {
+	protected long getTimeOfLastFire() {
 		return time_of_last_fire;
 	}
 
@@ -605,7 +528,7 @@ public abstract class Tower extends Observable implements Serializable{
 	 * Setter fore the time the tower last fired in milliseconds.
 	 * @param time_of_last_fire The time the tower last fired in milliseconds.
 	 */
-	public void setTimeOfLastFire(long time_of_last_fire) {
+	protected void setTimeOfLastFire(long time_of_last_fire) {
 		this.time_of_last_fire = time_of_last_fire;
 	}
 
@@ -613,7 +536,7 @@ public abstract class Tower extends Observable implements Serializable{
 	 * Getter for the list of critters in range of the tower.
 	 * @return The list of critters in range of the tower.
 	 */
-	public ArrayList<Critter> getCrittersInRange() {
+	protected ArrayList<Critter> getCrittersInRange() {
 		
 		return critters_in_range;
 	}
@@ -622,7 +545,7 @@ public abstract class Tower extends Observable implements Serializable{
 	 * Getter for the list of all the critters on the map.
 	 * @return The list of all the critters on the map.
 	 */
-	public ArrayList<Critter> getAllCrittersOnMap() {
+	protected ArrayList<Critter> getAllCrittersOnMap() {
 		return all_critters_on_map;
 	}
 	
@@ -634,22 +557,8 @@ public abstract class Tower extends Observable implements Serializable{
 		all_critters_on_map = all_critters;
 	}
 
-	public Color getTowerColor() {
-		return tower_color;
-	}
 
-	public void drawTower(Graphics g) {
-		
-//		g.setColor(this.getTowerColor());
-//		g.fillOval(0, 0, cell.getCellSize().width, cell.getCellSize().height);
-//		
-//		g.setColor(Color.red);
-//		if (upgrade_level >= 2) {
-//			g.drawOval(cell.getCellSize().width/8, cell.getCellSize().height/8, cell.getCellSize().width*3/4, cell.getCellSize().height*3/4);
-//		}
-//		if (upgrade_level >= 3) {
-//			g.drawOval(cell.getCellSize().width/4, cell.getCellSize().height/4, cell.getCellSize().width/2, cell.getCellSize().height/2);
-//		}
+	protected void drawTower(Graphics g) {
 		
 		if (towerSelected) {
 			g.setColor(new Color(254,140,255,100));
@@ -680,6 +589,10 @@ public abstract class Tower extends Observable implements Serializable{
 
 	public void setTowerSelected(boolean towerSelected) {
 		this.towerSelected = towerSelected;
+	}
+	
+	public void setAttackMode(AI_TYPE attack_mode) {
+		this.attack_mode = attack_mode;
 	}
 	
 }

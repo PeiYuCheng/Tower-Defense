@@ -61,12 +61,10 @@ public class GameController implements ActionListener, Serializable{
 	private ArrayList<Critter> list_of_critters_on_map;
 	private Queue<Critter> critter_buffer;
 	private long time_of_last_deploy;
-	private ArrayList<CustomButton> list_of_buttons;
 	private CritterWaveFactory critter_factory;
 	private CardLayout card_layout;
 	private boolean gameStarted;
 	private Dimension map_size;
-	private boolean waveStarted;
 	private boolean customMapMode;
 	private boolean validCustomMap;
 	private boolean dropdownFull;
@@ -91,7 +89,7 @@ public class GameController implements ActionListener, Serializable{
 		card_layout = new CardLayout();
 		savedGame = new File("src/savedGames/game.txt");
 		dropdownFull = false;
-		MusicPlayer.music();
+		MusicPlayer.playMainMenuBGM();;
 		images = Images.getUniqueInstance();
 		//create Field with paint function defined in controller
 		setMainMenu(new MainMenu() {
@@ -201,7 +199,6 @@ public class GameController implements ActionListener, Serializable{
 			
 			list_of_critters_on_map = new ArrayList<>();
 			list_of_towers_on_map = new ArrayList<>();
-			list_of_buttons = new ArrayList<>();
 			critter_factory = CritterWaveFactory.getInstance();
 			critter_buffer = new LinkedList<>();
 			
@@ -460,14 +457,13 @@ public class GameController implements ActionListener, Serializable{
 
 	private void startWave() {
 
-		if (button_selector.isStartWave()) {
-
-			if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty()) {
+		if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty()) {
+			MusicPlayer.playInBetweenWavesBGM();
+			if (button_selector.isStartWave()) {
+				MusicPlayer.playWaveBGM();
 				critter_factory.setupNextWave();
 				critter_buffer = critter_factory.createWave(map);
-				waveStarted = true;
 			}
-
 			button_selector.setStartWave(false);
 		}
 	}
@@ -513,8 +509,6 @@ public class GameController implements ActionListener, Serializable{
 					break;
 				}
 			}
-		} else {
-			waveStarted = false;
 		}
 	}
 	
@@ -554,10 +548,7 @@ public class GameController implements ActionListener, Serializable{
 		if (upgradeLevel < 3) {
 			
 		}
-		
-		//		g.drawString("Has pyro damage: " + tower.hasPyroDamage());
-		//		g.drawString("Has slow damage: " + tower.hasSlowDamage());
-		//		g.drawString("Is active: " + tower.isActive());
+
 	}
 	
 	private void printNextWaveInfo(Graphics g, Point position) {
@@ -569,75 +560,75 @@ public class GameController implements ActionListener, Serializable{
 		g.drawString("x " + critter_factory.countAmountOfLargeCritters(critter_factory.getWaveNumber()+1), position.x + 90, position.y);
 	}
 	
-	protected void saveGame() {
-		try {
-			FileOutputStream fileStream = new FileOutputStream(savedGame);
-			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
-			
-	        objectStream.writeObject(player);
-	        objectStream.writeObject(map);
-	        objectStream.writeObject(button_selector);
-	        objectStream.writeObject(cell_selector);
-	        objectStream.writeObject(game_field);
-	        objectStream.writeObject(game_side_menu);
-	        objectStream.writeObject(custom_map_field);
-	        objectStream.writeObject(custom_map_side_menu);
-	        objectStream.writeObject(main_menu);
-	        objectStream.writeObject(timer);
-	        objectStream.writeObject(list_of_towers_on_map);
-	        objectStream.writeObject(list_of_critters_on_map);
-	        objectStream.writeObject(critter_buffer);
-	        objectStream.writeObject(new Long(time_of_last_deploy));
-	        objectStream.writeObject(list_of_buttons);
-	        objectStream.writeObject(critter_factory);
-	        objectStream.writeObject(card_layout);
-	        objectStream.writeObject(new Boolean(gameStarted));
-	        objectStream.writeObject(new Boolean(waveStarted));
-	        objectStream.writeObject(new Dimension(map_size));
-	        
-	        objectStream.close();
-	        fileStream.close();
-	        
-	        JOptionPane.showConfirmDialog(game_field, "Saved game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
-		} catch(Exception e) {
-			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to save game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
-		}
-	}
-	
-	protected void loadGame() {
-		try {
-			FileInputStream fileStream = new FileInputStream(savedGame);
-			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
-			
-			player = (Player) objectStream.readObject();
-			map = (Map) objectStream.readObject();
-			button_selector = (ButtonSelector) objectStream.readObject();
-			cell_selector = (CellSelector) objectStream.readObject();
-			game_field = (Field) objectStream.readObject();
-			game_side_menu = (SideMenu) objectStream.readObject();
-			custom_map_field = (Field) objectStream.readObject();
-			custom_map_side_menu = (SideMenu) objectStream.readObject();
-			main_menu = (MainMenu) objectStream.readObject();
-			timer = (Timer) objectStream.readObject();
-			list_of_towers_on_map = (ArrayList<Tower>) objectStream.readObject();
-			list_of_critters_on_map = (ArrayList<Critter>) objectStream.readObject();
-			critter_buffer = (Queue<Critter>) objectStream.readObject();
-			time_of_last_deploy = (Long) objectStream.readObject();
-			list_of_buttons = (ArrayList<CustomButton>) objectStream.readObject();
-			critter_factory = (CritterWaveFactory) objectStream.readObject();
-			card_layout = (CardLayout) objectStream.readObject();
-			gameStarted = (Boolean) objectStream.readObject();
-			waveStarted = (Boolean) objectStream.readObject();
-			map_size = (Dimension) objectStream.readObject();
-			
-			fileStream.close();
-			objectStream.close();
-			
-			JOptionPane.showConfirmDialog(game_field, "Loaded game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
-		} catch(Exception e) {
-			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to load game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
-		}
-	}
+//	protected void saveGame() {
+//		try {
+//			FileOutputStream fileStream = new FileOutputStream(savedGame);
+//			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
+//			
+//	        objectStream.writeObject(player);
+//	        objectStream.writeObject(map);
+//	        objectStream.writeObject(button_selector);
+//	        objectStream.writeObject(cell_selector);
+//	        objectStream.writeObject(game_field);
+//	        objectStream.writeObject(game_side_menu);
+//	        objectStream.writeObject(custom_map_field);
+//	        objectStream.writeObject(custom_map_side_menu);
+//	        objectStream.writeObject(main_menu);
+//	        objectStream.writeObject(timer);
+//	        objectStream.writeObject(list_of_towers_on_map);
+//	        objectStream.writeObject(list_of_critters_on_map);
+//	        objectStream.writeObject(critter_buffer);
+//	        objectStream.writeObject(new Long(time_of_last_deploy));
+//	        objectStream.writeObject(list_of_buttons);
+//	        objectStream.writeObject(critter_factory);
+//	        objectStream.writeObject(card_layout);
+//	        objectStream.writeObject(new Boolean(gameStarted));
+//	        objectStream.writeObject(new Boolean(waveStarted));
+//	        objectStream.writeObject(new Dimension(map_size));
+//	        
+//	        objectStream.close();
+//	        fileStream.close();
+//	        
+//	        JOptionPane.showConfirmDialog(game_field, "Saved game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+//		} catch(Exception e) {
+//			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to save game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+//		}
+//	}
+//	
+//	protected void loadGame() {
+//		try {
+//			FileInputStream fileStream = new FileInputStream(savedGame);
+//			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+//			
+//			player = (Player) objectStream.readObject();
+//			map = (Map) objectStream.readObject();
+//			button_selector = (ButtonSelector) objectStream.readObject();
+//			cell_selector = (CellSelector) objectStream.readObject();
+//			game_field = (Field) objectStream.readObject();
+//			game_side_menu = (SideMenu) objectStream.readObject();
+//			custom_map_field = (Field) objectStream.readObject();
+//			custom_map_side_menu = (SideMenu) objectStream.readObject();
+//			main_menu = (MainMenu) objectStream.readObject();
+//			timer = (Timer) objectStream.readObject();
+//			list_of_towers_on_map = (ArrayList<Tower>) objectStream.readObject();
+//			list_of_critters_on_map = (ArrayList<Critter>) objectStream.readObject();
+//			critter_buffer = (Queue<Critter>) objectStream.readObject();
+//			time_of_last_deploy = (Long) objectStream.readObject();
+//			list_of_buttons = (ArrayList<CustomButton>) objectStream.readObject();
+//			critter_factory = (CritterWaveFactory) objectStream.readObject();
+//			card_layout = (CardLayout) objectStream.readObject();
+//			gameStarted = (Boolean) objectStream.readObject();
+//			waveStarted = (Boolean) objectStream.readObject();
+//			map_size = (Dimension) objectStream.readObject();
+//			
+//			fileStream.close();
+//			objectStream.close();
+//			
+//			JOptionPane.showConfirmDialog(game_field, "Loaded game successfully", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+//		} catch(Exception e) {
+//			JOptionPane.showConfirmDialog(game_field, e.toString() + "\nFailed to load game", "Tower Defense", JOptionPane.DEFAULT_OPTION);
+//		}
+//	}
 	
 	private void startGame() {
 		if (!gameStarted) {
@@ -659,9 +650,11 @@ public class GameController implements ActionListener, Serializable{
 					}
 
 					card_layout.show(Application.getCardContainer(), CARD_CUSTOM_MAP_MAKER);
+					MusicPlayer.playMapMakingBGM();
 				}
 				else {
 					card_layout.show(Application.getCardContainer(), CARD_MAIN_GAME);
+					MusicPlayer.playInBetweenWavesBGM();
 				}
 				
 				initiateGame(button_selector.getMapType());
@@ -801,9 +794,11 @@ public class GameController implements ActionListener, Serializable{
 	
 	private void resetGame() {
 		card_layout.show(Application.getCardContainer(), CARD_MAIN_MENU);
+		MusicPlayer.playMainMenuBGM();
 		player.restartPlayer();
 		critter_factory.restartWaves();
 		clearFields();
+		customMapMode = false;
 		gameStarted = false;
 	}
 	
@@ -817,13 +812,13 @@ public class GameController implements ActionListener, Serializable{
 		}
 	}
 	
-	private void saveGameRequest() {
-		if (button_selector.isSaveGame()) {
-			saveGame();
-			button_selector.setSaveGame(false);
-			JOptionPane.showMessageDialog(game_field, "Game was saved!");
-		}
-	}
+//	private void saveGameRequest() {
+//		if (button_selector.isSaveGame()) {
+//			saveGame();
+//			button_selector.setSaveGame(false);
+//			JOptionPane.showMessageDialog(game_field, "Game was saved!");
+//		}
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -848,10 +843,10 @@ public class GameController implements ActionListener, Serializable{
 			startWave();
 			deployCritters();
 			moveCritters();
-			startWave();
 			killCritter();
 			
-			saveGameRequest();
+			// Miscellaneous logic
+//			saveGameRequest();
 			returnToMenu(game_field);
 			endGame();
 		}

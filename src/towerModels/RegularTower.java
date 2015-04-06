@@ -16,11 +16,10 @@ public class RegularTower extends Tower implements Serializable {
 	private static final int RANGE = 1;
 	private static final int POWER = 5;
 	private static final int RATE_OF_FIRE = 1;
-	public static final Color TOWER_COLOR = Color.blue;
 	
 	
 	public RegularTower() {
-		super(COST, REFUND_VALUE, RANGE, POWER, RATE_OF_FIRE, AI_TYPE.FOLLOW, TOWER_COLOR);
+		super(COST, REFUND_VALUE, RANGE, POWER, RATE_OF_FIRE, AI_TYPE.FOLLOW);
 	}
 	
 	/**

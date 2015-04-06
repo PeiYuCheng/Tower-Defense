@@ -7,9 +7,6 @@ import javax.swing.JComponent;
 
 public abstract class Map implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public static final int MAX_WIDTH = 15;
 	public static final int MAX_HEIGHT = 15;
@@ -83,9 +80,11 @@ public abstract class Map implements Serializable{
 		Cell LastCell;
 		
 		if(EntryCell == null || ExitCell == null){
-			valid = false;
+			return false;
 		} else {
-			sortPathCells();
+			if (!validateAndSortPathCells()) {
+				return false;
+			}
 			FirstCell = EntryCell;
 			LastCell = ExitCell;
 			previousX = FirstCell.getX();
@@ -95,8 +94,7 @@ public abstract class Map implements Serializable{
 		//to the next cell, so return false
 			for(Cell aCell : path){
 				if(aCell.getX() != previousX && aCell.getY() != previousY ){
-					valid = false;
-					break;
+					return false;
 				}
 				previousX = aCell.getX();
 				previousY = aCell.getY();
@@ -105,16 +103,18 @@ public abstract class Map implements Serializable{
 		//the last cell.
 		//check if it is the coordinate of the last cell
 			if(previousX != LastCell.getX() || previousY != LastCell.getY()){
-				valid = false;
+				return false;
 			}
 		}
 		
 		return valid;
 	}
 	
-	protected void sortPathCells() {
+	protected boolean validateAndSortPathCells() {
 		
 		ArrayList<Cell> path = new ArrayList<>();
+		int pathCellCount;
+		boolean valid = true;
 		Cell lastCell = null;
 		Cell currentCell;
 		Cell[] nextCell = new Cell[4];
@@ -124,10 +124,22 @@ public abstract class Map implements Serializable{
 		
 		while(currentCell != null) {
 			
+			pathCellCount = 0;
+			
 			nextCell[0] = Grid[boundNumber(currentCell.position.x - 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid[0].length - 1)];
 			nextCell[1] = Grid[boundNumber(currentCell.position.x + 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid[0].length - 1)];
 			nextCell[2] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y - 1, 0, Grid[0].length - 1)];
 			nextCell[3] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y + 1, 0, Grid[0].length - 1)];
+			
+			for (int i = 0; i < nextCell.length; i++) {
+				if (nextCell[i] instanceof PathCell) {
+					pathCellCount++;
+				}
+			}
+			
+			if (pathCellCount > 2) {
+				valid = false;
+			}
 			
 			for (int i = 0; i < nextCell.length; i++) {
 				if (nextCell[i] != currentCell && nextCell[i] != lastCell && nextCell[i] instanceof PathCell) {
@@ -143,6 +155,7 @@ public abstract class Map implements Serializable{
 		}
 		
 		this.path = path;
+		return valid;
 		
 		
 	}
