@@ -19,9 +19,7 @@ public class MusicPlayer {
 	
 	private static Clip BGM_clip;
 	
-	public MusicPlayer() {
-		// TODO Auto-generated constructor stub
-	}
+	public MusicPlayer() {}
 	
 	public static void stopBGM() {
 		if (BGM_clip != null) {
@@ -32,23 +30,27 @@ public class MusicPlayer {
 	public static void playMainMenuBGM() {
 		stopBGM();
 		music(mainMenuBGM);
+		changeBGMVolume(-10);
 	}
 	
 	public static void playInBetweenWavesBGM() {
 		if (!currentFile.equals(inBetweenWavesBGM)) {
 			stopBGM();
 			music(inBetweenWavesBGM);
+			changeBGMVolume(-10);
 		}
 	}
 	
 	public static void playMapMakingBGM() {
 		stopBGM();
 		music(mapMakingBGM);
+		changeBGMVolume(0);
 	}
 	
 	public static void playWaveBGM() {
 		stopBGM();
 		music(waveBGM);
+		changeBGMVolume(0);
 	}
 	
 	public static void music(File soundFile) {
@@ -73,5 +75,10 @@ public class MusicPlayer {
 	      }
 		
     }
+	
+	public static void changeBGMVolume(float volume) {
+		FloatControl gainControl = (FloatControl) BGM_clip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(volume);
+	}
 
 }

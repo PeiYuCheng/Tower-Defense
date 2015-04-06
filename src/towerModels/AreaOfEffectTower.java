@@ -61,7 +61,6 @@ public class AreaOfEffectTower extends Tower implements Serializable {
 			return false;
 		}
 		
-		// TODO invoke the damage method of the critter
 		if (canFire() && this.getCurrentTargetCritter() != null) {
 			for (int i = 0; i < area_of_effect_targets.size(); i++) {
 				area_of_effect_targets.get(i).damageCritter(amount_of_damage, hasPyroDamage(), hasSlowDamage());
@@ -76,13 +75,13 @@ public class AreaOfEffectTower extends Tower implements Serializable {
 	@Override
 	public void drawTower(Graphics g) {
 		if (getUpgradeLevel() == 1) {
-			g.drawImage(images.splashTowerLevelOne.getScaledInstance(40, 40, 0), 1, 1, null);
+			g.drawImage(images.splashTowerLevelOne.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		else if (getUpgradeLevel() == 2) {
-			g.drawImage(images.splashTowerLevelTwo.getScaledInstance(40, 40, 0), 1, 1, null);
+			g.drawImage(images.splashTowerLevelTwo.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		else {
-			g.drawImage(images.splashTowerLevelThree.getScaledInstance(40, 40, 0), 1, 1, null);
+			g.drawImage(images.splashTowerLevelThree.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		super.drawTower(g);
 	}

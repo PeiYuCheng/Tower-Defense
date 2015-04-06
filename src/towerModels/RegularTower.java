@@ -45,13 +45,13 @@ public class RegularTower extends Tower implements Serializable {
 	@Override
 	public void drawTower(Graphics g) {
 		if (getUpgradeLevel() == 1) {
-			g.drawImage(images.regularTowerLevelOne.getScaledInstance(40, 40, 0), 1, 1, null);
+			g.drawImage(images.regularTowerLevelOne.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		else if (getUpgradeLevel() == 2) {
-			g.drawImage(images.regularTowerLevelTwo.getScaledInstance(40, 40, 0), 1, 1, null);
+			g.drawImage(images.regularTowerLevelTwo.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		else {
-			g.drawImage(images.regularTowerLevelThree.getScaledInstance(40, 40, 0), 1, 1, null);
+			g.drawImage(images.regularTowerLevelThree.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		super.drawTower(g);
 	}

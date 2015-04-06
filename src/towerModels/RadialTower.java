@@ -112,13 +112,13 @@ public class RadialTower extends Tower implements Serializable {
 	@Override
 	public void drawTower(Graphics g) {
 		if (getUpgradeLevel() == 1) {
-			g.drawImage(images.radialTowerLevelOne.getScaledInstance(40, 40, 0), 1, 1, null);
+			g.drawImage(images.radialTowerLevelOne.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		else if (getUpgradeLevel() == 2) {
-			g.drawImage(images.radialTowerLevelTwo.getScaledInstance(40, 40, 0), 1, 1, null);
+			g.drawImage(images.radialTowerLevelTwo.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		else {
-			g.drawImage(images.radialTowerLevelThree.getScaledInstance(40, 40, 0), 1, 1, null);
+			g.drawImage(images.radialTowerLevelThree.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		super.drawTower(g);
 	}
