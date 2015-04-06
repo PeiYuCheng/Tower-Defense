@@ -89,7 +89,7 @@ public class GameController implements ActionListener, Serializable{
 		card_layout = new CardLayout();
 		savedGame = new File("src/savedGames/game.txt");
 		dropdownFull = false;
-		MusicPlayer.music();
+		MusicPlayer.playMainMenuBGM();;
 		images = Images.getUniqueInstance();
 		//create Field with paint function defined in controller
 		setMainMenu(new MainMenu() {
@@ -457,13 +457,13 @@ public class GameController implements ActionListener, Serializable{
 
 	private void startWave() {
 
-		if (button_selector.isStartWave()) {
-
-			if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty()) {
+		if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty()) {
+			MusicPlayer.playInBetweenWavesBGM();
+			if (button_selector.isStartWave()) {
+				MusicPlayer.playWaveBGM();
 				critter_factory.setupNextWave();
 				critter_buffer = critter_factory.createWave(map);
 			}
-
 			button_selector.setStartWave(false);
 		}
 	}
@@ -650,9 +650,11 @@ public class GameController implements ActionListener, Serializable{
 					}
 
 					card_layout.show(Application.getCardContainer(), CARD_CUSTOM_MAP_MAKER);
+					MusicPlayer.playMapMakingBGM();
 				}
 				else {
 					card_layout.show(Application.getCardContainer(), CARD_MAIN_GAME);
+					MusicPlayer.playInBetweenWavesBGM();
 				}
 				
 				initiateGame(button_selector.getMapType());
@@ -792,9 +794,11 @@ public class GameController implements ActionListener, Serializable{
 	
 	private void resetGame() {
 		card_layout.show(Application.getCardContainer(), CARD_MAIN_MENU);
+		MusicPlayer.playMainMenuBGM();
 		player.restartPlayer();
 		critter_factory.restartWaves();
 		clearFields();
+		customMapMode = false;
 		gameStarted = false;
 	}
 	
@@ -839,7 +843,6 @@ public class GameController implements ActionListener, Serializable{
 			startWave();
 			deployCritters();
 			moveCritters();
-			startWave();
 			killCritter();
 			
 			// Miscellaneous logic
