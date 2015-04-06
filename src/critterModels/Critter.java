@@ -1,5 +1,7 @@
 package critterModels;
 
+import img.Images;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -53,10 +55,12 @@ public abstract class Critter extends Observable {
 	private JComponent critter_component;
 	private JComponent healthbar_component;
 	private boolean deployed, up, down, left, right;
+	protected DIRECTION direction;
 	public static final long DEPLOY_TIME = 1000;
 	public static final int HEALTH_BAR_WIDTH = 20;
 	public static final int HEALTH_BAR_HEIGHT = 5;
 	public static enum DIRECTION {UP, DOWN, LEFT, RIGHT};
+	protected Images images;
 
 	public Critter(int health, int movingSpeed, int damagingPower, int reward) {
 		this.health = health;
@@ -70,10 +74,11 @@ public abstract class Critter extends Observable {
 		this.cell_position = new Point();
 		this.pathToWalk = new ArrayList<>();
 		this.size = new Dimension();
+		images = Images.getUniqueInstance();
 		critter_component = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
-				setBounds(pixel_position.x, pixel_position.y, size.width, size.height);
+				setBounds(getTruePixelPosition().x, getTruePixelPosition().y, size.width, size.height);
 				drawCritter(g);
 				super.paintComponent(g);
 			}
@@ -81,7 +86,7 @@ public abstract class Critter extends Observable {
 		healthbar_component = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
-				setBounds(pixel_position.x - HEALTH_BAR_WIDTH/2 + size.width/2, pixel_position.y - 15, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
+				setBounds(getTruePixelPosition().x - HEALTH_BAR_WIDTH/2 + size.width/2, getTruePixelPosition().y - 15, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
 				drawHealthBar(g);
 				super.paintComponent(g);
 			}
@@ -177,32 +182,7 @@ public abstract class Critter extends Observable {
 	}
 	
 	public void setMovement(DIRECTION direction) {
-		switch (direction) {
-		case UP:
-			up = true;
-			down = false;
-			left = false;
-			right = false;
-			break;
-		case DOWN:
-			up = false;
-			down = true;
-			left = false;
-			right = false;
-			break;
-		case LEFT:
-			up = false;
-			down = false;
-			left = true;
-			right = false;
-			break;
-		case RIGHT:
-			up = false;
-			down = false;
-			left = false;
-			right = true;
-			break;
-		}
+		this.direction = direction;
 	}
 
 	/**
@@ -299,8 +279,8 @@ public abstract class Critter extends Observable {
 				}
 			}
 		}
-		critter_component.setBounds(pixel_position.x, pixel_position.y, size.width, size.height);
-		healthbar_component.setBounds(pixel_position.x - HEALTH_BAR_WIDTH/2 + size.width/2, pixel_position.y - 15, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
+		critter_component.setBounds(getTruePixelPosition().x, getTruePixelPosition().y, size.width, size.height);
+		healthbar_component.setBounds(getTruePixelPosition().x - HEALTH_BAR_WIDTH/2 + size.width/2, getTruePixelPosition().y - 15, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
 		setChanged();
 		notifyObservers();
 	}
@@ -449,5 +429,9 @@ public abstract class Critter extends Observable {
 
 	public void setRight(boolean right) {
 		this.right = right;
+	}
+
+	public Point getTruePixelPosition() {
+		return new Point(pixel_position.x - 15, pixel_position.y - 15);
 	}
 }

@@ -2,6 +2,7 @@ package critterModels;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.io.Serializable;
 
 /**
@@ -27,7 +28,7 @@ public class MediumCritter extends Critter implements Serializable {
 	private static final int MAX_HEALTH = 150;
 	private static final int DAMAGING_POWER = 5;
 	private static final int MOVING_SPEED = 7;
-	private static final Dimension SIZE = new Dimension(10, 10);
+	private static final Dimension SIZE = new Dimension(30, 30);
 	private static final Color COLOUR = Color.ORANGE;
 
 	public MediumCritter(int startX, int startY) {
@@ -36,6 +37,26 @@ public class MediumCritter extends Critter implements Serializable {
 		setPosY(startY);
 		setSize(SIZE);
 		setColour(COLOUR);
+	}
+	
+	@Override
+	public void drawCritter(Graphics g) {
+		// Critter movement during game loop
+		
+		switch(direction) {
+		case UP:
+			g.drawImage(images.mediumCritterUp.getScaledInstance(18, 29, 0), 5, 0, null);
+			break;
+		case DOWN:
+			g.drawImage(images.mediumCritterDown.getScaledInstance(18, 29, 0), 5, 0, null);
+			break;
+		case LEFT:
+			g.drawImage(images.mediumCritterLeft.getScaledInstance(29, 18, 0), 0, 5, null);
+			break;
+		default:
+			g.drawImage(images.mediumCritterRight.getScaledInstance(29, 18, 0), 0, 5, null);
+			break;
+		}
 	}
 
 }

@@ -33,7 +33,7 @@ public class RegularCritter extends Critter implements Serializable {
 	private static final int MAX_HEALTH = 100;
 	private static final int DAMAGING_POWER = 1;
 	private static final int MOVING_SPEED = 3;
-	private static final Dimension SIZE = new Dimension(5, 5);
+	private static final Dimension SIZE = new Dimension(30, 30);
 	private static final Color COLOUR = Color.BLUE;
 
 	public RegularCritter(int startX, int startY) {
@@ -47,22 +47,20 @@ public class RegularCritter extends Critter implements Serializable {
 	@Override
 	public void drawCritter(Graphics g) {
 		// Critter movement during game loop
-		if (isUp()) {
-			// Move Up
-			g.setColor(COLOUR);
-			g.fillRect(super.pixel_position.x, super.pixel_position.y, 10, 30);
-		} else if (isDown()) {
-			//Move Down
-			g.setColor(COLOUR);
-			g.fillRect(super.pixel_position.x, super.pixel_position.y, 10, 30);
-		} else if (isRight()) {
-			// Move Right
-			g.setColor(COLOUR);
-			g.fillRect(super.pixel_position.x, super.pixel_position.y, 30, 10);
-		} else if (isLeft()) {
-			// Move Left
-			g.setColor(COLOUR);
-			g.fillRect(super.pixel_position.x, super.pixel_position.y, 30, 10);
+		
+		switch(direction) {
+		case UP:
+			g.drawImage(images.regularCritterUp.getScaledInstance(21, 30, 0), 5, 0, null);
+			break;
+		case DOWN:
+			g.drawImage(images.regularCritterDown.getScaledInstance(21, 30, 0), 5, 0, null);
+			break;
+		case LEFT:
+			g.drawImage(images.regularCritterLeft.getScaledInstance(30, 21, 0), 0, 5, null);
+			break;
+		default:
+			g.drawImage(images.regularCritterRight.getScaledInstance(30, 21, 0), 0, 5, null);
+			break;
 		}
 	}
 }
