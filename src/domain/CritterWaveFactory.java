@@ -3,7 +3,9 @@ package domain;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 
 import map.Map;
 import critterModels.BossCritter;
@@ -84,6 +86,8 @@ public class CritterWaveFactory implements Serializable{
 		for (Critter critter : group) {
 			critter.setMapKnownToCritters(map);
 		}
+		
+		Collections.shuffle((List<?>) group, new Random(System.nanoTime()));
 		
 		return group;
 	}

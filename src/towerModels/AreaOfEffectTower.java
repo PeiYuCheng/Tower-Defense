@@ -41,7 +41,7 @@ public class AreaOfEffectTower extends Tower implements Serializable {
 			return;
 		}
 		area_of_effect_targets = this.detectCritters(all_critters, current_target_critter.getCell_position().x,
-				current_target_critter.getCell_position().y, AREA_OF_EFFECT);		
+				current_target_critter.getCell_position().y, AREA_OF_EFFECT + getUpgradeLevel());		
 	}
 		
 	/**
