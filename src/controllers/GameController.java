@@ -584,13 +584,13 @@ public class GameController implements ActionListener, Serializable{
 					card_layout.show(Application.getCardContainer(), CARD_CUSTOM_MAP_MAKER);
 					MusicPlayer.playMapMakingBGM();
 				}
-				else if (button_selector.getMapType() == LOAD_MAP) {
-					if (savedMapsDropdown.getSelectedItem() == null) {
-						button_selector.setStartGame(false);
-						return;
-					}
-				}
 				else {
+					if (button_selector.getMapType() == LOAD_MAP) {
+						if (savedMapsDropdown.getSelectedItem() == null) {
+							button_selector.setStartGame(false);
+							return;
+						}
+					}
 					card_layout.show(Application.getCardContainer(), CARD_MAIN_GAME);
 					MusicPlayer.playInBetweenWavesBGM();
 				}
