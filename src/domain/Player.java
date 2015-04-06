@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Player implements Serializable{
 	
 	private final int LIVES_AT_START = 10;
-	private final int MONEY_AT_START = 40;
+	private final int MONEY_AT_START = 60;
 	
 	private int lives;
 	private int money;

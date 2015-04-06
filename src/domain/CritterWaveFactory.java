@@ -100,8 +100,14 @@ public class CritterWaveFactory implements Serializable{
 	}
 	
 	public int countAmountOfSmallCritters(int waveNumber) {
-		if (waveNumber <= 40) {
+		if (waveNumber <= 15) {
 			return waveNumber*2;
+		}
+		else if (waveNumber <= 30) {
+			return waveNumber;
+		}
+		else if (waveNumber <= 40) {
+			return waveNumber/2;
 		}
 		else if (waveNumber < 50) {
 			return waveNumber;
@@ -114,7 +120,7 @@ public class CritterWaveFactory implements Serializable{
 	public int countAmountOfMediumCritters(int waveNumber) {
 		if (waveNumber > 10) {
 			if (waveNumber <= 20) {
-				return waveNumber - 10;
+				return (waveNumber - 10)*4;
 			}
 			else if (waveNumber <= 40) {
 				return waveNumber - 15;
@@ -131,14 +137,11 @@ public class CritterWaveFactory implements Serializable{
 	
 	public int countAmountOfLargeCritters(int waveNumber) {
 		if (waveNumber > 20) {
-			if (waveNumber <= 30) {
-				return waveNumber - 20;
-			}
-			else if (waveNumber <= 40) {
-				return waveNumber - 15;
+			if (waveNumber <= 40) {
+				return (waveNumber - 20)*3;
 			}
 			else if (waveNumber < 50) {
-				return waveNumber - 10;
+				return (waveNumber - 25)*3;
 			}
 			else {
 				return 0;
