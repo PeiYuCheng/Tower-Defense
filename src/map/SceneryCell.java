@@ -9,6 +9,10 @@ import java.util.Random;
 
 public class SceneryCell extends Cell implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final Color SCENERY_CELL_COLOR = new Color(48,173,35);
 	private static final boolean SELECTABLE = true;
 	
