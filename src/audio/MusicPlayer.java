@@ -48,9 +48,11 @@ public class MusicPlayer {
 	}
 	
 	public static void playWaveBGM() {
-		stopBGM();
-		music(waveBGM);
-		changeBGMVolume(0);
+		if (!currentFile.equals(waveBGM)) {
+			stopBGM();
+			music(waveBGM);
+			changeBGMVolume(0);
+		}
 	}
 	
 	public static void music(File soundFile) {
