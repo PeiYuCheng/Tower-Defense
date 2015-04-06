@@ -14,6 +14,10 @@ import towerModels.Tower;
 
 public abstract class Cell implements CellInterface, Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected static final int CELL_HEIGHT = 40;
 	protected static final int CELL_WIDTH = 40;
 	protected static final int CELL_SPACING = 40;
@@ -57,13 +61,11 @@ public abstract class Cell implements CellInterface, Serializable{
 	public int getX() { return position.x; }
 	public int getY() { return position.y; }
 	
-	private void drawCell(Graphics g) {
-		
+	protected void drawCell(Graphics g) {
 		chooseColor(g);
 		g.fillRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
 		g.setColor(Color.black);
 		g.drawRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
-		
 	}
 	
 	public void chooseColor(Graphics g) {

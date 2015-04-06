@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,6 +23,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -635,6 +637,10 @@ public class GameController implements ActionListener, Serializable{
 			FileOutputStream fileStream = new FileOutputStream("src/savedMaps/" + mapName + ".txt");
 			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
 	        
+			ImageIO.write(img.grass, "jpg", objectStream);
+			ImageIO.write(img.street, "png", objectStream);
+			ImageIO.write(img.regularCritterImage, "png", objectStream);
+			ImageIO.write(img.menuBackground, "jpg", objectStream);
 			objectStream.writeObject(map);
 			
 	        objectStream.close();
@@ -651,6 +657,10 @@ public class GameController implements ActionListener, Serializable{
 			FileInputStream fileStream = new FileInputStream(mapName);
 			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
 			
+			img.grass = ImageIO.read(objectStream);
+			img.menuBackground = ImageIO.read(objectStream);
+			img.regularCritterImage = ImageIO.read(objectStream);
+			img.street = ImageIO.read(objectStream);
 			map = (Map) objectStream.readObject();
 			map.refreshCellSelectors();
 			

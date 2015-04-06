@@ -42,19 +42,21 @@ public abstract class Critter extends Observable {
 	private int movingSpeed;
 	private int damagingPower;
 	private int reward;
-	private boolean critterSpawned;
-	private Point pixel_position, cell_position;
+	protected boolean critterSpawned;
+	protected Point pixel_position;
+	protected Point cell_position;
 	private Dimension size;
 	private boolean damagePlayer;
 	private Color colour;
 	private Map mapKnownToCritters;
-	private List<Cell> pathToWalk;
+	protected List<Cell> pathToWalk;
 	private JComponent critter_component;
 	private JComponent healthbar_component;
-	private boolean deployed;
+	private boolean deployed, up, down, left, right;
 	public static final long DEPLOY_TIME = 1000;
 	public static final int HEALTH_BAR_WIDTH = 20;
 	public static final int HEALTH_BAR_HEIGHT = 5;
+	public static enum DIRECTION {UP, DOWN, LEFT, RIGHT};
 
 	public Critter(int health, int movingSpeed, int damagingPower, int reward) {
 		this.health = health;
@@ -173,6 +175,35 @@ public abstract class Critter extends Observable {
 			return true;
 		return false;
 	}
+	
+	public void setMovement(DIRECTION direction) {
+		switch (direction) {
+		case UP:
+			up = true;
+			down = false;
+			left = false;
+			right = false;
+			break;
+		case DOWN:
+			up = false;
+			down = true;
+			left = false;
+			right = false;
+			break;
+		case LEFT:
+			up = false;
+			down = false;
+			left = true;
+			right = false;
+			break;
+		case RIGHT:
+			up = false;
+			down = false;
+			left = false;
+			right = true;
+			break;
+		}
+	}
 
 	/**
 	 * This method deals with the path finding algorithm to make sure that the
@@ -205,6 +236,7 @@ public abstract class Critter extends Observable {
 
 				// Critter spawns on starting cell
 				if (critterSpawned) {
+					setMovement(DIRECTION.RIGHT);
 					pixel_position.setLocation(currentPixelPositionX, currentPixelPositionY);
 					cell_position.setLocation(currentCellPositionX, currentCellPositionY);
 					critterSpawned = false;
@@ -214,12 +246,14 @@ public abstract class Critter extends Observable {
 				if (currentPixelPositionX == nextPixelPositionX) {
 					if (nextPixelPositionY - currentPixelPositionY < 0) {
 						// Move Up
+						setMovement(DIRECTION.UP);
 						pixel_position.y -= movingSpeed;
 						if (pixel_position.y - nextPixelPositionY < 0)
 							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
 					}
 					else {
 						//Move Down
+						setMovement(DIRECTION.DOWN);
 						pixel_position.y += movingSpeed;
 						if (pixel_position.y - nextPixelPositionY > 0)
 							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
@@ -228,12 +262,14 @@ public abstract class Critter extends Observable {
 				else if (currentPixelPositionY == nextPixelPositionY) {
 					if (nextPixelPositionX - currentPixelPositionX > 0) {
 						// Move Right
+						setMovement(DIRECTION.RIGHT);
 						pixel_position.x += movingSpeed;
 						if (pixel_position.x - nextPixelPositionX  > 0)
 							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
 					}
 					else {
 						// Move Left
+						setMovement(DIRECTION.LEFT);
 						pixel_position.x -= movingSpeed;
 						if (pixel_position.x - nextPixelPositionX  < 0)
 							pixel_position.setLocation(nextPixelPositionX, nextPixelPositionY);
@@ -253,6 +289,7 @@ public abstract class Critter extends Observable {
 				 * until the exit cell is reached
 				 */
 				
+				setMovement(DIRECTION.RIGHT);
 				pixel_position.x += movingSpeed;
 
 				// Critter reaches the exit cell
@@ -380,5 +417,37 @@ public abstract class Critter extends Observable {
 	public void setMapKnownToCritters (Map map) {
 		mapKnownToCritters = map;
 		pathToWalk.addAll(map.getPath());
+	}
+
+	public boolean isUp() {
+		return up;
+	}
+
+	public void setUp(boolean up) {
+		this.up = up;
+	}
+
+	public boolean isDown() {
+		return down;
+	}
+
+	public void setDown(boolean down) {
+		this.down = down;
+	}
+
+	public boolean isLeft() {
+		return left;
+	}
+
+	public void setLeft(boolean left) {
+		this.left = left;
+	}
+
+	public boolean isRight() {
+		return right;
+	}
+
+	public void setRight(boolean right) {
+		this.right = right;
 	}
 }

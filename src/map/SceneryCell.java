@@ -1,7 +1,11 @@
 package map;
 
+import img.Images;
+
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.Serializable;
+import java.util.Random;
 
 public class SceneryCell extends Cell implements Serializable{
 

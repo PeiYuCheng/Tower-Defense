@@ -128,6 +128,7 @@ public class CritterWaveFactory implements Serializable{
 		
 		return group;
 	}
+	
 	/**
 	 * This method empties the CritterWaveFactory. Its a helper method for the next
 	 * one which is <b>dispatchAllCritter()</b>.
@@ -136,37 +137,6 @@ public class CritterWaveFactory implements Serializable{
 	 */
 	public Critter dispatchOneCritter() {
 		return group.poll();
-	}
-
-	/**
-	 * This method deals with placing the critter on the map every 10
-	 * milliseconds and getting them ready to begin walking from start to
-	 * finish.
-	 */
-	// TODO: Every 10 seconds add critters to map tiles array.
-	public void dispatchAllCritters() {
-		int i = 1;
-		int wave = Collections.frequency(group, group.peek()) / 2;
-		if (group.peek().getClass().getSimpleName().equals("Boss"))
-			wave = FINAL_WAVE;
-
-		while (!group.isEmpty()) {
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			// TODO: Do it here
-			System.out
-					.println("Critter "
-							+ i
-							+ " of wave "
-							+ wave
-							+ " is a "
-							+ dispatchOneCritter().getClass().getSimpleName()
-							+ " Critter and begins walking from start tile to end tile");
-			i++;
-		}
 	}
 
 	// /////////////////////
