@@ -464,8 +464,8 @@ public class GameController implements ActionListener, Serializable{
 				critter_factory.setupNextWave();
 				critter_buffer = critter_factory.createWave(map);
 			}
-			button_selector.setStartWave(false);
 		}
+		button_selector.setStartWave(false);
 	}
 
 	private void deployCritters() {

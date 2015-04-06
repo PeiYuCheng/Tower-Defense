@@ -13,9 +13,9 @@ import critterModels.Critter;
  */
 public class AreaOfEffectTower extends Tower implements Serializable {
 
-	public static final int COST = 7;
+	public static final int COST = 13;
 	private static final int REFUND_VALUE = 4;
-	private static final int RANGE = 3;
+	private static final int RANGE = 2;
 	private static final int POWER = 3;
 	private static final int RATE_OF_FIRE = 1;
 	

@@ -11,11 +11,11 @@ import java.io.Serializable;
  */
 public class RegularTower extends Tower implements Serializable {
 
-	public static final int COST = 5;
+	public static final int COST = 9;
 	private static final int REFUND_VALUE = 3;
 	private static final int RANGE = 1;
 	private static final int POWER = 5;
-	private static final int RATE_OF_FIRE = 1;
+	private static final int RATE_OF_FIRE = 2;
 	
 	
 	public RegularTower() {
@@ -56,4 +56,10 @@ public class RegularTower extends Tower implements Serializable {
 		super.drawTower(g);
 	}
 
+	@Override
+	public int actualRange() {
+		// TODO Auto-generated method stub
+		return RANGE*(getUpgradeLevel()+1);
+	}
+	
 }

@@ -13,10 +13,10 @@ import critterModels.Critter;
  */
 public class RadialTower extends Tower implements Serializable {
 
-	public static final int COST = 7;
+	public static final int COST = 13;
 	private static final int REFUND_VALUE = 4;
-	private static final int RANGE = 4;
-	private static final int POWER = 4;
+	private static final int RANGE = 3;
+	private static final int POWER = 3;
 	private static final int RATE_OF_FIRE = 1;
 	
 	private ArrayList<Critter> radial_targets;
@@ -121,6 +121,12 @@ public class RadialTower extends Tower implements Serializable {
 			g.drawImage(images.radialTowerLevelThree.getScaledInstance(40, 40, 0), 0, 0, null);
 		}
 		super.drawTower(g);
+	}
+	
+	@Override
+	public int actualRange() {
+		// TODO Auto-generated method stub
+		return RANGE + getUpgradeLevel();
 	}
 
 }
