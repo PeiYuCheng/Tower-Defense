@@ -12,7 +12,7 @@ public class ValidateAndSaveButton extends ClickButton {
 	@Override
 	public void drawButton(Graphics g) {
 		
-		selectColor(g, BUTTON_COLOR);
+		selectColor(g, REGULAR_BUTTON_COLOR);
 		g.fillRect(position.x, position.y, size.width, size.height);
 		g.setColor(Color.white);
 		g.drawRect(position.x, position.y, size.width, size.height);

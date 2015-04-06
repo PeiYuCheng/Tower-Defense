@@ -27,7 +27,7 @@ public class CritterTest {
 	ArrayList<Cell> walkingPath = gameMap.getPath();
 
 	CritterWaveFactory wave = CritterWaveFactory.getInstance();
-	Queue<Critter> critterOnMap = wave.createWave(waveNumber, gameMap);
+	Queue<Critter> critterOnMap = wave.createWave(gameMap);
 
 	// Unit test to check if the critter's health actually goes down
 	@Test
@@ -39,6 +39,9 @@ public class CritterTest {
 
 	@Test
 	public void critterWaveReferencing_test() {
+		for (int i = 0; i < waveNumber; i++) {
+			wave.setupNextWave();
+		}
 		Critter test1 = wave.dispatchOneCritter();
 		Critter test2 = wave.dispatchOneCritter();
 		assertNotSame(test1, test2);

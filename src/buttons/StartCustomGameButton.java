@@ -28,13 +28,13 @@ public class StartCustomGameButton extends ClickButton implements Serializable {
 		
 		int fontsize = 24;
 		
-		selectColor(g, BUTTON_COLOR);
+		selectColor(g, REGULAR_BUTTON_COLOR);
 		g.fillRect(position.x, position.y, size.width, size.height);
 		g.setColor(Color.white);
 		g.drawRect(position.x, position.y, size.width, size.height);
 		
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN, fontsize));
-		g.drawString("Custom Game", position.x + 8, position.y + size.height/2 + 8);
+		g.drawString("custom wow.", 8, size.height/2 + 8);
 
 	}
 	

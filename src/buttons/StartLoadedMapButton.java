@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 import controllers.GameController;
 
-public class StartLoadedGameButton extends ClickButton implements Serializable{
+public class StartLoadedMapButton extends ClickButton implements Serializable{
 String cardLayout = GameController.CARD_MAIN_GAME;
 	
-	public StartLoadedGameButton(int posX, int posY, int width, int height) {
+	public StartLoadedMapButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);
 	}
 
@@ -26,13 +26,13 @@ String cardLayout = GameController.CARD_MAIN_GAME;
 		
 		int fontsize = 24;
 		
-		selectColor(g, BUTTON_COLOR);
-		g.fillRect(position.x, position.y, size.width, size.height);
-		g.setColor(Color.white);
-		g.drawRect(position.x, position.y, size.width, size.height);
+//		selectColor(g, REGULAR_BUTTON_COLOR);
+//		g.fillRect(position.x, position.y, size.width, size.height);
+//		g.setColor(Color.white);
+//		g.drawRect(position.x, position.y, size.width, size.height);
 		
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN, fontsize));
-		g.drawString("Load Map", position.x + 20, position.y + size.height/2 + 8);
+		g.drawString("so load map", 8, size.height/2 + 8);
 
 	}
 }

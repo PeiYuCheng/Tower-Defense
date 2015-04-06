@@ -16,14 +16,17 @@ public class BuyRadialTowerButton extends ToggleButton implements Serializable {
 	@Override
 	public void drawButton(Graphics g) {
 		
-		selectColor(g, BUTTON_COLOR);
-		g.fillRect(position.x, position.y, size.width, size.height);
-		g.setColor(Color.white);
-		g.drawRect(position.x, position.y, size.width, size.height);
-		g.drawString("Radial", position.x, position.y + 45);
-		g.drawString("$" + RadialTower.COST, position.x, position.y + 60);
-		g.setColor(RadialTower.TOWER_COLOR);
-		g.fillOval(position.x + 2, position.y + 2, size.width - 4, size.height - 4);
+		g.drawImage(images.radialTowerLevelOne.getScaledInstance(size.width, size.height, 0), 0, 0, null);
+		super.drawButton(g);
+		
+//		selectColor(g, REGULAR_BUTTON_COLOR);
+//		g.fillRect(0, 0, size.width, size.height);
+//		g.setColor(Color.white);
+//		g.drawRect(0, 0, size.width, size.height);
+//		g.drawString("Radial", 0, 0 + 45);
+//		g.drawString("$" + RadialTower.COST, 0, 60);
+//		g.setColor(RadialTower.TOWER_COLOR);
+//		g.fillOval(2, 2, size.width - 4, size.height - 4);
 	}
 	
 	@Override

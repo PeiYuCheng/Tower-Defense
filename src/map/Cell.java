@@ -1,5 +1,7 @@
 package map;
 
+import img.Images;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,6 +12,7 @@ import java.io.Serializable;
 
 import javax.swing.JComponent;
 
+import controllers.CellSelector;
 import towerModels.Tower;
 
 public abstract class Cell implements CellInterface, Serializable{
@@ -32,10 +35,12 @@ public abstract class Cell implements CellInterface, Serializable{
 	private boolean hovered;
 	private CellSelector cell_selector;
 	private Tower tower_in_cell;
+	protected Images images;
 	
 	public Cell (int x, int y, Color color, boolean selectable) {
 		
 		cell_selector = CellSelector.getInstance();
+		images = Images.getUniqueInstance();
 		
 		position = new Point(x,y);
 		pixel_position = new Point(x*CELL_SPACING,y*CELL_SPACING);

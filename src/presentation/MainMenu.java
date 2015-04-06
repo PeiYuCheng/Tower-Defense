@@ -1,7 +1,9 @@
 package presentation;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Point;
 import java.io.Serializable;
 
@@ -11,8 +13,8 @@ public class MainMenu extends JPanel implements Serializable{
 	
 	public MainMenu() {
 		setBackground(Color.BLACK);
+		setLocation(0,0);
         setPreferredSize(new Dimension(Application.SCREEN_WIDTH, Application.SCREEN_HEIGHT));
-        setLocation(new Point(0, 0));
         setDoubleBuffered(true);
         setVisible(true);
         this.setFocusable(true);

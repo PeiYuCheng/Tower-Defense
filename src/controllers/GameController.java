@@ -5,6 +5,7 @@ import img.Images;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -31,13 +32,12 @@ import javax.swing.Timer;
 
 import map.*;
 import presentation.*;
+import towerModels.AreaOfEffectTower;
+import towerModels.RadialTower;
+import towerModels.RegularTower;
 import towerModels.Tower;
 import buttons.*;
-import critterModels.BossCritter;
-import critterModels.Critter;
-import critterModels.LargeCritter;
-import critterModels.MediumCritter;
-import critterModels.RegularCritter;
+import critterModels.*;
 import domain.CritterWaveFactory;
 import domain.Player;
 
@@ -60,9 +60,8 @@ public class GameController implements ActionListener, Serializable{
 	private Queue<Critter> critter_buffer;
 	private Images img;
 	private long time_of_last_deploy;
-	private ArrayList<Button> list_of_buttons;
+	private ArrayList<CustomButton> list_of_buttons;
 	private CritterWaveFactory critter_factory;
-	private int waveNumber;
 	private CardLayout card_layout;
 	private boolean gameStarted;
 	private Dimension map_size;
@@ -70,6 +69,7 @@ public class GameController implements ActionListener, Serializable{
 	private boolean customMapMode;
 	private boolean validCustomMap;
 	private boolean dropdownFull;
+	private Images images;
 	
 	public static final int CUSTOM_MAP = 0;
 	public static final int EASY_MAP = 1;
@@ -86,10 +86,11 @@ public class GameController implements ActionListener, Serializable{
 		player = Player.getPlayerInstance();
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
-		img = new Images();
+		img = Images.getUniqueInstance();
 		card_layout = new CardLayout();
 		savedGame = new File("src/savedGames/game.txt");
 		dropdownFull = false;
+		images = Images.getUniqueInstance();
 		//create Field with paint function defined in controller
 		setMainMenu(new MainMenu() {
 			@Override
@@ -137,20 +138,33 @@ public class GameController implements ActionListener, Serializable{
 		});
 		
 		// Set up the main menu buttons
-		main_menu.add(savedMapsDropdown = new JComboBox<File>());
-		savedMapsDropdown.setLocation(new Point(400, 200));
-		main_menu.add(new StartEasyGameButton(200, 200, 150, 50));
-		main_menu.add(new StartHardGameButton(200, 300, 150, 50));
-		main_menu.add(new StartCustomGameButton(200, 400, 150, 50));
-		main_menu.add(new StartLoadedGameButton(200, 500, 150, 50));
+		main_menu.add(new StartEasyGameButton(30, 100, 150, 50));
+		main_menu.add(new StartHardGameButton(200, 100, 150, 50));
+		main_menu.add(new StartCustomGameButton(30, 170, 150, 50));
+		main_menu.add(new StartLoadedMapButton(115, 300, 150, 50));
+		
+		savedMapsDropdown = new JComboBox<File>() {
+			@Override
+			public void paintComponent(Graphics g) {
+				savedMapsDropdown.setLocation(new Point(100, 260));
+				super.paintComponent(g);
+			}
+		};
+		
+		main_menu.add(savedMapsDropdown);
+		
+		main_menu.revalidate();
 		
 		// Set up the side menu buttons
-		game_side_menu.add(new BuyRegularTowerButton(10, 100, 30, 30));
-		game_side_menu.add(new BuySplashTowerButton(70, 100, 30, 30));
-		game_side_menu.add(new BuyRadialTowerButton(130, 100, 30, 30));
-		game_side_menu.add(new UpgradeButton(10, 200, 30, 30));
-		game_side_menu.add(new SellTowerButton(70, 200, 30, 30));
-		game_side_menu.add(new StartWaveButton(130, 20, 30, 30));
+		game_side_menu.add(new BuyRegularTowerButton(10, 130, 50, 50));
+		game_side_menu.add(new BuySplashTowerButton(70, 130, 50, 50));
+		game_side_menu.add(new BuyRadialTowerButton(130, 130, 50, 50));
+		game_side_menu.add(new UpgradeButton(10, 250, 50, 50));
+		game_side_menu.add(new SellTowerButton(70, 250, 50, 50));
+		game_side_menu.add(new AttackModeButton(130, 250, 50, 50));
+		game_side_menu.add(new StartWaveButton(10, 490, 50, 50));
+		game_side_menu.add(new SaveGameButton(0, 555, 100, 45));
+		game_side_menu.add(new MenuButton(100, 555, 100, 45));
 		
 		custom_map_side_menu.add(new ValidateAndSaveButton(10, 80, 30, 30));
 		
@@ -187,7 +201,6 @@ public class GameController implements ActionListener, Serializable{
 			list_of_buttons = new ArrayList<>();
 			critter_factory = CritterWaveFactory.getInstance();
 			critter_buffer = new LinkedList<>();
-			waveNumber = 1;
 			
 			for (int i = 0; i < map.getMapHeight(); i++) {
 				for (int j = 0; j < map.getMapWidth(); j++) {
@@ -198,52 +211,102 @@ public class GameController implements ActionListener, Serializable{
 	}
 
 	protected void doGameFieldDrawing(Graphics g) {
-		for (int i = 0; i < game_field.getLayeredPane().getComponents().length; i++) {
-			game_field.getLayeredPane().getComponent(i).paint(g);
-		}
-		
 		game_field.getLayeredPane().repaint();
 	}
 	
 	protected void doCustomMapFieldDrawing(Graphics g) {
-		for (int i = 0; i < custom_map_field.getLayeredPane().getComponents().length; i++) {
-			custom_map_field.getLayeredPane().getComponent(i).paint(g);
-		}
-		
 		custom_map_field.getLayeredPane().repaint();
 	}
 
 	protected void doGameSideMenuDrawing(Graphics g) {
-		g.setColor(Color.white);
-		g.drawString("Lives: " + player.getLives(), 10, 20);
-		g.drawString("Money: " + player.getMoney(), 10, 40);
-		g.drawString("Towers: ", 10, 90);
-		if (waveStarted)
-			g.drawString("Wave: " + (waveNumber-1) + "/50", 10, 60);
-		else if (!waveStarted && waveNumber != 1)
-			g.drawString("Wave " + (waveNumber-1) + " Complete", 10, 60);
 		
-		for (int i = 0; i < game_side_menu.getComponents().length; i++) {
-			game_side_menu.getComponent(i).paint(g);
-			
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+		
+		g.setColor(Color.GREEN);
+		g.drawString("much health: ", 10, 30);
+		g.drawImage(images.healthIcon.getScaledInstance(30, 30, 0), 115, 10, null);
+		g.drawString("x " + player.getLives(), 150, 30);
+		
+		g.setColor(Color.YELLOW);
+		g.drawString("very money: ", 10, 70);
+		g.drawImage(images.moneyIcon.getScaledInstance(30, 30, 0), 115, 50, null);
+		g.drawString("x " + player.getMoney(), 150, 70);
+		
+		// menu seperator, change color
+		g.setColor(new Color(97,80,194,50));
+		g.fillRect(0, 90, 200, 5);
+		
+		// tower buying icons
+		g.setColor(Color.MAGENTA);
+		g.drawString("very buy:", 10, 115);
+		
+		g.setColor(Color.YELLOW);
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+		g.drawImage(images.moneyIcon.getScaledInstance(20, 20, 0), 10, 185, null);
+		g.drawString(" x " + RegularTower.COST, 30, 200);
+		g.drawImage(images.moneyIcon.getScaledInstance(20, 20, 0), 70, 185, null);
+		g.drawString(" x " + AreaOfEffectTower.COST, 90, 200);
+		g.drawImage(images.moneyIcon.getScaledInstance(20, 20, 0), 130, 185, null);
+		g.drawString(" x " + RadialTower.COST, 150, 200);
+		
+		// menu seperator, change color
+		g.setColor(new Color(97,80,194,50));
+		g.fillRect(0, 210, 200, 5);
+		
+		// effect icons
+		g.setColor(Color.CYAN);
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+		g.drawString("much change:", 10, 235);
+		
+		// menu seperator, change color
+		g.setColor(new Color(97,80,194,50));
+		g.fillRect(0, 310, 200, 5);
+		
+		// tower stats
+		g.setColor(Color.ORANGE);
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+		g.drawString("so tower:", 10, 335);
+		
+		g.setColor(Color.white);
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		printTowerStats(g, new Point(10, 355));
+		
+		// menu seperator, change color
+		g.setColor(new Color(97,80,194,50));
+		g.fillRect(0, 450, 200, 5);
+		
+		// enemy info
+		g.setColor(Color.PINK);
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+		g.drawString("much enemy:", 10, 475);
+		
+		g.setColor(Color.white);
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		g.drawString("very wave: " + (critter_factory.getWaveNumber()) + "/50", 70, 490);
+		if (button_selector.isShowNextWaveInfo()) {
+			printNextWaveInfo(g, new Point(70, 510));
 		}
-
-		printTowerStats(g, new Point(10,400));
+				
+		// menu seperator, change color
+		g.setColor(new Color(97,80,194,50));
+		g.fillRect(0, 550, 200, 5);
+		
+//		g.drawString("Lives: " + player.getLives(), 10, 20);
+//		g.drawString("Money: " + player.getMoney(), 10, 40);
+//		g.drawString("Towers: ", 10, 90);
+//		if (waveStarted)
+//			g.drawString("Wave: " + (waveNumber-1) + "/50", 10, 60);
+//		else if (!waveStarted && waveNumber != 1)
+//			g.drawString("Wave " + (waveNumber-1) + " Complete", 10, 60);
 	}
 	
 	protected void doCustomMapSideMenuDrawing(Graphics g) {
 		g.setColor(Color.white);
 		g.drawString("Valid Map: " + validCustomMap, 10, 20);
-		for (int i = 0; i < custom_map_side_menu.getComponents().length; i++) {
-			custom_map_side_menu.getComponent(i).paint(g);
-		}
 	}
 
 	protected void doMainMenuDrawing(Graphics g) {
 		g.drawImage(img.menuBackground, 0, 0, null);
-		for (int i = 0; i < main_menu.getComponents().length; i++) {
-			main_menu.getComponent(i).paint(g);
-		}
 	}
 
 	private void fireTowers() {
@@ -258,7 +321,7 @@ public class GameController implements ActionListener, Serializable{
 
 	private void buyTower() {
 
-		Button button = button_selector.getSelectedButton();
+		CustomButton button = button_selector.getSelectedButton();
 		Tower newTower;
 
 		// check selected button
@@ -269,16 +332,13 @@ public class GameController implements ActionListener, Serializable{
 			return;
 		}
 
-		// check player money
-		if (player.getMoney() < newTower.getCost()) {
-			return;
-		}
-
 		map.Cell towersCell = cell_selector.getSelectedCell();
 
 		if (towersCell != null) {
 
-			if (towersCell.cellAvailable()) {
+			// check player money
+			if (player.getMoney() < newTower.getCost()) {}
+			else if (towersCell.cellAvailable()) {
 				list_of_towers_on_map.add(newTower);
 				newTower.placeTower(towersCell, true);
 				game_field.getLayeredPane().add(newTower.getComponent(), new Integer(1));
@@ -359,15 +419,42 @@ public class GameController implements ActionListener, Serializable{
 		}
 
 	}
+	
+	private void changeTowerAttackMode() {
+
+		map.Cell towersCell = cell_selector.getSelectedCell();
+		Tower selectedTower;
+
+		if ((towersCell == null)) {
+			button_selector.setToggleAttackMode(false);
+			return;
+		}
+
+		selectedTower = towersCell.getTowerInCell();
+
+		if (selectedTower == null) {
+			button_selector.setToggleAttackMode(false);
+			return;
+		}
+
+
+		if (button_selector.isToggleAttackMode()) {
+
+			selectedTower.toggleTowerAI();
+			button_selector.setToggleAttackMode(false);
+
+		}
+
+	}
 
 	private void startWave() {
 
 		if (button_selector.isStartWave()) {
 
 			if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty()) {
-				critter_buffer = critter_factory.createWave(waveNumber, map);
+				critter_factory.setupNextWave();
+				critter_buffer = critter_factory.createWave(map);
 				waveStarted = true;
-				waveNumber++;
 			}
 
 			button_selector.setStartWave(false);
@@ -424,9 +511,6 @@ public class GameController implements ActionListener, Serializable{
 		
 		Tower tower;
 		
-		g.setColor(Color.white);
-		g.drawString("Tower stats:", position.x, position.y + 15);
-		
 		if (button_selector.getSelectedButton() != null) {
 			tower = button_selector.getSelectedButton().getNewTower();
 		}
@@ -443,21 +527,35 @@ public class GameController implements ActionListener, Serializable{
 
 		int upgradeLevel = tower.getUpgradeLevel();
 
-		g.drawString("Level: " + upgradeLevel, position.x, position.y + 30);
-		g.drawString("Power: " + tower.actualPower(), position.x, position.y + 45);
-		g.drawString("Range: " + tower.actualRange(), position.x, position.y + 60);
-		g.drawString("Rate of fire: " + tower.actualRateOfFire(), position.x, position.y + 75);
+		g.drawString("such lvl: " + upgradeLevel, position.x, position.y);
+		g.drawString("much pwr: " + tower.actualPower(), position.x, position.y + 15);
+		g.drawString("very range: " + tower.actualRange(), position.x, position.y + 30);
+		g.drawString("so fire rate: " + tower.actualRateOfFire(), position.x, position.y + 45);
 		if (upgradeLevel == 3) {
-			g.drawString("Upgrade cost: ---", position.x, position.y + 90);
+			g.drawString("very upgrade cost: ---", position.x, position.y + 60);
 		}
 		else {
-			g.drawString("Upgrade cost: " + tower.getUpgradeCost(), position.x, position.y + 90);
+			g.drawString("very upgrade cost: " + tower.getUpgradeCost(), position.x, position.y + 60);
 		}
-		g.drawString("Sell value: " + tower.getRefundValue(), position.x, position.y + 105);
-		g.drawString("Attack mode: " + tower.getAttackMode().toString(), position.x, position.y + 120);
+		g.drawString("so sell value: " + tower.getRefundValue(), position.x, position.y + 75);
+		g.drawString("much mode: " + tower.getAttackMode().toString(), position.x, position.y + 90);
+		
+		if (upgradeLevel < 3) {
+			
+		}
+		
 		//		g.drawString("Has pyro damage: " + tower.hasPyroDamage());
 		//		g.drawString("Has slow damage: " + tower.hasSlowDamage());
 		//		g.drawString("Is active: " + tower.isActive());
+	}
+	
+	private void printNextWaveInfo(Graphics g, Point position) {
+		g.drawImage(images.regularCritterRight.getScaledInstance(30, 21, 0), position.x, position.y - 15, null);
+		g.drawString("x " + critter_factory.countAmountOfSmallCritters(critter_factory.getWaveNumber()+1), position.x + 30, position.y);
+		g.drawImage(images.mediumCritterRight.getScaledInstance(30, 21, 0), position.x, position.y + 15, null);
+		g.drawString("x " + critter_factory.countAmountOfMediumCritters(critter_factory.getWaveNumber()+1), position.x + 30, position.y + 30);
+		g.drawImage(images.largeCritterRight.getScaledInstance(30, 21, 0), position.x + 60, position.y - 15, null);
+		g.drawString("x " + critter_factory.countAmountOfLargeCritters(critter_factory.getWaveNumber()+1), position.x + 90, position.y);
 	}
 	
 	protected void saveGame() {
@@ -481,7 +579,6 @@ public class GameController implements ActionListener, Serializable{
 	        objectStream.writeObject(new Long(time_of_last_deploy));
 	        objectStream.writeObject(list_of_buttons);
 	        objectStream.writeObject(critter_factory);
-	        objectStream.writeObject(new Integer(waveNumber));
 	        objectStream.writeObject(card_layout);
 	        objectStream.writeObject(new Boolean(gameStarted));
 	        objectStream.writeObject(new Boolean(waveStarted));
@@ -515,9 +612,8 @@ public class GameController implements ActionListener, Serializable{
 			list_of_critters_on_map = (ArrayList<Critter>) objectStream.readObject();
 			critter_buffer = (Queue<Critter>) objectStream.readObject();
 			time_of_last_deploy = (Long) objectStream.readObject();
-			list_of_buttons = (ArrayList<Button>) objectStream.readObject();
+			list_of_buttons = (ArrayList<CustomButton>) objectStream.readObject();
 			critter_factory = (CritterWaveFactory) objectStream.readObject();
-			waveNumber = (Integer) objectStream.readObject();
 			card_layout = (CardLayout) objectStream.readObject();
 			gameStarted = (Boolean) objectStream.readObject();
 			waveStarted = (Boolean) objectStream.readObject();
@@ -637,10 +733,6 @@ public class GameController implements ActionListener, Serializable{
 			FileOutputStream fileStream = new FileOutputStream("src/savedMaps/" + mapName + ".txt");
 			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
 	        
-			ImageIO.write(img.grass, "jpg", objectStream);
-			ImageIO.write(img.street, "png", objectStream);
-			ImageIO.write(img.regularCritterImage, "png", objectStream);
-			ImageIO.write(img.menuBackground, "jpg", objectStream);
 			objectStream.writeObject(map);
 			
 	        objectStream.close();
@@ -657,10 +749,6 @@ public class GameController implements ActionListener, Serializable{
 			FileInputStream fileStream = new FileInputStream(mapName);
 			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
 			
-			img.grass = ImageIO.read(objectStream);
-			img.menuBackground = ImageIO.read(objectStream);
-			img.regularCritterImage = ImageIO.read(objectStream);
-			img.street = ImageIO.read(objectStream);
 			map = (Map) objectStream.readObject();
 			map.refreshCellSelectors();
 			
@@ -700,8 +788,27 @@ public class GameController implements ActionListener, Serializable{
 	private void resetGame() {
 		card_layout.show(Application.getCardContainer(), CARD_MAIN_MENU);
 		player.restartPlayer();
+		critter_factory.restartWaves();
 		clearFields();
 		gameStarted = false;
+	}
+	
+	private void returnToMenu() {
+		if (button_selector.isRestartGame()) {
+			int reply = JOptionPane.showConfirmDialog(game_field, "Are you sure you want to quit?", "Quit Game", JOptionPane.YES_NO_OPTION);
+			if (reply == JOptionPane.YES_OPTION) {
+				resetGame();
+			}
+			button_selector.setRestartGame(false);
+		}
+	}
+	
+	private void saveGameRequest() {
+		if (button_selector.isSaveGame()) {
+			saveGame();
+			button_selector.setSaveGame(false);
+			JOptionPane.showMessageDialog(game_field, "Game was saved!");
+		}
 	}
 
 	@Override
@@ -714,10 +821,12 @@ public class GameController implements ActionListener, Serializable{
 			validateAndSaveCustomMap();
 		}
 		else if (gameStarted) {
+			
 			// Tower logic
 			buyTower();
 			sellTower();
 			upgradeTower();
+			changeTowerAttackMode();
 			fireTowers();
 	
 			// Critter logic
@@ -727,6 +836,8 @@ public class GameController implements ActionListener, Serializable{
 			startWave();
 			killCritter();
 			
+			saveGameRequest();
+			returnToMenu();
 			endGame();
 		}
 		

@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class LargeCritter extends Critter implements Serializable {
 
 	// final constants
-	private static final int REWARD = 150;
+	private static final int REWARD = 15;
 	private static final int MAX_HEALTH = 400;
 	private static final int DAMAGING_POWER = 20;
 	private static final int MOVING_SPEED = 4;

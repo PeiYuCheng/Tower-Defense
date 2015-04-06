@@ -3,6 +3,8 @@ package map;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import controllers.CellSelector;
+
 public class CustomMap extends Map implements Serializable {
 
 	public CustomMap(int w, int h) {

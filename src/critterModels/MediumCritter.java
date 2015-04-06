@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class MediumCritter extends Critter implements Serializable {
 	
 	// final constants
-	private static final int REWARD = 50;
+	private static final int REWARD = 5;
 	private static final int MAX_HEALTH = 150;
 	private static final int DAMAGING_POWER = 5;
 	private static final int MOVING_SPEED = 7;

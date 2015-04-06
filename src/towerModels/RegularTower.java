@@ -1,6 +1,7 @@
 package towerModels;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.Serializable;
 
 /**
@@ -10,8 +11,8 @@ import java.io.Serializable;
  */
 public class RegularTower extends Tower implements Serializable {
 
-	public static final int COST = 50;
-	private static final int REFUND_VALUE = 30;
+	public static final int COST = 5;
+	private static final int REFUND_VALUE = 3;
 	private static final int RANGE = 1;
 	private static final int POWER = 5;
 	private static final int RATE_OF_FIRE = 1;
@@ -40,6 +41,20 @@ public class RegularTower extends Tower implements Serializable {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public void drawTower(Graphics g) {
+		if (getUpgradeLevel() == 1) {
+			g.drawImage(images.regularTowerLevelOne.getScaledInstance(40, 40, 0), 1, 1, null);
+		}
+		else if (getUpgradeLevel() == 2) {
+			g.drawImage(images.regularTowerLevelTwo.getScaledInstance(40, 40, 0), 1, 1, null);
+		}
+		else {
+			g.drawImage(images.regularTowerLevelThree.getScaledInstance(40, 40, 0), 1, 1, null);
+		}
+		super.drawTower(g);
 	}
 
 }

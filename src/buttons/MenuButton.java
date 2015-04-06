@@ -1,6 +1,7 @@
 package buttons;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.io.Serializable;
 
@@ -14,16 +15,15 @@ public class MenuButton extends ClickButton implements Serializable {
 	@Override
 	public void drawButton(Graphics g) {
 		
-		selectColor(g, BUTTON_COLOR);
-		g.fillRect(position.x, position.y, size.width, size.height);
-		g.setColor(Color.white);
-		g.drawRect(position.x, position.y, size.width, size.height);
-		g.drawString("Start Game", position.x, position.y);
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+		g.drawString("much menu", 8, (size.height-1)/2 + 6);
+		super.drawButton(g);
+		
 	}
 	
 	@Override
 	protected void OnRelease() {
-//		button_selector.setStart_game(true);
+		button_selector.setRestartGame(true);
 		setSelected(false);
 	}
 }
