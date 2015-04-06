@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
-public class Images implements Serializable{
+
+public class Images implements Serializable {
 
 	/**
 	 * 
@@ -58,6 +60,35 @@ public class Images implements Serializable{
 	// cell icons
 	public BufferedImage grass;
 	public BufferedImage path;
+
+//	public ImageIcon menuBackgroundII;
+//	public ImageIcon moneyIconII;
+//	public ImageIcon healthIconII;
+//	public ImageIcon upgradeIconII;
+//	public ImageIcon sellIconII;
+//	public ImageIcon attackModeIconII;
+//	public ImageIcon newWaveIconII;
+//	public ImageIcon regularTowerLevelOneII;
+//	public ImageIcon regularTowerLevelTwoII;
+//	public ImageIcon regularTowerLevelThreeII;
+//	public ImageIcon splashTowerLevelOneII;
+//	public ImageIcon splashTowerLevelTwoII;
+//	public ImageIcon splashTowerLevelThreeII;
+//	public ImageIcon radialTowerLevelOneII;
+//	public ImageIcon radialTowerLevelTwoII;
+//	public ImageIcon radialTowerLevelThreeII;
+//	public ImageIcon regularCritterDownII;
+//	public ImageIcon regularCritterLeftII;
+//	public ImageIcon regularCritterUpII;
+//	public ImageIcon regularCritterRightII;
+//	public ImageIcon mediumCritterDownII;
+//	public ImageIcon mediumCritterLeftII;
+//	public ImageIcon mediumCritterUpII;
+//	public ImageIcon mediumCritterRightII;
+//	public ImageIcon largeCritterDownII;
+//	public ImageIcon largeCritterLeftII;
+//	public ImageIcon largeCritterUpII;
+//	public ImageIcon largeCritterRightII;
 	
 	private Images() {}
 	
@@ -98,12 +129,44 @@ public class Images implements Serializable{
 			mediumCritterLeft = ImageIO.read(new File("src/img/mediumCritterL.gif"));
 			mediumCritterUp = ImageIO.read(new File("src/img/mediumCritterU.gif"));
 			mediumCritterRight = ImageIO.read(new File("src/img/mediumCritterR.gif"));
-			largeCritterDown = ImageIO.read(new File("src/img/mediumCritterD.gif"));
-			largeCritterLeft = ImageIO.read(new File("src/img/mediumCritterL.gif"));
-			largeCritterUp = ImageIO.read(new File("src/img/mediumCritterU.gif"));
+			largeCritterDown = ImageIO.read(new File("src/img/largeCritterD.gif"));
+			largeCritterLeft = ImageIO.read(new File("src/img/largeCritterL.gif"));
+			largeCritterUp = ImageIO.read(new File("src/img/largeCritterU.gif"));
+			largeCritterRight = ImageIO.read(new File("src/img/largeCritterR.gif"));
 			
 			
-			grass = ImageIO.read(new File("src/img/grass.png"));
+//			menuBackgroundII = new ImageIcon(menuBackground);
+//			
+//			moneyIconII = new ImageIcon(moneyIcon);
+//			healthIconII = new ImageIcon(healthIcon);
+//			upgradeIconII = new ImageIcon(upgradeIcon);
+//			sellIconII = new ImageIcon(sellIcon);
+//			attackModeIconII = new ImageIcon(attackModeIcon);
+//			newWaveIconII = new ImageIcon(newWaveIcon);
+//			
+//			regularTowerLevelOneII = new ImageIcon(regularTowerLevelOne);
+//			regularTowerLevelTwoII = new ImageIcon(regularTowerLevelTwo);
+//			regularTowerLevelThreeII = new ImageIcon(regularTowerLevelThree);
+//			splashTowerLevelOneII = new ImageIcon(splashTowerLevelOne);
+//			splashTowerLevelTwoII = new ImageIcon(splashTowerLevelTwo);
+//			splashTowerLevelThreeII = new ImageIcon(splashTowerLevelThree);
+//			radialTowerLevelOneII = new ImageIcon(radialTowerLevelOne);
+//			radialTowerLevelTwoII = new ImageIcon(radialTowerLevelTwo);
+//			radialTowerLevelThreeII = new ImageIcon(radialTowerLevelThree);
+//			
+//			regularCritterDownII = new ImageIcon(regularCritterDown);
+//			regularCritterLeftII = new ImageIcon(regularCritterLeft);
+//			regularCritterUpII = new ImageIcon(regularCritterUp);
+//			regularCritterRightII = new ImageIcon(regularCritterRight);
+//			mediumCritterDownII = new ImageIcon(mediumCritterDown);
+//			mediumCritterLeftII = new ImageIcon(mediumCritterLeft);
+//			mediumCritterUpII = new ImageIcon(mediumCritterUp);
+//			mediumCritterRightII = new ImageIcon(mediumCritterRight);
+//			largeCritterDownII = new ImageIcon(largeCritterDown);
+//			largeCritterLeftII = new ImageIcon(largeCritterLeft);
+//			largeCritterUpII = new ImageIcon(largeCritterUp);
+//			largeCritterRightII = new ImageIcon(largeCritterRight);
+			
 		} catch (IOException e) {
 			System.out.println("NO");
 		}

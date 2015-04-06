@@ -86,6 +86,7 @@ public class GameController implements ActionListener, Serializable{
 		player = Player.getPlayerInstance();
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
+		critter_factory = CritterWaveFactory.getInstance();
 		img = Images.getUniqueInstance();
 		card_layout = new CardLayout();
 		savedGame = new File("src/savedGames/game.txt");
