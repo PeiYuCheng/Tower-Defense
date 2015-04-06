@@ -1,8 +1,14 @@
 package critterModels;
 
+import img.Images;
+
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.io.Serializable;
+import java.util.ListIterator;
+
+import map.Cell;
 
 /**
  * <h3>
@@ -38,4 +44,25 @@ public class RegularCritter extends Critter implements Serializable {
 		setColour(COLOUR);
 	}
 
+	@Override
+	public void drawCritter(Graphics g) {
+		// Critter movement during game loop
+		if (isUp()) {
+			// Move Up
+			g.setColor(COLOUR);
+			g.fillRect(super.pixel_position.x, super.pixel_position.y, 10, 30);
+		} else if (isDown()) {
+			//Move Down
+			g.setColor(COLOUR);
+			g.fillRect(super.pixel_position.x, super.pixel_position.y, 10, 30);
+		} else if (isRight()) {
+			// Move Right
+			g.setColor(COLOUR);
+			g.fillRect(super.pixel_position.x, super.pixel_position.y, 30, 10);
+		} else if (isLeft()) {
+			// Move Left
+			g.setColor(COLOUR);
+			g.fillRect(super.pixel_position.x, super.pixel_position.y, 30, 10);
+		}
+	}
 }
