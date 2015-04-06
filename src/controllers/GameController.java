@@ -796,6 +796,7 @@ public class GameController implements ActionListener, Serializable{
 		card_layout.show(Application.getCardContainer(), CARD_MAIN_MENU);
 		MusicPlayer.playMainMenuBGM();
 		player.restartPlayer();
+		button_selector.deselectSelected();
 		critter_factory.restartWaves();
 		clearFields();
 		customMapMode = false;
