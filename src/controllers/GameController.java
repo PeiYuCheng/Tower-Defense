@@ -26,6 +26,7 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
@@ -36,6 +37,7 @@ import towerModels.AreaOfEffectTower;
 import towerModels.RadialTower;
 import towerModels.RegularTower;
 import towerModels.Tower;
+import audio.MusicPlayer;
 import buttons.*;
 import critterModels.*;
 import domain.CritterWaveFactory;
@@ -58,7 +60,6 @@ public class GameController implements ActionListener, Serializable{
 	private ArrayList<Tower> list_of_towers_on_map;
 	private ArrayList<Critter> list_of_critters_on_map;
 	private Queue<Critter> critter_buffer;
-	private Images img;
 	private long time_of_last_deploy;
 	private ArrayList<CustomButton> list_of_buttons;
 	private CritterWaveFactory critter_factory;
@@ -87,10 +88,10 @@ public class GameController implements ActionListener, Serializable{
 		button_selector = ButtonSelector.getInstance();
 		cell_selector = CellSelector.getInstance();
 		critter_factory = CritterWaveFactory.getInstance();
-		img = Images.getUniqueInstance();
 		card_layout = new CardLayout();
 		savedGame = new File("src/savedGames/game.txt");
 		dropdownFull = false;
+		MusicPlayer.music();
 		images = Images.getUniqueInstance();
 		//create Field with paint function defined in controller
 		setMainMenu(new MainMenu() {
@@ -164,10 +165,11 @@ public class GameController implements ActionListener, Serializable{
 		game_side_menu.add(new SellTowerButton(70, 250, 50, 50));
 		game_side_menu.add(new AttackModeButton(130, 250, 50, 50));
 		game_side_menu.add(new StartWaveButton(10, 490, 50, 50));
-		game_side_menu.add(new SaveGameButton(0, 555, 100, 45));
-		game_side_menu.add(new MenuButton(100, 555, 100, 45));
+//		game_side_menu.add(new SaveGameButton(0, 555, 100, 45));
+		game_side_menu.add(new MenuButton(0, 555, 200, 45));
 		
-		custom_map_side_menu.add(new ValidateAndSaveButton(10, 80, 30, 30));
+		custom_map_side_menu.add(new ValidateAndSaveButton(70, 420, 80, 80));
+		custom_map_side_menu.add(new MenuButton(0, 555, 200, 45));
 		
 		timer = new Timer(Application.TIMEOUT,this);
 		timer.start();
@@ -291,23 +293,31 @@ public class GameController implements ActionListener, Serializable{
 		// menu seperator, change color
 		g.setColor(new Color(97,80,194,50));
 		g.fillRect(0, 550, 200, 5);
-		
-//		g.drawString("Lives: " + player.getLives(), 10, 20);
-//		g.drawString("Money: " + player.getMoney(), 10, 40);
-//		g.drawString("Towers: ", 10, 90);
-//		if (waveStarted)
-//			g.drawString("Wave: " + (waveNumber-1) + "/50", 10, 60);
-//		else if (!waveStarted && waveNumber != 1)
-//			g.drawString("Wave " + (waveNumber-1) + " Complete", 10, 60);
+
 	}
 	
 	protected void doCustomMapSideMenuDrawing(Graphics g) {
+		if (validCustomMap) {
+			g.drawImage(images.validBackground.getScaledInstance(200, 600, 0), 0, 0, null);
+			
+			g.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+			g.setColor(Color.GREEN);
+			g.drawString("very accept", 75, 355);
+			
+			g.setColor(Color.CYAN);
+			g.drawString("such valid", 94, 105);
+			
+			g.setColor(Color.RED);
+			g.drawString("wow.", 28, 182);
+			
+			g.setColor(Color.MAGENTA);
+			g.drawString("so map", 13, 409);
+		}
 		g.setColor(Color.white);
-		g.drawString("Valid Map: " + validCustomMap, 10, 20);
 	}
 
 	protected void doMainMenuDrawing(Graphics g) {
-		g.drawImage(img.menuBackground, 0, 0, null);
+		g.drawImage(images.menuBackground, 0, 0, null);
 	}
 
 	private void fireTowers() {
@@ -702,14 +712,17 @@ public class GameController implements ActionListener, Serializable{
 		validCustomMap = map.validate();
 		if (button_selector.isValidateAndSave()) {
 			if (validCustomMap) {
-				for (Cell cell : map.getPath()) {
-					cell.customMapModeOff();
-				}
-				customMapMode = false;
 				String mapName = JOptionPane.showInputDialog("Enter map name");
-				saveMap(mapName);
-				dropdownFull = false;
-				resetGame();
+				if (mapName != null) {
+					for (Cell cell : map.getPath()) {
+						cell.customMapModeOff();
+					}
+					customMapMode = false;
+					saveMap(mapName);
+					dropdownFull = false;
+					resetGame();
+				}
+				button_selector.setValidateAndSave(false);
 			}
 		}
 	}
@@ -794,9 +807,9 @@ public class GameController implements ActionListener, Serializable{
 		gameStarted = false;
 	}
 	
-	private void returnToMenu() {
+	private void returnToMenu(JComponent field) {
 		if (button_selector.isRestartGame()) {
-			int reply = JOptionPane.showConfirmDialog(game_field, "Are you sure you want to quit?", "Quit Game", JOptionPane.YES_NO_OPTION);
+			int reply = JOptionPane.showConfirmDialog(field, "Are you sure you want to quit?", "Quit Game", JOptionPane.YES_NO_OPTION);
 			if (reply == JOptionPane.YES_OPTION) {
 				resetGame();
 			}
@@ -820,6 +833,7 @@ public class GameController implements ActionListener, Serializable{
 		if (customMapMode) {
 			toggleCellOnCustomMap();
 			validateAndSaveCustomMap();
+			returnToMenu(custom_map_field);
 		}
 		else if (gameStarted) {
 			
@@ -838,7 +852,7 @@ public class GameController implements ActionListener, Serializable{
 			killCritter();
 			
 			saveGameRequest();
-			returnToMenu();
+			returnToMenu(game_field);
 			endGame();
 		}
 		

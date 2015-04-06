@@ -23,12 +23,12 @@ public class CustomMap extends Map implements Serializable {
 	
 	public Cell toggleCell(Cell cell) {
 		if (cell instanceof SceneryCell) {
-			Grid[cell.getX()][cell.getY()] = new PathCell(cell.getX(), cell.getY());
+			Grid[cell.getX()][cell.getY()] = new PathCell(cell.getX(), cell.getY(), Width, Height);
 			Grid[cell.getX()][cell.getY()].customMapModeOn();
 			return Grid[cell.getX()][cell.getY()];
 		}
 		else {
-			Grid[cell.getX()][cell.getY()] = new SceneryCell(cell.getX(), cell.getY());
+			Grid[cell.getX()][cell.getY()] = new SceneryCell(cell.getX(), cell.getY(), Width, Height);
 			return Grid[cell.getX()][cell.getY()];
 		}
 	}
@@ -41,7 +41,7 @@ public class CustomMap extends Map implements Serializable {
 		// set every cell to SceneryCell first
 		for (int i = 0; i < Width; i++) {
 			for (int j = 0; j < Height; j++) {
-				aCell = new SceneryCell(i, j);
+				aCell = new SceneryCell(i, j, Width, Height);
 				this.addGridCell(aCell);
 			}
 		}

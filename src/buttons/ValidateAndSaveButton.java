@@ -12,15 +12,16 @@ public class ValidateAndSaveButton extends ClickButton {
 	@Override
 	public void drawButton(Graphics g) {
 		
-		selectColor(g, REGULAR_BUTTON_COLOR);
-		g.fillRect(position.x, position.y, size.width, size.height);
-		g.setColor(Color.white);
-		g.drawRect(position.x, position.y, size.width, size.height);
-		g.drawString("Validate and Save", position.x, position.y + 45);
-//		g.drawString("$" + AreaOfEffectTower.COST, position.x, position.y + 60);
+		g.drawImage(images.validateIcon.getScaledInstance(size.width, size.height, 0), 0, 0, null);
+		super.drawButton(g);
 		
 	}
 
+	@Override
+	public void drawButtonBackground(Graphics g) {
+
+	}
+	
 	@Override
 	protected void OnRelease() {
 		button_selector.setValidateAndSave(true);

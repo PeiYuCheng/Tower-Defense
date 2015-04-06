@@ -16,8 +16,8 @@ public class PathCell extends Cell implements Serializable {
 	private static final Color PATH_CELL_COLOR = Color.orange;
 	private static final boolean SELECTABLE = false;
 	
-	public PathCell(int posX, int posY){
-		super(posX, posY, PATH_CELL_COLOR, SELECTABLE);
+	public PathCell(int posX, int posY, int mapWidth, int mapHeight){
+		super(posX, posY, PATH_CELL_COLOR, SELECTABLE, mapWidth, mapHeight);
 	}
 	
 	@Override

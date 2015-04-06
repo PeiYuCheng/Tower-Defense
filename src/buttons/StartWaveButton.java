@@ -26,12 +26,7 @@ public class StartWaveButton extends ClickButton implements Serializable {
 		
 		g.drawImage(images.newWaveIcon.getScaledInstance(size.width, size.height, 0), 0, 0, null);
 		super.drawButton(g);
-		
-//		selectColor(g, REGULAR_BUTTON_COLOR);
-//		g.fillRect(position.x, position.y, size.width, size.height);
-//		g.setColor(Color.white);
-//		g.drawRect(position.x, position.y, size.width, size.height);
-//		g.drawString("Start Wave", position.x, position.y + 45);
+
 	}
 	
 	@Override

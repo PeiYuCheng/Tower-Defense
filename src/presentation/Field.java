@@ -15,7 +15,7 @@ public class Field extends JPanel implements Serializable {
 	
 	public Field(){
 		
-		setBackground(Color.white);
+		setBackground(new Color(20,20,20));
 		setLocation(0, 0);
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(3*Application.SCREEN_WIDTH/4, Application.SCREEN_HEIGHT));

@@ -17,8 +17,9 @@ public class Images implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static Images images;
 	
-	// menu
+	// backgrounds
 	public BufferedImage menuBackground;
+	public BufferedImage validBackground;
 	
 	// side menu icons
 	public BufferedImage moneyIcon;
@@ -27,6 +28,7 @@ public class Images implements Serializable {
 	public BufferedImage sellIcon;
 	public BufferedImage attackModeIcon;
 	public BufferedImage newWaveIcon;
+	public BufferedImage validateIcon;
 	
 	// towers
 	public BufferedImage regularTowerLevelOne;
@@ -103,6 +105,7 @@ public class Images implements Serializable {
 	public void loadImages() {
 		try {
 			menuBackground = ImageIO.read(new File("src/img/menuBackground.jpg"));
+			validBackground = ImageIO.read(new File("src/img/dogeApproval.jpg"));
 			
 			moneyIcon = ImageIO.read(new File("src/img/dogeMoney.png"));
 			healthIcon = ImageIO.read(new File("src/img/dogeHeart.png"));
@@ -110,6 +113,7 @@ public class Images implements Serializable {
 			sellIcon = ImageIO.read(new File("src/img/sellDoge.jpg"));
 			attackModeIcon = ImageIO.read(new File("src/img/attackModeDoge.jpg"));
 			newWaveIcon = ImageIO.read(new File("src/img/newWaveDoge.jpg"));
+			validateIcon = ImageIO.read(new File("src/img/validateDoge.png"));
 			
 			regularTowerLevelOne = ImageIO.read(new File("src/img/reg1.gif"));
 			regularTowerLevelTwo = ImageIO.read(new File("src/img/reg2.gif"));

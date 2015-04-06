@@ -16,13 +16,6 @@ public class UpgradeButton extends ClickButton implements Serializable {
 		g.drawImage(images.upgradeIcon.getScaledInstance(size.width, size.height, 0), 0, 0, null);
 		super.drawButton(g);
 		
-//		selectColor(g, REGULAR_BUTTON_COLOR);
-//		g.fillRect(position.x, position.y, size.width, size.height);
-//		g.setColor(Color.white);
-//		g.drawRect(position.x, position.y, size.width, size.height);
-//		g.drawString("Upgrade", position.x, position.y + 45);
-//		g.drawString("$" + AreaOfEffectTower.COST, position.x, position.y + 60);
-		
 	}
 
 	@Override

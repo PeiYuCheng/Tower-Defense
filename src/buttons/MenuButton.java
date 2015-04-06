@@ -16,7 +16,8 @@ public class MenuButton extends ClickButton implements Serializable {
 	public void drawButton(Graphics g) {
 		
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
-		g.drawString("much menu", 8, (size.height-1)/2 + 6);
+		int stringWidth = g.getFontMetrics().stringWidth("much menu");
+		g.drawString("much menu", (size.width - stringWidth) / 2, (size.height-1)/2 + 6);
 		super.drawButton(g);
 		
 	}

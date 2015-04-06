@@ -68,9 +68,9 @@ public class Application extends JFrame implements Serializable {
 		
 		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);	
 		setTitle(APP_NAME);
+		setResizable(false);
 		pack();
 		
-		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);

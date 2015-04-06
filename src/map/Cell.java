@@ -36,12 +36,12 @@ public abstract class Cell implements CellInterface, Serializable{
 	private CellSelector cell_selector;
 	private Tower tower_in_cell;
 	
-	public Cell (int x, int y, Color color, boolean selectable) {
+	public Cell (int x, int y, Color color, boolean selectable, int mapWidth, int mapHeight) {
 		
 		cell_selector = CellSelector.getInstance();
 		
 		position = new Point(x,y);
-		pixel_position = new Point(x*CELL_SPACING,y*CELL_SPACING);
+		pixel_position = new Point((((Map.MAX_WIDTH-mapWidth)*CELL_SPACING)/2) + x*CELL_SPACING,(((Map.MAX_HEIGHT-mapHeight)*CELL_SPACING)/2) + y*CELL_SPACING);
 		cell_color = color;
 		this.selectable = selectable;
 		component = new JComponent() {
