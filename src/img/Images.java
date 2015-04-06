@@ -137,6 +137,10 @@ public class Images implements Serializable {
 			largeCritterLeft = ImageIO.read(new File("src/img/largeCritterL.gif"));
 			largeCritterUp = ImageIO.read(new File("src/img/largeCritterU.gif"));
 			largeCritterRight = ImageIO.read(new File("src/img/largeCritterR.gif"));
+			bossCritterDown = ImageIO.read(new File("src/img/bossCritterD.gif"));
+			bossCritterLeft = ImageIO.read(new File("src/img/bossCritterL.gif"));
+			bossCritterUp = ImageIO.read(new File("src/img/bossCritterU.gif"));
+			bossCritterRight = ImageIO.read(new File("src/img/bossCritterR.gif"));
 			
 			
 //			menuBackgroundII = new ImageIcon(menuBackground);

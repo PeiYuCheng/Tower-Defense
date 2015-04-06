@@ -812,6 +812,13 @@ public class GameController implements ActionListener, Serializable{
 		}
 	}
 	
+	private void winGame() {
+		if (list_of_critters_on_map.isEmpty() && critter_buffer.isEmpty() && (critter_factory.getWaveNumber() == CritterWaveFactory.FINAL_WAVE)) {
+			JOptionPane.showMessageDialog(game_field, "much defended. so win. wow.");
+			resetGame();
+		}
+	}
+	
 //	private void saveGameRequest() {
 //		if (button_selector.isSaveGame()) {
 //			saveGame();
@@ -848,6 +855,7 @@ public class GameController implements ActionListener, Serializable{
 			// Miscellaneous logic
 //			saveGameRequest();
 			returnToMenu(game_field);
+			winGame();
 			endGame();
 		}
 		

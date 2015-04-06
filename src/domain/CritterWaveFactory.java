@@ -29,7 +29,7 @@ public class CritterWaveFactory implements Serializable{
 
 	private static CritterWaveFactory critter_factory;
 	
-	private static final int FINAL_WAVE = 50;
+	public static final int FINAL_WAVE = 50;
 	private Queue<Critter> group;
 	private int waveNumber;
 	private int amountOfSmallCritters;
