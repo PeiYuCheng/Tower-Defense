@@ -742,7 +742,7 @@ public class GameController implements ActionListener, Serializable{
 		}
 	}
 	
-	private void saveMap(String mapName) {
+	protected void saveMap(String mapName) {
 		try {
 			FileOutputStream fileStream = new FileOutputStream("src/savedMaps/" + mapName + ".txt");
 			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
@@ -758,7 +758,7 @@ public class GameController implements ActionListener, Serializable{
 		}
 	}
 	
-	private void loadMap(File mapName) {
+	protected void loadMap(File mapName) {
 		try {
 			FileInputStream fileStream = new FileInputStream(mapName);
 			ObjectInputStream objectStream = new ObjectInputStream(fileStream);

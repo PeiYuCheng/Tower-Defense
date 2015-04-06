@@ -8,8 +8,6 @@ import java.util.Queue;
 import map.Map;
 import map.MapFactory;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import critterModels.Critter;
@@ -17,31 +15,29 @@ import domain.CritterWaveFactory;
 import domain.TowerFactory;
 
 
-public class TowerTest {
+public class TowerTest {	
 	
-	Tower tower;
-	Map map;
-	ArrayList<Critter> wave;
-			
-	@Before
-	public void setUp() throws Exception {
-		tower = TowerFactory.getInstance().getNewRegularTower();
-		map = MapFactory.getUniqueInstance().createMap(1, 0, 0);
-		wave = (ArrayList<Critter>) CritterWaveFactory.getInstance().createWave(map);
-	}
+	Map map = MapFactory.getUniqueInstance().createMap(2, 0, 0);
+	CritterWaveFactory wave = CritterWaveFactory.getInstance();
+	ArrayList<Critter> buffer = new ArrayList<Critter>();
+	Tower tower = TowerFactory.getInstance().getNewRegularTower();
+	
+	@Test
+	public void towerHitCritter_test() {
+		wave.setupNextWave();
+		Queue<Critter> critterOnMap = wave.createWave(map);
+		while (!critterOnMap.isEmpty())
+			buffer.add(critterOnMap.poll());
+		int maxHealth = buffer.get(0).getHealth();
+		tower.activateTower(true);
+		tower.detectCritterTargets(buffer);
+		tower.fire();
 
-	@After
-	public void tearDown() throws Exception {
-		
+		assertNotEquals(buffer.get(0).getHealth(), maxHealth, 0);
 	}
 	
-//	@Test
-//	public void towerHitCritter() {
-//		while(!wave.peek().isDead()) {
-//			tower.activateTower(true);
-//			tower.detectCritterTargets(buffer);
-//			tower.fire();
-//		}
-//		assertTrue(wave.peek().isDead());
-//	}
+	@Test
+	public void towerUpgrade_test() {
+		assertTrue(tower.upgradeTower());
+	}
 }

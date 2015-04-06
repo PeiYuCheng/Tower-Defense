@@ -12,15 +12,15 @@ public class GameTest {
 	GameController loadedGameState = new GameController();
 	
 	@Test
-	public void saveFileExists_test() {
-		game.saveGame();
+	public void saveMapFileExist_test() {
+		game.saveMap("Tree");
 		
-		File gameSave = new File("src/savedGames/game.txt");
+		File gameSave = new File("src/savedMaps/Tree.txt");
 		assertTrue(gameSave.exists());
 	}
 	
 	@Test
-	public void loadFile_Test() {
-		game.loadGame();
+	public void loadMapFile_Test() {
+		game.loadMap(new File("src/savedMaps/Tree.txt"));
 	}
 }
