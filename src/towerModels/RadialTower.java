@@ -17,7 +17,7 @@ public class RadialTower extends Tower implements Serializable {
 	private static final int REFUND_VALUE = 4;
 	private static final int RANGE = 3;
 	private static final int POWER = 3;
-	private static final int RATE_OF_FIRE = 1;
+	private static final int RATE_OF_FIRE = 3;
 	
 	private ArrayList<Critter> radial_targets;
 	private ArrayList<Integer> x_coordinate_target_points;
@@ -125,7 +125,6 @@ public class RadialTower extends Tower implements Serializable {
 	
 	@Override
 	public int actualRange() {
-		// TODO Auto-generated method stub
 		return RANGE + getUpgradeLevel();
 	}
 

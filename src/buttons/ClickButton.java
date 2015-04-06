@@ -26,4 +26,10 @@ public class ClickButton extends CustomButton implements Serializable {
 		setSelected(false);
 	}
 
+	@Override
+	protected void OnClick() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

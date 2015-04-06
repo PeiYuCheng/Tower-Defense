@@ -715,9 +715,9 @@ public class GameController implements ActionListener, Serializable{
 					dropdownFull = false;
 					resetGame();
 				}
-				button_selector.setValidateAndSave(false);
 			}
 		}
+		button_selector.setValidateAndSave(false);
 	}
 	
 	private void toggleCellOnCustomMap() {
@@ -777,13 +777,8 @@ public class GameController implements ActionListener, Serializable{
 	
 	private void endGame() {
 		if (getPlayer().isDead()) {
-			int reply = JOptionPane.showConfirmDialog(game_field, "Game Over: Would you like to Restart", "Tower Defense", JOptionPane.YES_NO_OPTION);
-			if (reply == JOptionPane.YES_OPTION) {
+			JOptionPane.showMessageDialog(game_field, "very game over. much dissapoint.");
 				resetGame();
-			} else {
-				JOptionPane.showMessageDialog(game_field, "GoodBye");
-				System.exit(0);
-			}
 		}
 	}
 	

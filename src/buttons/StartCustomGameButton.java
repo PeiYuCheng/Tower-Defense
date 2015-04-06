@@ -33,6 +33,7 @@ public class StartCustomGameButton extends ClickButton implements Serializable {
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN, fontsize));
 		stringWidth = g.getFontMetrics().stringWidth(message);
 		g.drawString(message, (size.width - stringWidth) / 2, size.height/2 + 8);
+		super.drawButton(g);
 
 	}
 	

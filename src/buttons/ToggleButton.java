@@ -28,5 +28,17 @@ public class ToggleButton extends CustomButton implements Serializable {
 			setSelected(true);
 		}
 	}
+
+	@Override
+	protected void OnPress() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void OnRelease() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

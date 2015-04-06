@@ -57,13 +57,12 @@ public abstract class CustomButton extends JComponent implements Serializable {
 	
 	@Override
 	public Dimension getPreferredSize() {
-		// TODO Auto-generated method stub
 		return size;
 	}
 
 	public void drawButtonBackground(Graphics g) {
 
-		selectColor(g, REGULAR_BUTTON_COLOR);
+		g.setColor(REGULAR_BUTTON_COLOR);
 		g.fillRect(0, 0, size.width-1, size.height-1);
 		g.setColor(Color.white);
 		g.drawRect(0, 0, size.width-1, size.height-1);
@@ -78,16 +77,6 @@ public abstract class CustomButton extends JComponent implements Serializable {
 		else if (hovered) {
 			g.setColor(new Color(0,0,0,50));
 			g.fillRect(0, 0, size.width, size.height);
-		}
-	}
-
-	protected void selectColor(Graphics g, Color button_color) {
-		if (selected) {
-			g.setColor(SELECTED_BUTTON_COLOR);
-		} else if (hovered) {
-			g.setColor(HOVERED_BUTTON_COLOR);
-		} else {
-			g.setColor(button_color);
 		}
 	}
 
@@ -111,17 +100,9 @@ public abstract class CustomButton extends JComponent implements Serializable {
 		return hovered;
 	}
 
-	protected void OnClick() {
-
-	}
-
-	protected void OnPress() {
-
-	}
-
-	protected void OnRelease() {
-
-	}
+	protected abstract void OnClick();
+	protected abstract void OnPress();
+	protected abstract void OnRelease();
 
 	protected void OnEnter() {
 		hovered = true;
