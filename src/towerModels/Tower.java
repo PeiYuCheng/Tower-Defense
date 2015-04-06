@@ -339,59 +339,49 @@ public abstract class Tower extends Observable implements Serializable{
 			return;
 		}
 		
-		Critter target_critter;
+		ITowerTargetingStrategy targeter;
 		
 		switch (attack_mode) {
 		
 		// Only changes target when the current critter is out of range of the tower
 		case FOLLOW:
-			if (!(current_target_critter == null)) {
-				if (!target_critters.contains(current_target_critter)) {
-					current_target_critter = target_critters.get(0);
-				}
-			}
-			else {
-				current_target_critter = target_critters.get(0);
-			}
+			targeter = new TowerTargetingFollow(current_target_critter, target_critters);
 			break;
 			
-		// Always changes the target to the first critter in the list
+		// Always changes the target to the back critter
 		case BACK:
-			current_target_critter = target_critters.get(target_critters.size() - 1);
+			targeter = new TowerTargetingBack(target_critters);
 			break;
 			
-		// Always changes the target to the last critter in the list
+		// Always changes the target to the front critter
 		case FRONT:
-			current_target_critter = target_critters.get(0);
+			targeter = new TowerTargetingFront(target_critters);
 			break;
 			
 		case RADIAL:
-			current_target_critter = null;
+			targeter = null;
 			break;
 			
 		case STRONGEST:
-			target_critter = target_critters.get(0);
-			for (Critter critter : target_critters) {
-				if (critter.getDamagingPower() > target_critter.getDamagingPower()) {
-					target_critter = critter;
-				}
-			}
-			current_target_critter = target_critter;
+			targeter = new TowerTargetingStrongest(target_critters);
 			break;
 			
 		case WEAKEST:
-			target_critter = target_critters.get(0);
-			for (Critter critter : target_critters) {
-				if (critter.getDamagingPower() < target_critter.getDamagingPower()) {
-					target_critter = critter;
-				}
-			}
-			current_target_critter = target_critter;
+			targeter = new TowerTargetingWeakest(target_critters);
 			break;
 			
 		default:
+			targeter = null;
 			break;
 		}
+		
+		if (targeter != null) {
+			current_target_critter = targeter.chooseTargetCritter();
+		}
+		else {
+			current_target_critter = null;
+		}
+		
 		
 	}
 	
