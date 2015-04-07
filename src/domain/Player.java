@@ -6,15 +6,14 @@ import java.io.Serializable;
 
 public class Player implements Serializable{
 	
-	private final int LIVES_AT_START = 10;
-	private final int MONEY_AT_START = 40;
+	private final int LIVES_AT_START = 25;
+	private final int MONEY_AT_START = 50;
 	
 	private int lives;
 	private int money;
 	private String name;
 	private static Player player;
 	
-	//TODO Set up player name here
 	private Player() {
 		setLives(LIVES_AT_START);
 		setMoney(MONEY_AT_START);

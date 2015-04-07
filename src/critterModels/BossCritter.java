@@ -25,7 +25,7 @@ public class BossCritter extends Critter implements Serializable {
 
 	private static final int REWARD = 10;
 	private static final int MAX_HEALTH = 10000;
-	private static final int DAMAGING_POWER = 10;
+	private static final int DAMAGING_POWER = 25;
 	private static final int MOVING_SPEED = 2;
 	private static final Dimension SIZE = new Dimension(30, 30);
 	private static final Color COLOUR = Color.RED;

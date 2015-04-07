@@ -24,7 +24,7 @@ import java.io.Serializable;
 public class LargeCritter extends Critter implements Serializable {
 
 	// final constants
-	private static final int REWARD = 15;
+	private static final int REWARD = 4;
 	private static final int MAX_HEALTH = 1000;
 	private static final int DAMAGING_POWER = 3;
 	private static final int MOVING_SPEED = 4;
@@ -48,7 +48,7 @@ public class LargeCritter extends Critter implements Serializable {
 			g.drawImage(images.largeCritterUp.getScaledInstance(21, 30, 0), 5, 0, null);
 			break;
 		case DOWN:
-			g.drawImage(images.largeCritterDown.getScaledInstance(21, 20, 0), 5, 0, null);
+			g.drawImage(images.largeCritterDown.getScaledInstance(21, 30, 0), 5, 0, null);
 			break;
 		case LEFT:
 			g.drawImage(images.largeCritterLeft.getScaledInstance(30, 21, 0), 0, 5, null);

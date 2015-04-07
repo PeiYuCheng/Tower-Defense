@@ -157,7 +157,7 @@ public abstract class Tower extends Observable implements ITower, Serializable{
 	public int getUpgradeCost() {
 		
 		int upgrade_cost;
-		upgrade_cost = this.cost/2 + (this.cost*this.upgrade_level)/2;
+		upgrade_cost = this.cost + (this.cost*this.upgrade_level)/2;
 		
 		if (this.upgrade_level <= MAX_UPGRADE_LEVEL) {
 			return upgrade_cost;

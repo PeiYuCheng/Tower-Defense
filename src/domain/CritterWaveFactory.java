@@ -29,7 +29,7 @@ public class CritterWaveFactory implements Serializable{
 
 	private static CritterWaveFactory critter_factory;
 	
-	public static final int FINAL_WAVE = 50;
+	public static final int FINAL_WAVE = 21;
 	private Queue<Critter> group;
 	private int waveNumber;
 	private int amountOfSmallCritters;
@@ -99,55 +99,55 @@ public class CritterWaveFactory implements Serializable{
 		amountOfLargeCritters = 0;
 	}
 	
-	public int countAmountOfSmallCritters(int waveNumber) {
-		if (waveNumber <= 15) {
+	public int countAmountOfSmallCritters(int waveNumber) {	
+		
+		if (waveNumber <= FINAL_WAVE/3) {
 			return waveNumber*2;
 		}
-		else if (waveNumber <= 30) {
-			return waveNumber;
+		else if (waveNumber <= (FINAL_WAVE*2)/3) {
+			return (((FINAL_WAVE*4)/3) - (waveNumber*2));
 		}
-		else if (waveNumber <= 40) {
-			return waveNumber/2;
-		}
-		else if (waveNumber < 50) {
-			return waveNumber;
+		else if (waveNumber < FINAL_WAVE) {
+			return 0;
 		}
 		else {
 			return 0;
 		}
+		
 	}
 	
 	public int countAmountOfMediumCritters(int waveNumber) {
-		if (waveNumber > 10) {
-			if (waveNumber <= 20) {
-				return (waveNumber - 10)*4;
-			}
-			else if (waveNumber <= 40) {
-				return waveNumber - 15;
-			}
-			else if (waveNumber < 50) {
-				return waveNumber - 25;
-			}
-			else {
-				return 0;
-			}
+		
+		if (waveNumber <= FINAL_WAVE/3) {
+			return 0;
 		}
-		return 0;
+		else if (waveNumber <= (FINAL_WAVE*2)/3) {
+			return (waveNumber*2 - (FINAL_WAVE*2)/3);
+		}
+		else if (waveNumber < FINAL_WAVE) {
+			return ((FINAL_WAVE*4)/3) - waveNumber;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	public int countAmountOfLargeCritters(int waveNumber) {
-		if (waveNumber > 20) {
-			if (waveNumber <= 40) {
-				return (waveNumber - 20)*3;
-			}
-			else if (waveNumber < 50) {
-				return (waveNumber - 25)*3;
-			}
-			else {
-				return 0;
-			}
+
+		if (waveNumber <= FINAL_WAVE/3) {
+			return 0;
 		}
-		return 0;
+		else if (waveNumber <= (FINAL_WAVE*2)/3) {
+			return 0;
+		}
+		else if (waveNumber < FINAL_WAVE) {
+			return (waveNumber - (FINAL_WAVE*2)/3)*2;
+		}
+		else {
+			return 0;
+		}
+		
 	}
 	
 	public void setupNextWave() {

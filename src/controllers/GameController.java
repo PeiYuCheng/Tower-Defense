@@ -283,7 +283,7 @@ public class GameController implements ActionListener, Serializable{
 		
 		g.setColor(Color.white);
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-		g.drawString("very wave: " + (critter_factory.getWaveNumber()) + "/50", 70, 490);
+		g.drawString("very wave: " + (critter_factory.getWaveNumber()) + "/" + CritterWaveFactory.FINAL_WAVE, 70, 490);
 		if (button_selector.isShowNextWaveInfo()) {
 			printNextWaveInfo(g, new Point(70, 510));
 		}
