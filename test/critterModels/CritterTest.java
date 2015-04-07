@@ -47,10 +47,15 @@ public class CritterTest {
 
 	@Test
 	public void critterWalking_test() {
+		
+		testRegular.setMapKnownToCritters(gameMap);
+		
 		while (!testRegular.hasReachedExit()) {
 			testRegular.startWalking();
 		}
-		assertEquals(testRegular.getCell_position(), gameMap.getExitCell().getPosition());
+		
+		assertEquals(testRegular.getTruePixelPosition().x, gameMap.getExitCell().getPixelPosition().x,testRegular.getMovingSpeed()+1);
+		assertEquals(testRegular.getTruePixelPosition().y, gameMap.getExitCell().getPixelPosition().y,testRegular.getMovingSpeed()+1);
 	}
 }
 
