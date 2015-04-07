@@ -272,16 +272,52 @@ public abstract class Critter extends Observable {
 				 * and gets deleted once it reaches it.
 				 */
 				if (direction == DIRECTION.RIGHT) {
-					pixel_position.x += movingSpeed;
+					if (nextPixelPositionY - currentPixelPositionY == 0) {
+						setMovement(DIRECTION.RIGHT);
+						pixel_position.x += movingSpeed;
+					} else if (nextPixelPositionY - currentPixelPositionY < 0) {
+						setMovement(DIRECTION.UP);
+						pixel_position.y -= movingSpeed;
+					} else {
+						setMovement(DIRECTION.DOWN);
+						pixel_position.y += movingSpeed;
+					}
 				}	
 				else if (direction == DIRECTION.LEFT) {
-					pixel_position.x -= movingSpeed;
+					if (nextPixelPositionY - currentPixelPositionY == 0) {
+						setMovement(DIRECTION.LEFT);
+						pixel_position.x -= movingSpeed;
+					} else if (nextPixelPositionY - currentPixelPositionY < 0) {
+						setMovement(DIRECTION.UP);
+						pixel_position.y -= movingSpeed;
+					} else {
+						setMovement(DIRECTION.DOWN);
+						pixel_position.y += movingSpeed;
+					}
 				}
 				else if (direction == DIRECTION.UP) {
-					pixel_position.y -= movingSpeed;
+					if (nextPixelPositionX - currentPixelPositionX == 0) {
+						setMovement(DIRECTION.UP);
+						pixel_position.y -= movingSpeed;
+					} else if (nextPixelPositionX - currentPixelPositionX > 0) {
+						setMovement(DIRECTION.RIGHT);
+						pixel_position.x += movingSpeed;
+					} else {
+						setMovement(DIRECTION.LEFT);
+						pixel_position.x -= movingSpeed;
+					}
 				}
 				else {
-					pixel_position.y += movingSpeed;
+					if (nextPixelPositionX - currentPixelPositionX == 0) {
+						setMovement(DIRECTION.DOWN);
+						pixel_position.y += movingSpeed;
+					} else if (nextPixelPositionX - currentPixelPositionX > 0) {
+						setMovement(DIRECTION.RIGHT);
+						pixel_position.x += movingSpeed;
+					} else {
+						setMovement(DIRECTION.LEFT);
+						pixel_position.x -= movingSpeed;
+					}
 				}
 
 				// Critter reaches the exit cell
