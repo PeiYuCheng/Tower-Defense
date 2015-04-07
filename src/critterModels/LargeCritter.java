@@ -27,7 +27,7 @@ public class LargeCritter extends Critter implements Serializable {
 	private static final int REWARD = 4;
 	private static final int MAX_HEALTH = 1000;
 	private static final int DAMAGING_POWER = 3;
-	private static final int MOVING_SPEED = 4;
+	private static final int MOVING_SPEED = 7;
 	private static final Dimension SIZE = new Dimension(30, 30);
 	private static final Color COLOUR = Color.GRAY;
 
