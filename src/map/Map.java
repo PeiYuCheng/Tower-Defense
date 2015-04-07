@@ -139,6 +139,7 @@ public abstract class Map implements Serializable{
 			
 			if (pathCellCount > 2) {
 				valid = false;
+				break;
 			}
 			
 			for (int i = 0; i < nextCell.length; i++) {

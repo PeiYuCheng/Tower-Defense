@@ -24,6 +24,7 @@ public class MusicPlayer {
 	public static void stopBGM() {
 		if (BGM_clip != null) {
 			BGM_clip.stop();
+			BGM_clip.close();
 		}
 	}
 	
