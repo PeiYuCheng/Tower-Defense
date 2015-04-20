@@ -209,6 +209,14 @@ public abstract class Map implements Serializable{
 		
 	}
 	
+	/**
+	 * Bounds a number to a certain range.
+	 * @param number Number to be bounded.
+	 * @param lowerBound The lower bound of the range.
+	 * @param upperBound The upper bound of the range.
+	 * @return The original number if it is inside the range, lowerBound if it is below,
+	 *  and upperBound if it is above
+	 */
 	public static int boundNumber(int number, int lowerBound, int upperBound) {
 		if (number < lowerBound) {
 			return lowerBound;
@@ -221,6 +229,9 @@ public abstract class Map implements Serializable{
 		}
 	}
 	
+	/**
+	 * Refreshes all cell selectors.
+	 */
 	public void refreshCellSelectors() {
 		for (int i = 0; i < Grid.length; i++) {
 			for (int j = 0; j < Grid[0].length; j++) {
