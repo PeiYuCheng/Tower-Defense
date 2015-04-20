@@ -9,6 +9,11 @@ import java.io.Serializable;
 
 import javax.swing.JPanel;
 
+/**
+ * JPanel that is to be the main menu.
+ * @author Jeffrey
+ *
+ */
 public class MainMenu extends JPanel implements Serializable{
 	
 	public MainMenu() {

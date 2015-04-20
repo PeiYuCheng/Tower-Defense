@@ -7,6 +7,11 @@ import java.io.Serializable;
 
 import javax.swing.JPanel;
 
+/**
+ * JPanel that is to be the side menu during game play.
+ * @author Jeffrey
+ *
+ */
 public class SideMenu extends JPanel implements Serializable {
 	
 	public SideMenu(){

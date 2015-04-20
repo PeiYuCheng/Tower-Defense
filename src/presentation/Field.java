@@ -8,7 +8,11 @@ import java.io.Serializable;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-
+/**
+ * JPanel that is to contain all the game entities.
+ * @author Jeffrey
+ *
+ */
 public class Field extends JPanel implements Serializable {
 	
 	private JLayeredPane lp;
