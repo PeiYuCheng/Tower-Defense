@@ -33,7 +33,8 @@ public class RegularTower extends Tower implements Serializable {
 		
 		detectCritterTargets(getAllCrittersOnMap());
 		amount_of_damage = this.getPower()*this.getUpgradeLevel();
-		// TODO invoke the damage method of the critter
+
+		// damages the target critter if the tower can fire
 		if (canFire() && this.getCurrentTargetCritter() != null) {
 			this.getCurrentTargetCritter().damageCritter(amount_of_damage, hasPyroDamage(), hasSlowDamage());
 			setTimeOfLastFire(System.currentTimeMillis());
@@ -58,7 +59,6 @@ public class RegularTower extends Tower implements Serializable {
 
 	@Override
 	public int actualRange() {
-		// TODO Auto-generated method stub
 		return RANGE*(getUpgradeLevel()+1);
 	}
 	

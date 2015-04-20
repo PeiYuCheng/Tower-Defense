@@ -7,6 +7,11 @@ import java.io.Serializable;
 import towerModels.RegularTower;
 import towerModels.Tower;
 
+/**
+ * Special button that is used to buy a regular type tower.
+ * @author Jeffrey
+ *
+ */
 public class BuyRegularTowerButton extends ToggleButton implements Serializable {
 
 	

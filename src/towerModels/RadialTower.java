@@ -106,7 +106,7 @@ public class RadialTower extends Tower implements Serializable {
 		detectCritterTargets(getAllCrittersOnMap());
 		findRadialTargets(this.getCrittersInRange());
 		
-		// TODO invoke the damage method of the critter
+		// damages all critters in attacking region if the tower can fire
 		if (canFire() && radial_targets != null) {
 			for (int i = 0; i < radial_targets.size(); i++) {
 				radial_targets.get(i).damageCritter(amount_of_damage, hasPyroDamage(), hasSlowDamage());

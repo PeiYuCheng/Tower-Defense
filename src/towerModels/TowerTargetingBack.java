@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import critterModels.Critter;
 
+/**
+ * Targeting strategy that targets the critter closest to the entrance.
+ * @author Jeffrey
+ *
+ */
 public class TowerTargetingBack implements ITowerTargetingStrategy {
 
 	private ArrayList<Critter> target_critters;

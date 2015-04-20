@@ -4,15 +4,22 @@ import java.io.Serializable;
 
 import buttons.CustomButton;
 
+/**
+ * This class handles all the selections of buttons in the game.
+ * @author Jeffrey
+ *
+ */
 public class ButtonSelector implements Serializable{
-
-	private static ButtonSelector cell_button;
+	
+	private static ButtonSelector button_selector;
 	private CustomButton selectedButton;
+	private int map_type;
+	
+	// Each variable name indicates the operation that has been selected if true.
 	private boolean sellTowerSelected;
 	private boolean upgradeTowerSelected;
 	private boolean start_wave;
 	private boolean start_game;
-	private int map_type;
 	private boolean validate_and_save;
 	private boolean toggleAttackMode;
 	private boolean showNextWaveInfo;
@@ -23,12 +30,15 @@ public class ButtonSelector implements Serializable{
 	}
 	
 	public static ButtonSelector getInstance() {
-		if (cell_button == null) {
-			cell_button = new ButtonSelector();
+		if (button_selector == null) {
+			button_selector = new ButtonSelector();
 		}
-		return cell_button;
+		return button_selector;
 	}
 	
+	/**
+	 * Deselects the currently selected button and deselects the currently selected cell.
+	 */
 	public void deselectSelected() {
 		if (selectedButton != null) {
 			selectedButton.setSelected(false);

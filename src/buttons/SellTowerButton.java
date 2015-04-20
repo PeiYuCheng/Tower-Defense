@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+/**
+ * Special button that is used to sell a tower.
+ * @author Jeffrey
+ *
+ */
 public class SellTowerButton extends ClickButton implements Serializable {
 
 	public SellTowerButton(int posX, int posY, int width, int height) {

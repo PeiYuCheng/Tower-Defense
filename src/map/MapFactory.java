@@ -3,11 +3,11 @@ package map;
 import java.io.Serializable;
 
 
-
+/**
+ * Map factory class intended to provide made maps.
+ */
 public class MapFactory implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private MapFactory() {

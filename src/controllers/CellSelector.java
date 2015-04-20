@@ -5,7 +5,11 @@ import java.io.Serializable;
 import map.Cell;
 import towerModels.Tower;
 
-
+/**
+ * This class handles all the selections of cells in the game.
+ * @author Jeffrey
+ *
+ */
 public class CellSelector implements Serializable{
 
 	private static CellSelector cell_controller;
@@ -21,6 +25,10 @@ public class CellSelector implements Serializable{
 		return cell_controller;
 	}
 	
+	/**
+	 * Deselects the currently selected cell as well as deselects the tower contained in the
+	 * currently selected cell if applicable.
+	 */
 	public void deselectSelectedCell() {
 		if (selectedCell != null) {
 			selectedCell.setSelection(false);
@@ -33,6 +41,10 @@ public class CellSelector implements Serializable{
 		}
 	}
 
+	/**
+	 * Selects the currently selected cell as well as Selects the tower contained in the
+	 * currently selected cell if applicable.
+	 */
 	public void setSelectedCell(Cell selectedCell) {
 		Tower tower = null;
 		if (this.selectedCell != null) {

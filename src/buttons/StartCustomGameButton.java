@@ -8,6 +8,11 @@ import java.io.Serializable;
 import towerModels.RadialTower;
 import controllers.GameController;
 
+/**
+ * Special button that is used to start a custom game.
+ * @author Jeffrey
+ *
+ */
 public class StartCustomGameButton extends ClickButton implements Serializable {
 
 	String cardLayout = GameController.CARD_MAIN_GAME;

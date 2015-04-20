@@ -7,8 +7,12 @@ import java.io.Serializable;
 
 import controllers.GameController;
 
+/**
+ * Special button that is used to load a map.
+ * @author Jeffrey
+ *
+ */
 public class StartLoadedMapButton extends ClickButton implements Serializable{
-String cardLayout = GameController.CARD_MAIN_GAME;
 	
 	public StartLoadedMapButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);

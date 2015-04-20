@@ -3,6 +3,11 @@ package buttons;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+/**
+ * Type of button that activates on a click.
+ * @author Jeffrey
+ *
+ */
 public class ClickButton extends CustomButton implements Serializable {
 
 	public ClickButton(int posX, int posY, int width, int height) {

@@ -2,6 +2,11 @@ package buttons;
 
 import java.awt.Graphics;
 
+/**
+ * Special button that is used to change the attack mode of the tower.
+ * @author Jeffrey
+ *
+ */
 public class AttackModeButton extends ClickButton {
 
 	public AttackModeButton(int posX, int posY, int width, int height) {

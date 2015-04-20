@@ -8,10 +8,13 @@ import java.io.Serializable;
 import towerModels.RadialTower;
 import controllers.GameController;
 
+/**
+ * Special button that is used to start a hard game.
+ * @author Jeffrey
+ *
+ */
 public class StartHardGameButton extends ClickButton implements Serializable{
 
-	String cardLayout = GameController.CARD_MAIN_GAME;
-	
 	public StartHardGameButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);
 	}

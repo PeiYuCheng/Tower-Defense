@@ -5,15 +5,14 @@ import java.util.Random;
 
 import presentation.Application;
 
+/**
+ * Entry point to the game.
+ * 
+ */
 public class main {
 	
 	private static Application tower_defense;
 	
-	/**
-	 * This Class serves as an entry point to the program
-	 * 
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		tower_defense = new Application();
 	}

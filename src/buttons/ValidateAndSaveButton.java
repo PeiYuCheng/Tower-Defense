@@ -3,6 +3,11 @@ package buttons;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * Special button that is used to validate and save a custom map.
+ * @author Jeffrey
+ *
+ */
 public class ValidateAndSaveButton extends ClickButton {
 
 	public ValidateAndSaveButton(int posX, int posY, int width, int height) {

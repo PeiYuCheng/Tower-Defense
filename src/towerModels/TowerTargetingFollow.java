@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import critterModels.Critter;
 
+/**
+ * Targeting strategy that targets and follows a critter in range of the tower.
+ * @author Jeffrey
+ *
+ */
 public class TowerTargetingFollow implements ITowerTargetingStrategy {
 
 	private Critter current_target_critter;

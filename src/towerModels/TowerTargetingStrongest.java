@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import critterModels.Critter;
 
+/**
+ * Targeting strategy that targets the strongest critter.
+ * @author Jeffrey
+ *
+ */
 public class TowerTargetingStrongest implements ITowerTargetingStrategy {
 
 	private ArrayList<Critter> target_critters;

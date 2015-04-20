@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+/**
+ * Special button that is used to upgrade a tower.
+ * @author Jeffrey
+ *
+ */
 public class UpgradeButton extends ClickButton implements Serializable {
 
 	public UpgradeButton(int posX, int posY, int width, int height) {

@@ -58,7 +58,7 @@ public class CritterWaveFactory implements Serializable{
 	 */
 	public Queue<Critter> createWave(Map map) {
 		group = new LinkedList<Critter>();
-		// TODO: add real start position for boss and regular
+		
 		Critter regularCritter;
 		Critter mediumCritter;
 		Critter largeCritter;
@@ -87,6 +87,7 @@ public class CritterWaveFactory implements Serializable{
 			critter.setMapKnownToCritters(map);
 		}
 		
+		// randomize the order of critters
 		Collections.shuffle((List<?>) group, new Random(System.nanoTime()));
 		
 		return group;

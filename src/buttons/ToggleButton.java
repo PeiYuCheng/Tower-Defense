@@ -5,6 +5,11 @@ import java.io.Serializable;
 import controllers.ButtonSelector;
 import domain.TowerFactory;
 
+/**
+ * Special button type that toggles on or off when clicked.
+ * @author Jeffrey
+ *
+ */
 public class ToggleButton extends CustomButton implements Serializable {
 
 	private ButtonSelector button_selector;

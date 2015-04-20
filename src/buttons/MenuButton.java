@@ -5,6 +5,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+/**
+ * Special button that is used to go to the main menu.
+ * @author Jeffrey
+ *
+ */
 public class MenuButton extends ClickButton implements Serializable {
 
 	public MenuButton(int posX, int posY, int width, int height) {

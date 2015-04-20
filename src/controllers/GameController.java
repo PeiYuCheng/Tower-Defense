@@ -44,6 +44,11 @@ import critterModels.*;
 import domain.CritterWaveFactory;
 import domain.Player;
 
+/**
+ * Main controller for the game.
+ * @author Jeffrey
+ *
+ */
 public class GameController implements ActionListener, Serializable{
 
 	private File savedGame;

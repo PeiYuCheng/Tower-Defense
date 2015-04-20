@@ -18,6 +18,11 @@ import javax.swing.JPanel;
 import controllers.ButtonSelector;
 import towerModels.Tower;
 
+/**
+ * Custom button class.
+ * @author Jeffrey
+ *
+ */
 public abstract class CustomButton extends JComponent implements Serializable {
 
 	protected static final Color REGULAR_BUTTON_COLOR = new Color(0,0,0,0);

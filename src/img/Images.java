@@ -8,7 +8,11 @@ import java.io.Serializable;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-
+/**
+ * Contains all the information of images for the game.
+ * @author Jeffrey
+ *
+ */
 public class Images implements Serializable {
 
 	/**
@@ -141,39 +145,6 @@ public class Images implements Serializable {
 			bossCritterLeft = ImageIO.read(new File("src/img/bossCritterL.gif"));
 			bossCritterUp = ImageIO.read(new File("src/img/bossCritterU.gif"));
 			bossCritterRight = ImageIO.read(new File("src/img/bossCritterR.gif"));
-			
-			
-//			menuBackgroundII = new ImageIcon(menuBackground);
-//			
-//			moneyIconII = new ImageIcon(moneyIcon);
-//			healthIconII = new ImageIcon(healthIcon);
-//			upgradeIconII = new ImageIcon(upgradeIcon);
-//			sellIconII = new ImageIcon(sellIcon);
-//			attackModeIconII = new ImageIcon(attackModeIcon);
-//			newWaveIconII = new ImageIcon(newWaveIcon);
-//			
-//			regularTowerLevelOneII = new ImageIcon(regularTowerLevelOne);
-//			regularTowerLevelTwoII = new ImageIcon(regularTowerLevelTwo);
-//			regularTowerLevelThreeII = new ImageIcon(regularTowerLevelThree);
-//			splashTowerLevelOneII = new ImageIcon(splashTowerLevelOne);
-//			splashTowerLevelTwoII = new ImageIcon(splashTowerLevelTwo);
-//			splashTowerLevelThreeII = new ImageIcon(splashTowerLevelThree);
-//			radialTowerLevelOneII = new ImageIcon(radialTowerLevelOne);
-//			radialTowerLevelTwoII = new ImageIcon(radialTowerLevelTwo);
-//			radialTowerLevelThreeII = new ImageIcon(radialTowerLevelThree);
-//			
-//			regularCritterDownII = new ImageIcon(regularCritterDown);
-//			regularCritterLeftII = new ImageIcon(regularCritterLeft);
-//			regularCritterUpII = new ImageIcon(regularCritterUp);
-//			regularCritterRightII = new ImageIcon(regularCritterRight);
-//			mediumCritterDownII = new ImageIcon(mediumCritterDown);
-//			mediumCritterLeftII = new ImageIcon(mediumCritterLeft);
-//			mediumCritterUpII = new ImageIcon(mediumCritterUp);
-//			mediumCritterRightII = new ImageIcon(mediumCritterRight);
-//			largeCritterDownII = new ImageIcon(largeCritterDown);
-//			largeCritterLeftII = new ImageIcon(largeCritterLeft);
-//			largeCritterUpII = new ImageIcon(largeCritterUp);
-//			largeCritterRightII = new ImageIcon(largeCritterRight);
 			
 		} catch (IOException e) {
 			System.out.println("NO");

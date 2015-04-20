@@ -5,6 +5,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+/**
+ * Special button that is used to save the game.
+ * @author Jeffrey
+ *
+ */
 public class SaveGameButton extends ClickButton implements Serializable {
 
 	public SaveGameButton(int posX, int posY, int width, int height) {

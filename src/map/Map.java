@@ -126,6 +126,7 @@ public abstract class Map implements Serializable{
 			
 			pathCellCount = 0;
 			
+			// Obtain all possible next path cells
 			nextCell[0] = Grid[boundNumber(currentCell.position.x - 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid[0].length - 1)];
 			nextCell[1] = Grid[boundNumber(currentCell.position.x + 1, 0, Grid.length - 1)][boundNumber(currentCell.position.y, 0, Grid[0].length - 1)];
 			nextCell[2] = Grid[boundNumber(currentCell.position.x, 0, Grid.length - 1)][boundNumber(currentCell.position.y - 1, 0, Grid[0].length - 1)];
@@ -189,6 +190,9 @@ public abstract class Map implements Serializable{
 		
 		list_of_boundary_cells.add(Grid[0][0]);
 		
+		
+		// scan all the possible entry and exit cells and set the first found as an entry
+		// and the second found as an exit
 		for (int i = 1; i < list_of_boundary_cells.size() - 2; i++) {
 			if (list_of_boundary_cells.get(i) instanceof PathCell &&
 					list_of_boundary_cells.get(i-1) instanceof SceneryCell &&

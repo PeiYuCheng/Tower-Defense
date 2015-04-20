@@ -13,7 +13,11 @@ import critterModels.LargeCritter;
 import critterModels.MediumCritter;
 import critterModels.RegularCritter;
 import domain.CritterWaveFactory;
-
+ /**
+  * Special button that is used to start a wave.
+  * @author Jeffrey
+  *
+  */
 public class StartWaveButton extends ClickButton implements Serializable {
 
 	public StartWaveButton(int posX, int posY, int width, int height) {

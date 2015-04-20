@@ -8,10 +8,13 @@ import java.io.Serializable;
 import towerModels.RadialTower;
 import controllers.GameController;
 
+/**
+ * Special button that is used to start an easy game.
+ * @author Jeffrey
+ *
+ */
 public class StartEasyGameButton extends ClickButton implements Serializable{
 
-	String cardLayout = GameController.CARD_MAIN_GAME;
-	
 	public StartEasyGameButton(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);
 	}

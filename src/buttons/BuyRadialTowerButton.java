@@ -7,6 +7,11 @@ import java.io.Serializable;
 import towerModels.RadialTower;
 import towerModels.Tower;
 
+/**
+ * Special button that is used to buy a radial type tower.
+ * @author Jeffrey
+ *
+ */
 public class BuyRadialTowerButton extends ToggleButton implements Serializable {
 
 	public BuyRadialTowerButton(int posX, int posY, int width, int height) {

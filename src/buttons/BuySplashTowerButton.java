@@ -7,6 +7,11 @@ import java.io.Serializable;
 import towerModels.AreaOfEffectTower;
 import towerModels.Tower;
 
+/**
+ * Special button that is used to buy a splash type tower.
+ * @author Jeffrey
+ *
+ */
 public class BuySplashTowerButton extends ToggleButton implements Serializable {
 
 

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import critterModels.Critter;
 
+/**
+ * Targeting strategy that targets the weakest critter.
+ * @author Jeffrey
+ *
+ */
 public class TowerTargetingWeakest implements ITowerTargetingStrategy {
 
 	private ArrayList<Critter> target_critters;

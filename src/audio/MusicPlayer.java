@@ -8,6 +8,11 @@ import java.io.InputStream;
 
 import javax.sound.sampled.*;
 
+/**
+ * This class controls all the audio in the game
+ * @author Jeffrey
+ *
+ */
 public class MusicPlayer {
 
 	private static File mainMenuBGM = new File("src/audio/Corncob.wav");
@@ -56,6 +61,10 @@ public class MusicPlayer {
 		}
 	}
 	
+	/**
+	 * This method plays a music file.
+	 * @param soundFile File which will be played.
+	 */
 	public static void music(File soundFile) {
 
 		currentFile = soundFile;
